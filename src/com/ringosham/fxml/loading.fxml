@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.ProgressBar?>
+<ProgressBar xmlns:fx="http://javafx.com/fxml"
+             prefWidth="200.0"
+             fx:controller="com.ringosham.controller.Loading"/>
+
