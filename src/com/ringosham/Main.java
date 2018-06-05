@@ -27,10 +27,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("../com/ringosham/fxml/loading.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("fxml/mainScreen.fxml"));
         primaryStage.setTitle("Parsing database. Please wait...");
-        primaryStage.resizableProperty().setValue(false);
-        primaryStage.setScene(new Scene(root, 350, 20));
+        //primaryStage.resizableProperty().setValue(false);
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 }

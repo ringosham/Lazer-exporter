@@ -1,8 +1,8 @@
-package com.ringosham.threads;
+package com.ringosham.threads.export.song;
 
 import javafx.concurrent.Task;
 
-public class BeatmapExport extends Task<Void> {
+public class SongExport extends Task<Void> {
     @Override
     protected Void call() {
         return null;
