@@ -8,6 +8,7 @@
             fx:controller="com.ringosham.controller.MainScreen">
     <MenuBar maxHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Menu mnemonicParsing="false" text="File">
+            <MenuItem fx:id="launchGame" mnemonicParsing="false" text="Launch osu!lazer"/>
             <MenuItem fx:id="menuSettings" mnemonicParsing="false" text="Settings"/>
             <MenuItem fx:id="menuClose" mnemonicParsing="false" text="Close"/>
         </Menu>

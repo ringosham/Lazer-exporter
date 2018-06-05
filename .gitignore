@@ -75,4 +75,4 @@ fabric.properties
 .idea/httpRequests
 
 # App config files and such
-config/
+config.cfg
