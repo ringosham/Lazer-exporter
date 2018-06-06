@@ -34,22 +34,29 @@ public class Global {
         }
         FileInputStream in = new FileInputStream(configFile);
         config.load(in);
-        lastExport = new File(config.getProperty("lastExport", ""));
+        lastExport = new File(config.getProperty("lastExport", Defaults.lastExport));
         //There are no ports of osu!lazer for macOS and Linux.
         //This is planned, but there are currently no support.
-        String defaultLazerDir = getDefaultDirectory();
+        String defaultLazerDir = Defaults.getDefaultDirectory();
         lazerDirectory = new File(config.getProperty("lazerDirectory", defaultLazerDir));
-        locale = new Locale(config.getProperty("locale", "en_US"));
+        locale = new Locale(config.getProperty("locale", Defaults.locale.toString()));
         in.close();
     }
 
     private void initConfig() throws IOException {
         FileOutputStream out = new FileOutputStream(configFile);
-        config.setProperty("lastExport", "");
-        config.setProperty("lazerDirectory", getDefaultDirectory());
-        config.setProperty("locale", "en_US");
+        config.setProperty("lastExport", Defaults.lastExport);
+        config.setProperty("lazerDirectory", Defaults.getDefaultDirectory());
+        config.setProperty("locale", Defaults.locale.toString());
         config.store(out, "Lazer exporter config");
         out.close();
+    }
+
+    public void configFailsafe() {
+        lastExport = new File("");
+        String defaultLazerDir;
+        defaultLazerDir = Defaults.getDefaultDirectory();
+        lazerDirectory = new File(defaultLazerDir);
     }
 
     public void saveConfig() throws IOException {
@@ -61,23 +68,8 @@ public class Global {
         out.close();
     }
 
-    public void configFailsafe() {
-        lastExport = new File("");
-        String defaultLazerDir;
-        defaultLazerDir = getDefaultDirectory();
-        lazerDirectory = new File(defaultLazerDir);
-    }
-
-    private String getDefaultDirectory() {
-        String os = System.getProperty("os.name").toLowerCase();
-        String defaultLazerDir;
-        if (os.contains("win"))
-            defaultLazerDir = System.getenv("AppData") + "/osu";
-        else if (os.contains("mac"))
-            defaultLazerDir = "";
-        else
-            defaultLazerDir = "";
-        return defaultLazerDir;
+    public String getDatabaseAbsolutePath() {
+        return lazerDirectory.getAbsolutePath().replaceAll("\\\\", "/") + "/client.db";
     }
 
     public Locale getLocale() {
@@ -100,7 +92,40 @@ public class Global {
         return lazerDirectory;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public void setLazerDirectory(File lazerDirectory) {
         this.lazerDirectory = lazerDirectory;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    private static class Defaults {
+        private static final String lastExport = "";
+        private static final Locale locale = Locale.US;
+
+        private static String getDefaultDirectory() {
+            String os = System.getProperty("os.name").toLowerCase();
+            String defaultLazerDir;
+            if (os.contains("win"))
+                defaultLazerDir = System.getenv("AppData").replaceAll("\\\\\\\\", "/") + "/osu";
+            else if (os.contains("mac"))
+                defaultLazerDir = "";
+            else
+                defaultLazerDir = "";
+            return defaultLazerDir;
+        }
     }
 }

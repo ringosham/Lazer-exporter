@@ -31,4 +31,6 @@ public class MainScreen {
     public TextArea consoleArea;
     @FXML
     public Button downloadMaps;
+    @FXML
+    public MenuItem launchGame;
 }
