@@ -10,9 +10,10 @@ public class Song {
     private File fileLocation;
     private long lengthInSeconds;
 
-    public Song(String hash, File fileLocation) {
+    public Song(String hash) {
         this.hash = hash;
-        this.fileLocation = fileLocation;
+        String subDirectory = "files/" + hash.substring(0, 1) + "/" + hash.substring(0, 2) + "/" + hash;
+        fileLocation = new File(Global.INSTANCE.getLazerDirectory(), subDirectory);
     }
 
     public String getHash() {

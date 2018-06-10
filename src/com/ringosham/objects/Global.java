@@ -120,7 +120,7 @@ public class Global {
             String os = System.getProperty("os.name").toLowerCase();
             String defaultLazerDir;
             if (os.contains("win"))
-                defaultLazerDir = System.getenv("AppData").replaceAll("\\\\\\\\", "/") + "/osu";
+                defaultLazerDir = System.getenv("AppData").replaceAll("\\\\", "/") + "/osu";
             else if (os.contains("mac"))
                 defaultLazerDir = "";
             else

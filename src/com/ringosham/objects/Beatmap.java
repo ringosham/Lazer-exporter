@@ -1,30 +1,22 @@
 package com.ringosham.objects;
 
-import java.io.File;
+import java.util.HashMap;
 
 public class Beatmap {
-    private int localId;
     private int beatmapId;
     private String artist;
     private String title;
     private String unicodeArtist;
     private String unicodeTitle;
-    private File coverArt;
-    private Song songFile;
+    private HashMap<String, String> fileMap;
 
-    public Beatmap(int localId, int beatmapId, String artist, String title, String unicodeArtist, String unicodeTitle, File coverArt, Song songFile) {
-        this.localId = localId;
+    public Beatmap(int beatmapId, String artist, String title, String unicodeArtist, String unicodeTitle, HashMap<String, String> fileMap) {
         this.beatmapId = beatmapId;
         this.artist = artist;
         this.title = title;
         this.unicodeArtist = unicodeArtist;
         this.unicodeTitle = unicodeTitle;
-        this.coverArt = coverArt;
-        this.songFile = songFile;
-    }
-
-    public int getLocalId() {
-        return localId;
+        this.fileMap = fileMap;
     }
 
     public int getBeatmapId() {
@@ -47,11 +39,7 @@ public class Beatmap {
         return unicodeTitle;
     }
 
-    public File getCoverArt() {
-        return coverArt;
-    }
-
-    public Song getSongFile() {
-        return songFile;
+    public HashMap<String, String> getFileMap() {
+        return fileMap;
     }
 }

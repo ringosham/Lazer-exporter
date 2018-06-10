@@ -1,6 +1,7 @@
 package com.ringosham.threads;
 
 import com.ringosham.locale.Localizer;
+import com.ringosham.objects.Beatmap;
 import com.ringosham.objects.Global;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -10,6 +11,7 @@ import javafx.stage.DirectoryChooser;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.util.HashMap;
 
 public class LoadTask extends Task<Void> {
     @Override
@@ -37,19 +39,45 @@ public class LoadTask extends Task<Void> {
         final String jdbcUrl = "jdbc:sqlite:";
         try {
             Connection connection = DriverManager.getConnection(jdbcUrl + Global.INSTANCE.getDatabaseAbsolutePath());
-            String beatmapinfoSql = "SELECT BeatmapSetInfoID, MetadataID, OnlineBeatmapID FROM BeatmapInfo";
-            String beatmapsetfileinfoSql = "SELECT BeatmapSetInfoID, FileInfoID, Filename FROM BeatmapSetFileInfo";
-            String fileinfoSql = "SELECT ID, Hash FROM FileInfo";
-            String beatmapmetadataSql = "SELECT ID, Artist, ArtistUnicode, Title, TitleUnicode FROM BeatmapMetadata";
-            Statement beatmapinfoStatement = connection.createStatement();
-            Statement beatmapsetfileinfoStatement = connection.createStatement();
-            Statement fileinfoStatement = connection.createStatement();
-            Statement beatmapmetadataStatement = connection.createStatement();
-            ResultSet beatmapInfo = beatmapinfoStatement.executeQuery(beatmapinfoSql);
-            ResultSet beatmapSetFileInfo = beatmapsetfileinfoStatement.executeQuery(beatmapsetfileinfoSql);
-            ResultSet fileInfo = fileinfoStatement.executeQuery(fileinfoSql);
-            ResultSet beatmapMetadata = beatmapmetadataStatement.executeQuery(beatmapmetadataSql);
-
+            String beatmapsetInfoSql = "SELECT ID, OnlineBeatmapSetID, MetadataID FROM BeatmapSetInfo ORDER BY ID";
+            String fileInfoSql = "SELECT BeatmapSetInfoID, Filename, FileInfo.Hash" +
+                    " FROM BeatmapSetFileInfo JOIN FileInfo ON BeatmapSetFileInfo.FileInfoID = FileInfo.ID";
+            String metadataSql = "SELECT ID, Artist, ArtistUnicode, Title, TitleUnicode FROM BeatmapMetadata";
+            Statement beatmapsetInfoStatement = connection.createStatement();
+            Statement fileInfoStatement = connection.createStatement();
+            Statement metadataStatement = connection.createStatement();
+            ResultSet beatmapSetInfo = beatmapsetInfoStatement.executeQuery(beatmapsetInfoSql);
+            ResultSet fileInfo = fileInfoStatement.executeQuery(fileInfoSql);
+            ResultSet beatmapMetadata = metadataStatement.executeQuery(metadataSql);
+            while (beatmapSetInfo.next()) {
+                String beatmapID = beatmapSetInfo.getString(1);
+                //Wait for issue #2758 to be merged and closed.
+                int onlineID = Integer.parseInt(beatmapSetInfo.getString(2));
+                String metadataID = beatmapSetInfo.getString(3);
+                HashMap<String, String> fileMap = new HashMap<>();
+                while (fileInfo.next())
+                    if (beatmapID.equals(fileInfo.getString(1)))
+                        fileMap.put(fileInfo.getString(2), fileInfo.getString(3));
+                //Reset the pointer.
+                fileInfo.beforeFirst();
+                String title = null;
+                String unicodeTitle = null;
+                String artist = null;
+                String unicodeArtist = null;
+                while (beatmapMetadata.next()) {
+                    if (metadataID.equals(beatmapMetadata.getString(1))) {
+                        title = beatmapMetadata.getString(4);
+                        unicodeTitle = beatmapMetadata.getString(5);
+                        artist = beatmapMetadata.getString(2);
+                        unicodeArtist = beatmapMetadata.getString(3);
+                        break;
+                    }
+                }
+                //Reset the pointer.
+                beatmapMetadata.beforeFirst();
+                Global.INSTANCE.beatmapList.add(new Beatmap(onlineID, artist, title, unicodeArtist, unicodeTitle, fileMap));
+            }
+            connection.close();
         } catch (SQLException e) {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -61,6 +89,7 @@ public class LoadTask extends Task<Void> {
             e.printStackTrace();
             return null;
         }
+        System.out.println("Parsing complete.");
         return null;
     }
 
