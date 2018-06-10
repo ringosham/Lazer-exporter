@@ -11,9 +11,7 @@ public class Main extends Application {
 
     /*
         TODOs
-        TODO Load schemas
         TODO Properties (Config files)
-        TODO Translation
         TODO Export as beatmap list (XML)
         TODO Import beatmap list
         TODO Download beatmaps to lazer (The game hasn't supported yet. This will be placeholder)

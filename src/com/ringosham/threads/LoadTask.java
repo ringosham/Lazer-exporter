@@ -1,12 +1,17 @@
 package com.ringosham.threads;
 
+import com.ringosham.controller.MainScreen;
 import com.ringosham.locale.Localizer;
 import com.ringosham.objects.Beatmap;
 import com.ringosham.objects.Global;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +19,12 @@ import java.sql.*;
 import java.util.HashMap;
 
 public class LoadTask extends Task<Void> {
+    private Stage stage;
+
+    public LoadTask(Stage stage) {
+        this.stage = stage;
+    }
+
     @Override
     protected Void call() {
         updateTitle("Loading configs...");
@@ -51,7 +62,7 @@ public class LoadTask extends Task<Void> {
             ResultSet beatmapMetadata = metadataStatement.executeQuery(metadataSql);
             while (beatmapSetInfo.next()) {
                 String beatmapID = beatmapSetInfo.getString(1);
-                //Wait for issue #2758 to be merged and closed.
+                //Wait for issue #2758 to be merged and closed. Current column will read null values which crashes the thread
                 int onlineID = Integer.parseInt(beatmapSetInfo.getString(2));
                 String metadataID = beatmapSetInfo.getString(3);
                 HashMap<String, String> fileMap = new HashMap<>();
@@ -89,7 +100,19 @@ public class LoadTask extends Task<Void> {
             e.printStackTrace();
             return null;
         }
-        System.out.println("Parsing complete.");
+        Platform.runLater(() -> {
+            stage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/mainScreen.fxml"));
+            loader.setController(new MainScreen());
+            try {
+                Parent root = loader.load();
+                stage.resizableProperty().setValue(true);
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         return null;
     }
 

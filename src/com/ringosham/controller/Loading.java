@@ -12,7 +12,7 @@ public class Loading {
     }
 
     public void initialize() {
-        LoadTask task = new LoadTask();
+        LoadTask task = new LoadTask(stage);
         stage.titleProperty().bind(task.titleProperty());
         Thread thread = new Thread(task);
         thread.setDaemon(true);
