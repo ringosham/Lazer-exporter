@@ -33,4 +33,8 @@ public class MainScreen {
     public Button downloadMaps;
     @FXML
     public MenuItem launchGame;
+
+    public void initialize() {
+
+    }
 }

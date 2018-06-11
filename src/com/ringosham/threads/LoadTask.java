@@ -1,6 +1,5 @@
 package com.ringosham.threads;
 
-import com.ringosham.controller.MainScreen;
 import com.ringosham.locale.Localizer;
 import com.ringosham.objects.Beatmap;
 import com.ringosham.objects.Global;
@@ -16,7 +15,9 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class LoadTask extends Task<Void> {
     private Stage stage;
@@ -57,38 +58,80 @@ public class LoadTask extends Task<Void> {
             Statement beatmapsetInfoStatement = connection.createStatement();
             Statement fileInfoStatement = connection.createStatement();
             Statement metadataStatement = connection.createStatement();
-            ResultSet beatmapSetInfo = beatmapsetInfoStatement.executeQuery(beatmapsetInfoSql);
-            ResultSet fileInfo = fileInfoStatement.executeQuery(fileInfoSql);
-            ResultSet beatmapMetadata = metadataStatement.executeQuery(metadataSql);
-            while (beatmapSetInfo.next()) {
-                String beatmapID = beatmapSetInfo.getString(1);
-                //Wait for issue #2758 to be merged and closed. Current column will read null values which crashes the thread
-                int onlineID = Integer.parseInt(beatmapSetInfo.getString(2));
-                String metadataID = beatmapSetInfo.getString(3);
+            ResultSet beatmapSetInfoSet = beatmapsetInfoStatement.executeQuery(beatmapsetInfoSql);
+            ResultSet fileInfoSet = fileInfoStatement.executeQuery(fileInfoSql);
+            ResultSet beatmapMetadataSet = metadataStatement.executeQuery(metadataSql);
+            //Extract ResultSets to Java objects as SQLite only supports forward only cursors.
+            List<List<String>> beatmapSetInfo = new ArrayList<List<String>>() {{
+                for (int i = 0; i < 3; i++)
+                    add(new ArrayList<>());
+            }};
+            List<List<String>> fileInfo = new ArrayList<List<String>>() {{
+                for (int i = 0; i < 3; i++)
+                    add(new ArrayList<>());
+            }};
+            List<List<String>> beatmapMetadata = new ArrayList<List<String>>() {{
+                for (int i = 0; i < 5; i++)
+                    add(new ArrayList<>());
+            }};
+            while (beatmapSetInfoSet.next()) {
+                beatmapSetInfo.get(0).add(beatmapSetInfoSet.getString(1));
+                beatmapSetInfo.get(1).add(beatmapSetInfoSet.getString(2));
+                beatmapSetInfo.get(2).add(beatmapSetInfoSet.getString(3));
+            }
+            while (fileInfoSet.next()) {
+                fileInfo.get(0).add(fileInfoSet.getString(1));
+                fileInfo.get(1).add(fileInfoSet.getString(2));
+                fileInfo.get(2).add(fileInfoSet.getString(3));
+            }
+            while (beatmapMetadataSet.next()) {
+                beatmapMetadata.get(0).add(beatmapMetadataSet.getString(1));
+                beatmapMetadata.get(1).add(beatmapMetadataSet.getString(2));
+                beatmapMetadata.get(2).add(beatmapMetadataSet.getString(3));
+                beatmapMetadata.get(3).add(beatmapMetadataSet.getString(4));
+                beatmapMetadata.get(4).add(beatmapMetadataSet.getString(5));
+            }
+            connection.close();
+            //Process the data and stored them as objects.
+            //There is always one beatmap in the database (Circles by nekodex). So using index 0 is safe.
+            boolean nullIDFound = false;
+            for (int i = 0; i < beatmapSetInfo.get(0).size(); i++) {
+                String beatmapID = beatmapSetInfo.get(0).get(i);
+                String onlineString = beatmapSetInfo.get(1).get(i);
+                if (onlineString == null) {
+                    if (!nullIDFound) {
+                        Platform.runLater(() -> {
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle(Localizer.getLocalizedText("nullID"));
+                            alert.setHeaderText(Localizer.getLocalizedText("nullIDHead"));
+                            alert.setContentText(Localizer.getLocalizedText("nullIDDesc"));
+                            alert.showAndWait();
+                        });
+                        nullIDFound = true;
+                    }
+                    continue;
+                }
+                int onlineID = Integer.parseInt(onlineString);
+                String metadataID = beatmapSetInfo.get(2).get(i);
                 HashMap<String, String> fileMap = new HashMap<>();
-                while (fileInfo.next())
-                    if (beatmapID.equals(fileInfo.getString(1)))
-                        fileMap.put(fileInfo.getString(2), fileInfo.getString(3));
-                //Reset the pointer.
-                fileInfo.beforeFirst();
+                for (int j = 0; j < fileInfo.get(0).size(); j++)
+                    if (beatmapID.equals(fileInfo.get(0).get(j)))
+                        fileMap.put(fileInfo.get(1).get(j), fileInfo.get(2).get(j));
                 String title = null;
                 String unicodeTitle = null;
                 String artist = null;
                 String unicodeArtist = null;
-                while (beatmapMetadata.next()) {
-                    if (metadataID.equals(beatmapMetadata.getString(1))) {
-                        title = beatmapMetadata.getString(4);
-                        unicodeTitle = beatmapMetadata.getString(5);
-                        artist = beatmapMetadata.getString(2);
-                        unicodeArtist = beatmapMetadata.getString(3);
+                for (int j = 0; j < beatmapMetadata.get(0).size(); j++) {
+                    if (metadataID.equals(beatmapMetadata.get(0).get(j))) {
+                        title = beatmapMetadata.get(3).get(j);
+                        unicodeTitle = beatmapMetadata.get(4).get(j);
+                        artist = beatmapMetadata.get(1).get(j);
+                        unicodeArtist = beatmapMetadata.get(2).get(j);
                         break;
                     }
                 }
-                //Reset the pointer.
-                beatmapMetadata.beforeFirst();
                 Global.INSTANCE.beatmapList.add(new Beatmap(onlineID, artist, title, unicodeArtist, unicodeTitle, fileMap));
             }
-            connection.close();
         } catch (SQLException e) {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -100,10 +143,10 @@ public class LoadTask extends Task<Void> {
             e.printStackTrace();
             return null;
         }
+        updateTitle(Localizer.getLocalizedText("appTitle"));
         Platform.runLater(() -> {
             stage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/mainScreen.fxml"));
-            loader.setController(new MainScreen());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/mainScreen.fxml"));
             try {
                 Parent root = loader.load();
                 stage.resizableProperty().setValue(true);
