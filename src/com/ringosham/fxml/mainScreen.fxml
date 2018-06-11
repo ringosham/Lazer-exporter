@@ -9,12 +9,13 @@
             fx:controller="com.ringosham.controller.MainScreen">
     <MenuBar maxHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Menu mnemonicParsing="false" text="%menu.file">
-            <MenuItem fx:id="launchGame" mnemonicParsing="false" text="%menu.file.launchGame"/>
-            <MenuItem fx:id="menuSettings" mnemonicParsing="false" text="%menu.file.settings"/>
-            <MenuItem fx:id="menuClose" mnemonicParsing="false" text="%menu.file.exit"/>
+            <MenuItem fx:id="launchGame" mnemonicParsing="false" onAction="#launchGame" text="%menu.file.launchGame"/>
+            <MenuItem fx:id="menuSettings" mnemonicParsing="false" onAction="#settingsWindow"
+                      text="%menu.file.settings"/>
+            <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#exit" text="%menu.file.exit"/>
         </Menu>
         <Menu mnemonicParsing="false" text="%menu.help">
-            <MenuItem fx:id="menuAbout" mnemonicParsing="false" text="%menu.help.about"/>
+            <MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#aboutWindow" text="%menu.help.about"/>
         </Menu>
     </MenuBar>
     <Label fx:id="statusText" layoutY="25.0" text="Label" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
@@ -42,17 +43,17 @@
     <Label layoutX="544.0" layoutY="112.0" text="%main.export" AnchorPane.rightAnchor="15.0"/>
     <HBox layoutX="14.0" layoutY="144.0" prefHeight="25.0" spacing="10.0" AnchorPane.bottomAnchor="512.0"
           AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="144.0">
-        <Button fx:id="importList" mnemonicParsing="false" text="%main.list"/>
-        <Button fx:id="downloadMaps" mnemonicParsing="false" text="%main.downloadMaps"/>
+        <Button fx:id="importList" mnemonicParsing="false" onAction="#importList" text="%main.list"/>
+        <Button fx:id="downloadMaps" mnemonicParsing="false" onAction="#downloadMaps" text="%main.downloadMaps"/>
     </HBox>
     <HBox layoutX="386.0" layoutY="144.0" prefHeight="25.0" spacing="10.0" AnchorPane.bottomAnchor="506.0"
           AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="144.0">
-        <Button fx:id="exportSongs" mnemonicParsing="false" text="%main.songs"/>
-        <Button fx:id="exportList" mnemonicParsing="false" text="%main.list"/>
-        <Button fx:id="exportMap" mnemonicParsing="false" text="%main.map"/>
+        <Button fx:id="exportSongs" mnemonicParsing="false" onAction="#exportSongs" text="%main.songs"/>
+        <Button fx:id="exportList" mnemonicParsing="false" onAction="#exportList" text="%main.list"/>
+        <Button fx:id="exportMap" mnemonicParsing="false" onAction="#exportMaps" text="%main.map"/>
     </HBox>
-    <ListView fx:id="beatmapList" layoutY="174.0" prefHeight="136.0" prefWidth="564.0" AnchorPane.bottomAnchor="200.0"
-              AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="174.0"/>
+    <TableView fx:id="beatmapList" layoutY="174.0" prefHeight="136.0" prefWidth="564.0" AnchorPane.bottomAnchor="200.0"
+               AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="174.0"/>
     <Label layoutX="-1.0" layoutY="407.0" text="%main.log" AnchorPane.bottomAnchor="176.0">
         <padding>
             <Insets left="15.0"/>

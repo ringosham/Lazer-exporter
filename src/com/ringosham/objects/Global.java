@@ -14,6 +14,7 @@ public class Global {
     public static Global INSTANCE = new Global();
     private final File configFile = Paths.get("./config.cfg").toFile();
     public List<Beatmap> beatmapList = new ArrayList<>();
+    public boolean inProgress;
     private Properties config = new Properties();
 
     private File lastExport;
