@@ -1,5 +1,7 @@
 package com.ringosham.controller;
 
+import com.ringosham.locale.Localizer;
+import com.ringosham.objects.Global;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -35,6 +37,6 @@ public class MainScreen {
     public MenuItem launchGame;
 
     public void initialize() {
-
+        statusText.setText(Localizer.getLocalizedText("readyStatus").replace("%BEATMAPCOUNT%", Integer.toString(Global.INSTANCE.beatmapList.size())));
     }
 }

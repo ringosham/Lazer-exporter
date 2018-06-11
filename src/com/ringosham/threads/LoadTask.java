@@ -105,7 +105,7 @@ public class LoadTask extends Task<Void> {
                             alert.setTitle(Localizer.getLocalizedText("nullID"));
                             alert.setHeaderText(Localizer.getLocalizedText("nullIDHead"));
                             alert.setContentText(Localizer.getLocalizedText("nullIDDesc"));
-                            alert.showAndWait();
+                            alert.show();
                         });
                         nullIDFound = true;
                     }
@@ -146,7 +146,7 @@ public class LoadTask extends Task<Void> {
         updateTitle(Localizer.getLocalizedText("appTitle"));
         Platform.runLater(() -> {
             stage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/mainScreen.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/mainScreen.fxml"), Localizer.getResourceBundle());
             try {
                 Parent root = loader.load();
                 stage.resizableProperty().setValue(true);

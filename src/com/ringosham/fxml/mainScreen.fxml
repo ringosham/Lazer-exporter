@@ -8,13 +8,13 @@
             minHeight="600.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121"
             fx:controller="com.ringosham.controller.MainScreen">
     <MenuBar maxHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <Menu mnemonicParsing="false" text="File">
-            <MenuItem fx:id="launchGame" mnemonicParsing="false" text="Launch osu!lazer"/>
-            <MenuItem fx:id="menuSettings" mnemonicParsing="false" text="Settings"/>
-            <MenuItem fx:id="menuClose" mnemonicParsing="false" text="Close"/>
+        <Menu mnemonicParsing="false" text="%menu.file">
+            <MenuItem fx:id="launchGame" mnemonicParsing="false" text="%menu.file.launchGame"/>
+            <MenuItem fx:id="menuSettings" mnemonicParsing="false" text="%menu.file.settings"/>
+            <MenuItem fx:id="menuClose" mnemonicParsing="false" text="%menu.file.exit"/>
         </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-            <MenuItem fx:id="menuAbout" mnemonicParsing="false" text="About"/>
+        <Menu mnemonicParsing="false" text="%menu.help">
+            <MenuItem fx:id="menuAbout" mnemonicParsing="false" text="%menu.help.about"/>
         </Menu>
     </MenuBar>
     <Label fx:id="statusText" layoutY="25.0" text="Label" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
@@ -34,23 +34,26 @@
             <Insets left="15.0" right="15.0"/>
         </padding>
     </ProgressBar>
-    <Label layoutY="112.0" text="Import">
+    <Label layoutY="112.0" text="%main.import">
         <padding>
             <Insets left="15.0"/>
         </padding>
     </Label>
-    <Label layoutX="544.0" layoutY="112.0" text="Export" AnchorPane.rightAnchor="15.0"/>
-    <Button fx:id="importList" layoutY="142.0" mnemonicParsing="false" text="Beatmap list"
-            AnchorPane.leftAnchor="15.0"/>
-    <Button fx:id="exportMap" layoutX="517.0" layoutY="142.0" mnemonicParsing="false" text="Beatmap"
-            AnchorPane.rightAnchor="15.0"/>
-    <Button fx:id="exportList" layoutX="433.0" layoutY="142.0" mnemonicParsing="false" text="Beatmap list"
-            AnchorPane.rightAnchor="85.0"/>
-    <Button fx:id="exportSongs" layoutX="376.0" layoutY="142.0" mnemonicParsing="false" text="Songs"
-            AnchorPane.rightAnchor="175.0"/>
+    <Label layoutX="544.0" layoutY="112.0" text="%main.export" AnchorPane.rightAnchor="15.0"/>
+    <HBox layoutX="14.0" layoutY="144.0" prefHeight="25.0" spacing="10.0" AnchorPane.bottomAnchor="512.0"
+          AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="144.0">
+        <Button fx:id="importList" mnemonicParsing="false" text="%main.list"/>
+        <Button fx:id="downloadMaps" mnemonicParsing="false" text="%main.downloadMaps"/>
+    </HBox>
+    <HBox layoutX="386.0" layoutY="144.0" prefHeight="25.0" spacing="10.0" AnchorPane.bottomAnchor="506.0"
+          AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="144.0">
+        <Button fx:id="exportSongs" mnemonicParsing="false" text="%main.songs"/>
+        <Button fx:id="exportList" mnemonicParsing="false" text="%main.list"/>
+        <Button fx:id="exportMap" mnemonicParsing="false" text="%main.map"/>
+    </HBox>
     <ListView fx:id="beatmapList" layoutY="174.0" prefHeight="136.0" prefWidth="564.0" AnchorPane.bottomAnchor="200.0"
               AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="174.0"/>
-    <Label layoutX="-1.0" layoutY="407.0" text="Output" AnchorPane.bottomAnchor="176.0">
+    <Label layoutX="-1.0" layoutY="407.0" text="%main.log" AnchorPane.bottomAnchor="176.0">
         <padding>
             <Insets left="15.0"/>
         </padding>
@@ -61,6 +64,4 @@
             <Font name="Consolas" size="12.0"/>
         </font>
     </TextArea>
-    <Button fx:id="downloadMaps" layoutX="108.0" layoutY="142.0" mnemonicParsing="false"
-            text="Download beatmaps from list to game" AnchorPane.leftAnchor="108.0"/>
 </AnchorPane>

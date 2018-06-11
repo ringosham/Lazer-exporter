@@ -8,7 +8,7 @@ public class Localizer {
     private static final String RESOURCE_BUNDLE = "com.ringosham.lang.lang";
 
     public static String getLocalizedText(String key) {
-        ResourceBundle bundle = ResourceBundle.getBundle(RESOURCE_BUNDLE, Global.INSTANCE.getLocale(), ClassLoader.getSystemClassLoader());
+        ResourceBundle bundle = getResourceBundle();
         try {
             if (bundle.keySet().contains(key))
                 return bundle.getString(key);
@@ -18,5 +18,9 @@ public class Localizer {
             e.printStackTrace();
             return "[Error]";
         }
+    }
+
+    public static ResourceBundle getResourceBundle() {
+        return ResourceBundle.getBundle(RESOURCE_BUNDLE, Global.INSTANCE.getLocale(), ClassLoader.getSystemClassLoader());
     }
 }
