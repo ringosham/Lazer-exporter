@@ -143,7 +143,7 @@ public class LoadTask extends Task<Void> {
             e.printStackTrace();
             return null;
         }
-        updateTitle(Localizer.getLocalizedText("appTitle"));
+        updateTitle("Lazer exporter");
         Platform.runLater(() -> {
             stage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/mainScreen.fxml"), Localizer.getResourceBundle());

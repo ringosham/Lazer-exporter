@@ -95,11 +95,11 @@ public class MainScreen {
     }
 
     public void downloadMaps() throws IOException {
-        loadStage(loginStage, Localizer.getLocalizedText("loginTitle"), "../fxml/login.fxml", new Login(this));
+        loadStage(loginStage, Localizer.getLocalizedText("loginTitle"), "../fxml/login.fxml", new Login(this, loginStage));
     }
 
     public void exportSongs() throws IOException {
-        loadStage(exportStage, Localizer.getLocalizedText("exportSongs"), "../fxml/songExport.fxml", new SongExportScreen(this));
+        loadStage(exportStage, Localizer.getLocalizedText("exportSongs"), "../fxml/songExport.fxml", new SongExportScreen(this, exportStage));
     }
 
     public void exportList() {
