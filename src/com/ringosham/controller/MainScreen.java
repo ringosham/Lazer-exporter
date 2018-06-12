@@ -64,14 +64,14 @@ public class MainScreen {
     }
 
     public void settingsWindow() throws IOException {
-        loadStage(settingsStage, "../fxml/settings.fxml");
+        loadStage(settingsStage, Localizer.getLocalizedText("settings"), "../fxml/settings.fxml");
     }
 
-    private void loadStage(Stage stage, String resourcePath) throws IOException {
-        loadStage(stage, resourcePath, null);
+    private void loadStage(Stage stage, String title, String resourcePath) throws IOException {
+        loadStage(stage, title, resourcePath, null);
     }
 
-    private void loadStage(Stage stage, String resourcePath, Object controller) throws IOException {
+    private void loadStage(Stage stage, String title, String resourcePath, Object controller) throws IOException {
         if (stage.isShowing()) {
             stage.toFront();
             return;
@@ -80,14 +80,14 @@ public class MainScreen {
         if (controller != null)
             loader.setController(controller);
         Parent root = loader.load();
-        stage.setTitle(Localizer.getLocalizedText("settings"));
+        stage.setTitle(title);
         stage.resizableProperty().setValue(false);
         stage.setScene(new Scene(root));
         stage.show();
     }
 
     public void aboutWindow() throws IOException {
-        loadStage(aboutStage, "../fxml/about.fxml");
+        loadStage(aboutStage, Localizer.getLocalizedText("menu.help.about"), "../fxml/about.fxml");
     }
 
     public void importList() {
@@ -95,11 +95,11 @@ public class MainScreen {
     }
 
     public void downloadMaps() throws IOException {
-        loadStage(loginStage, "../fxml/login.fxml", new Login());
+        loadStage(loginStage, Localizer.getLocalizedText("loginTitle"), "../fxml/login.fxml", new Login(this));
     }
 
     public void exportSongs() throws IOException {
-        loadStage(exportStage, "../fxml/songExport.fxml", new SongExportScreen());
+        loadStage(exportStage, Localizer.getLocalizedText("exportSongs"), "../fxml/songExport.fxml", new SongExportScreen(this));
     }
 
     public void exportList() {

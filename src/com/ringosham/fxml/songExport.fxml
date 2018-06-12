@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--suppress ALL -->
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <FlowPane xmlns:fx="http://javafx.com/fxml/1" fx:id="pane" alignment="center" maxHeight="1.7976931348623157E308"
           maxWidth="1.7976931348623157E308" minWidth="400.0" prefHeight="221.0" prefWidth="432.0"
-          xmlns="http://javafx.com/javafx/8.0.121" fx:controller="com.ringosham.controllers.Controller">
+          xmlns="http://javafx.com/javafx/8.0.121">
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
     </padding>
-    <Button fx:id="oszExport" mnemonicParsing="false" onAction="#onOszExportClick" text="Begin export"/>
+    <Button fx:id="oszExport" mnemonicParsing="false" onAction="#onExportClick" text="Begin export"/>
     <Separator orientation="VERTICAL" prefHeight="3.0" prefWidth="394.0" visible="false"/>
     <Label text="Hover the cursor on the options to see the description!"/>
     <GridPane prefHeight="120.0" prefWidth="396.0">
