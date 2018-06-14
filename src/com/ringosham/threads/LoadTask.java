@@ -1,8 +1,10 @@
 package com.ringosham.threads;
 
+import com.ringosham.controller.MainScreen;
 import com.ringosham.locale.Localizer;
 import com.ringosham.objects.Beatmap;
 import com.ringosham.objects.Global;
+import com.ringosham.objects.Metadata;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
@@ -130,7 +132,8 @@ public class LoadTask extends Task<Void> {
                         break;
                     }
                 }
-                Global.INSTANCE.beatmapList.add(new Beatmap(onlineID, artist, title, unicodeArtist, unicodeTitle, fileMap));
+                Metadata metadata = new Metadata(artist, title, unicodeArtist, unicodeTitle);
+                Global.INSTANCE.beatmapList.add(new Beatmap(onlineID, metadata, fileMap));
             }
         } catch (SQLException e) {
             Platform.runLater(() -> {
@@ -150,6 +153,8 @@ public class LoadTask extends Task<Void> {
             try {
                 Parent root = loader.load();
                 stage.resizableProperty().setValue(true);
+                MainScreen controller = loader.getController();
+                stage.setOnCloseRequest(e -> controller.exit());
                 stage.setScene(new Scene(root));
                 stage.show();
             } catch (IOException e) {
@@ -181,11 +186,12 @@ public class LoadTask extends Task<Void> {
                         error.showAndWait();
                         e.printStackTrace();
                     }
+                } else {
+                    Alert alert1 = new Alert(Alert.AlertType.ERROR);
+                    alert1.setTitle(Localizer.getLocalizedText("dirInvalid"));
+                    alert1.setTitle(Localizer.getLocalizedText("dirInvalidDesc"));
+                    alert1.showAndWait();
                 }
-                Alert alert1 = new Alert(Alert.AlertType.ERROR);
-                alert1.setTitle(Localizer.getLocalizedText("dirInvalid"));
-                alert1.setTitle(Localizer.getLocalizedText("dirInvalidDesc"));
-                alert1.showAndWait();
             });
         }
     }

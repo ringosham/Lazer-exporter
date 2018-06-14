@@ -2,14 +2,17 @@ package com.ringosham.controller;
 
 import com.ringosham.locale.Localizer;
 import com.ringosham.objects.Global;
+import com.ringosham.threads.export.beatmap.BeatmapExport;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 public class MainScreen {
@@ -49,13 +52,17 @@ public class MainScreen {
     private Stage exportStage = new Stage();
     private Stage loginStage = new Stage();
 
+    private boolean shownDisclaimer = false;
+
     public void initialize() {
         statusText.setText(Localizer.getLocalizedText("readyStatus").replace("%BEATMAPCOUNT%", Integer.toString(Global.INSTANCE.beatmapList.size())));
     }
 
     public void exit() {
         if (Global.INSTANCE.inProgress) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "A process is still running. Confirm exit?", ButtonType.YES, ButtonType.NO);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, Localizer.getLocalizedText("confirmExitDesc"), ButtonType.YES, ButtonType.NO);
+            alert.setTitle(Localizer.getLocalizedText("confirmExit"));
+            alert.setHeaderText(Localizer.getLocalizedText("confirmExit"));
             alert.showAndWait();
             if (alert.getResult() == ButtonType.YES)
                 Platform.exit();
@@ -91,23 +98,82 @@ public class MainScreen {
     }
 
     public void importList() {
-
+        unbindNodes();
+        File importDir = getChooserDirectory(true);
+        disableButtons();
     }
 
     public void downloadMaps() throws IOException {
+        unbindNodes();
         loadStage(loginStage, Localizer.getLocalizedText("loginTitle"), "../fxml/login.fxml", new Login(this, loginStage));
     }
 
     public void exportSongs() throws IOException {
+        unbindNodes();
+        if (!shownDisclaimer)
+            showDisclaimer();
         loadStage(exportStage, Localizer.getLocalizedText("exportSongs"), "../fxml/songExport.fxml", new SongExportScreen(this, exportStage));
     }
 
-    public void exportList() {
+    private void showDisclaimer() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(Localizer.getLocalizedText("disclaimer"));
+        alert.setHeaderText(Localizer.getLocalizedText("disclaimerHead"));
+        alert.setContentText(Localizer.getLocalizedText("disclaimerDesc"));
+        alert.showAndWait();
+        shownDisclaimer = true;
+    }
 
+    public void exportList() {
+        unbindNodes();
+        File exportDir = getChooserDirectory(false);
+        disableButtons();
     }
 
     public void exportMaps() {
+        unbindNodes();
+        File exportDir = getChooserDirectory(false);
+        if (exportDir == null)
+            return;
+        BeatmapExport export = new BeatmapExport(this, exportDir);
+        statusText.textProperty().bind(export.messageProperty());
+        mainProgress.progressProperty().bind(export.progressProperty());
+        Thread thread = new Thread(export);
+        thread.setDaemon(true);
+        Global.INSTANCE.inProgress = true;
+        thread.start();
+        disableButtons();
+    }
 
+    private void disableButtons() {
+        importList.setDisable(true);
+        downloadMaps.setDisable(true);
+        exportList.setDisable(true);
+        exportMap.setDisable(true);
+        exportSongs.setDisable(true);
+    }
+
+    public void enableButtons() {
+        importList.setDisable(false);
+        downloadMaps.setDisable(false);
+        exportList.setDisable(false);
+        exportMap.setDisable(false);
+        exportSongs.setDisable(false);
+    }
+
+    private void unbindNodes() {
+        statusText.textProperty().unbind();
+        mainProgress.progressProperty().unbind();
+        subProgress.progressProperty().unbind();
+    }
+
+    private File getChooserDirectory(boolean isImport) {
+        DirectoryChooser chooser = new DirectoryChooser();
+        if (isImport)
+            chooser.setTitle(Localizer.getLocalizedText("chooseImportDir"));
+        else
+            chooser.setTitle(Localizer.getLocalizedText("chooseExportDir"));
+        return chooser.showDialog(null);
     }
 
     public void launchGame() {

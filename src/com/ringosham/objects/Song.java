@@ -4,14 +4,16 @@ import java.io.File;
 
 public class Song {
     private String hash;
+    private Metadata metadata;
     private boolean isOgg;
     private boolean isFullVersion;
     private File outputLocation;
     private File fileLocation;
     private long lengthInSeconds;
 
-    public Song(String hash) {
+    public Song(String hash, Metadata metadata) {
         this.hash = hash;
+        this.metadata = metadata;
         String subDirectory = "files/" + hash.substring(0, 1) + "/" + hash.substring(0, 2) + "/" + hash;
         fileLocation = new File(Global.INSTANCE.getLazerDirectory(), subDirectory);
     }
@@ -54,5 +56,9 @@ public class Song {
 
     public void setLengthInSeconds(long lengthInSeconds) {
         this.lengthInSeconds = lengthInSeconds;
+    }
+
+    public Metadata getMetadata() {
+        return metadata;
     }
 }

@@ -12,9 +12,7 @@ import javafx.stage.Stage;
 import java.io.File;
 
 public class SongExportScreen {
-    ;
-    @FXML
-    public Button exportButton;
+
     @FXML
     private CheckBox convertCheckbox;
     @FXML
