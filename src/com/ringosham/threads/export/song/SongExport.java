@@ -1,18 +1,18 @@
 package com.ringosham.threads.export.song;
 
 import com.ringosham.controller.MainScreen;
+import com.ringosham.locale.Localizer;
 import com.ringosham.objects.ExportSettings;
 import com.ringosham.objects.Song;
 import javafx.concurrent.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SongExport extends Task<Void> {
     private MainScreen mainScreen;
     private ExportSettings settings;
 
-    int failCount = 0;
+    static int failCount = 0;
     int exportCount = 0;
 
     public SongExport(MainScreen mainScreen, ExportSettings settings) {
@@ -22,8 +22,12 @@ public class SongExport extends Task<Void> {
 
     @Override
     protected Void call() {
-        List<Song> songList = new ArrayList<>();
-
+        List<Song> songList;
+        updateMessage(Localizer.getLocalizedText("analysing"));
+        Analyser analyser = new Analyser(mainScreen);
+        songList = analyser.run();
+        if (settings.isFilterPractice() || settings.isFilterDuplicates())
+            songList = new Filter(mainScreen, songList).run();
         return null;
     }
 }

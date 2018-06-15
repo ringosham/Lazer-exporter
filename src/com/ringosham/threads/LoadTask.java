@@ -56,7 +56,7 @@ public class LoadTask extends Task<Void> {
             String beatmapsetInfoSql = "SELECT ID, OnlineBeatmapSetID, MetadataID FROM BeatmapSetInfo ORDER BY ID";
             String fileInfoSql = "SELECT BeatmapSetInfoID, Filename, FileInfo.Hash" +
                     " FROM BeatmapSetFileInfo JOIN FileInfo ON BeatmapSetFileInfo.FileInfoID = FileInfo.ID";
-            String metadataSql = "SELECT ID, Artist, ArtistUnicode, Title, TitleUnicode FROM BeatmapMetadata";
+            String metadataSql = "SELECT ID, Artist, ArtistUnicode, Title, TitleUnicode, AudioFile, BackgroundFile FROM BeatmapMetadata";
             Statement beatmapsetInfoStatement = connection.createStatement();
             Statement fileInfoStatement = connection.createStatement();
             Statement metadataStatement = connection.createStatement();
@@ -73,7 +73,7 @@ public class LoadTask extends Task<Void> {
                     add(new ArrayList<>());
             }};
             List<List<String>> beatmapMetadata = new ArrayList<List<String>>() {{
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 7; i++)
                     add(new ArrayList<>());
             }};
             while (beatmapSetInfoSet.next()) {
@@ -92,6 +92,8 @@ public class LoadTask extends Task<Void> {
                 beatmapMetadata.get(2).add(beatmapMetadataSet.getString(3));
                 beatmapMetadata.get(3).add(beatmapMetadataSet.getString(4));
                 beatmapMetadata.get(4).add(beatmapMetadataSet.getString(5));
+                beatmapMetadata.get(5).add(beatmapMetadataSet.getString(6));
+                beatmapMetadata.get(6).add(beatmapMetadataSet.getString(7));
             }
             connection.close();
             //Process the data and stored them as objects.
@@ -123,16 +125,20 @@ public class LoadTask extends Task<Void> {
                 String unicodeTitle = null;
                 String artist = null;
                 String unicodeArtist = null;
+                String audioFilename = null;
+                String backgroundFilename = null;
                 for (int j = 0; j < beatmapMetadata.get(0).size(); j++) {
                     if (metadataID.equals(beatmapMetadata.get(0).get(j))) {
                         title = beatmapMetadata.get(3).get(j);
                         unicodeTitle = beatmapMetadata.get(4).get(j);
                         artist = beatmapMetadata.get(1).get(j);
                         unicodeArtist = beatmapMetadata.get(2).get(j);
+                        audioFilename = beatmapMetadata.get(5).get(j);
+                        backgroundFilename = beatmapMetadata.get(6).get(j);
                         break;
                     }
                 }
-                Metadata metadata = new Metadata(artist, title, unicodeArtist, unicodeTitle);
+                Metadata metadata = new Metadata(artist, title, unicodeArtist, unicodeTitle, audioFilename, backgroundFilename);
                 Global.INSTANCE.beatmapList.add(new Beatmap(onlineID, metadata, fileMap));
             }
         } catch (SQLException e) {

@@ -5,12 +5,16 @@ public class Metadata {
     private String title;
     private String unicodeArtist;
     private String unicodeTitle;
+    private String audioFilename;
+    private String backgroundFilename;
 
-    public Metadata(String artist, String title, String unicodeArtist, String unicodeTitle) {
+    public Metadata(String artist, String title, String unicodeArtist, String unicodeTitle, String audioFilename, String backgroundFilename) {
         this.artist = artist;
         this.title = title;
         this.unicodeArtist = unicodeArtist;
         this.unicodeTitle = unicodeTitle;
+        this.audioFilename = audioFilename;
+        this.backgroundFilename = backgroundFilename;
     }
 
     public String getArtist() {
@@ -27,5 +31,13 @@ public class Metadata {
 
     public String getUnicodeTitle() {
         return unicodeTitle;
+    }
+
+    public String getAudioFilename() {
+        return audioFilename;
+    }
+
+    public String getBackgroundFilename() {
+        return backgroundFilename;
     }
 }

@@ -24,4 +24,8 @@ public class Beatmap {
     public Metadata getMetadata() {
         return metadata;
     }
+
+    public String getBeatmapFullname() {
+        return beatmapId + " " + metadata.getArtist() + " - " + metadata.getTitle();
+    }
 }

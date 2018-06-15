@@ -29,11 +29,12 @@ public class BeatmapExport extends Task<Void> {
         updateProgress(0, Global.INSTANCE.beatmapList.size());
         int progress = 0;
         for (Beatmap beatmap : Global.INSTANCE.beatmapList) {
-            String beatmapName = beatmap.getBeatmapId() + " " + beatmap.getMetadata().getArtist() + " - " + beatmap.getMetadata().getTitle();
-            updateMessage(Localizer.getLocalizedText("exportingMap").replace("%BEATMAP%", beatmapName));
-            File outputFile = new File(exportDir, fixIllegalFilename(beatmapName + ".osz"));
+            updateMessage(Localizer.getLocalizedText("exportingMap").replace("%BEATMAP%", beatmap.getBeatmapFullname()));
+            File outputFile = new File(exportDir, fixIllegalFilename(beatmap.getBeatmapFullname() + ".osz"));
             try {
                 ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(outputFile));
+                Platform.runLater(() -> mainScreen.subProgress.setProgress(0));
+                int fileCount = 0;
                 for (String filename : beatmap.getFileMap().keySet()) {
                     byte[] buffer = new byte[1024];
                     FileInputStream in = new FileInputStream(getFileFromHash(beatmap.getFileMap().get(filename)));
@@ -41,12 +42,15 @@ public class BeatmapExport extends Task<Void> {
                     int length;
                     while ((length = in.read(buffer)) > 0)
                         stream.write(buffer, 0, length);
+                    fileCount++;
+                    int finalFileCount = fileCount;
+                    Platform.runLater(() -> mainScreen.subProgress.setProgress((double) finalFileCount / beatmap.getFileMap().keySet().size()));
                 }
                 stream.close();
             } catch (IOException e) {
                 failCount++;
                 Platform.runLater(() -> {
-                    mainScreen.consoleArea.appendText(Localizer.getLocalizedText("failZipping").replace("%BEATMAP%", beatmapName) + "\n");
+                    mainScreen.consoleArea.appendText(Localizer.getLocalizedText("failZipping").replace("%BEATMAP%", beatmap.getBeatmapFullname()) + "\n");
                     mainScreen.consoleArea.appendText(e.getClass().getName() + " - " + e.getMessage() + "\n");
                 });
                 e.printStackTrace();
@@ -59,7 +63,10 @@ public class BeatmapExport extends Task<Void> {
         else
             updateMessage(Localizer.getLocalizedText("taskFinishWithFailure").replace("%FAILCOUNT%", Integer.toString(failCount)));
         updateProgress(0, 0);
-        Platform.runLater(() -> mainScreen.enableButtons());
+        Platform.runLater(() -> {
+            mainScreen.enableButtons();
+            mainScreen.subProgress.setProgress(0);
+        });
         Global.INSTANCE.inProgress = false;
         return null;
     }

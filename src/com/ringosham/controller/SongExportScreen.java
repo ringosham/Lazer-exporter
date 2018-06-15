@@ -77,6 +77,14 @@ public class SongExportScreen {
 
     @FXML
     public void onExportClick() {
+        if (filterDuplicates.isSelected() && filterSeconds.getText().trim().isEmpty()) {
+            filterSeconds.requestFocus();
+            filterSeconds.setStyle("-fx-text-box-boarder: red; -fx-focus-color: red");
+            return;
+        }
+        int seconds = 0;
+        if (filterDuplicates.isSelected())
+            seconds = Integer.parseInt(filterSeconds.getText());
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle(Localizer.getLocalizedText("chooseExportDir"));
         File exportDirectory = chooser.showDialog(null);
@@ -85,7 +93,7 @@ public class SongExportScreen {
         ExportSettings settings = new ExportSettings(convertCheckbox.isSelected(), filterPractice.isSelected(), overwriteCheckbox.isSelected(),
                 addTags.isSelected(), overrideTags.isSelected(),
                 ((RadioButton) renameOptions.getSelectedToggle()).getText().equals(Localizer.getLocalizedText("renameBeatmap")),
-                filterDuplicates.isSelected(), romajiNaming.isSelected(), Integer.parseInt(filterSeconds.getText()), exportDirectory);
+                filterDuplicates.isSelected(), romajiNaming.isSelected(), seconds, exportDirectory);
         SongExport export = new SongExport(mainScreen, settings);
         mainScreen.statusText.textProperty().bind(export.messageProperty());
         Thread thread = new Thread(export);
@@ -109,7 +117,13 @@ public class SongExportScreen {
         if (!filterDuplicates.isSelected()) {
             filterSeconds.setDisable(true);
             filterSeconds.setText("");
-        } else
+            useBeatmapID.setSelected(true);
+            useBeatmapID.setDisable(true);
+            renameBeatmap.setDisable(true);
+        } else {
             filterSeconds.setDisable(false);
+            useBeatmapID.setDisable(false);
+            renameBeatmap.setDisable(false);
+        }
     }
 }
