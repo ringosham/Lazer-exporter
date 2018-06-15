@@ -101,6 +101,7 @@ public class SongExportScreen {
         Global.INSTANCE.inProgress = true;
         thread.start();
         currentStage.close();
+        mainScreen.disableButtons();
     }
 
     @FXML

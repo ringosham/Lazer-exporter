@@ -76,6 +76,12 @@ public class LoadTask extends Task<Void> {
                 for (int i = 0; i < 7; i++)
                     add(new ArrayList<>());
             }};
+            /*
+                The Filename and AudioFile name may have different capitalization
+                While this has no effect as the files are supposed to be in Windows, whereas file names are case-insensitive
+                in NTFS, this may affect users in macOS and Linux.
+                Filename refers to the actual file. While AudioFile is an attribute from the beatmap file.
+             */
             while (beatmapSetInfoSet.next()) {
                 beatmapSetInfo.get(0).add(beatmapSetInfoSet.getString(1));
                 beatmapSetInfo.get(1).add(beatmapSetInfoSet.getString(2));
@@ -83,7 +89,7 @@ public class LoadTask extends Task<Void> {
             }
             while (fileInfoSet.next()) {
                 fileInfo.get(0).add(fileInfoSet.getString(1));
-                fileInfo.get(1).add(fileInfoSet.getString(2));
+                fileInfo.get(1).add(fileInfoSet.getString(2).toLowerCase());
                 fileInfo.get(2).add(fileInfoSet.getString(3));
             }
             while (beatmapMetadataSet.next()) {
@@ -92,7 +98,7 @@ public class LoadTask extends Task<Void> {
                 beatmapMetadata.get(2).add(beatmapMetadataSet.getString(3));
                 beatmapMetadata.get(3).add(beatmapMetadataSet.getString(4));
                 beatmapMetadata.get(4).add(beatmapMetadataSet.getString(5));
-                beatmapMetadata.get(5).add(beatmapMetadataSet.getString(6));
+                beatmapMetadata.get(5).add(beatmapMetadataSet.getString(6).toLowerCase());
                 beatmapMetadata.get(6).add(beatmapMetadataSet.getString(7));
             }
             connection.close();

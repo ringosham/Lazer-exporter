@@ -28,6 +28,11 @@ public class SongExport extends Task<Void> {
         songList = analyser.run();
         if (settings.isFilterPractice() || settings.isFilterDuplicates())
             songList = new Filter(mainScreen, songList).run();
+        if (settings.isConvertOgg())
+            for (Song song : songList)
+                if (song.isOgg())
+                    new Converter(mainScreen, song).run();
+
         return null;
     }
 }

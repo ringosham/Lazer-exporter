@@ -145,7 +145,7 @@ public class MainScreen {
         disableButtons();
     }
 
-    private void disableButtons() {
+    void disableButtons() {
         importList.setDisable(true);
         downloadMaps.setDisable(true);
         exportList.setDisable(true);

@@ -5,12 +5,12 @@ import com.ringosham.locale.Localizer;
 import com.ringosham.objects.Beatmap;
 import com.ringosham.objects.Global;
 import com.ringosham.objects.Song;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import org.gagravarr.vorbis.VorbisFile;
+import it.sauronsoftware.jave.Encoder;
+import it.sauronsoftware.jave.EncoderException;
+import it.sauronsoftware.jave.MultimediaInfo;
+import javafx.application.Platform;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,52 +30,37 @@ class Analyser {
             hashing them ourselves.
          */
         Map<String, Song> songMap = new HashMap<>();
+        Platform.runLater(() -> {
+            mainScreen.mainProgress.setProgress(0);
+            mainScreen.subProgress.setProgress(-1);
+        });
+        int progress = 0;
         for (Beatmap beatmap : Global.INSTANCE.beatmapList) {
-            File songFile = getFileFromHash(beatmap.getFileMap().get(beatmap.getMetadata().getAudioFilename()));
-            //Determine song length
-            if (beatmap.getFileMap().get(beatmap.getMetadata().getAudioFilename()).toLowerCase().endsWith(".mp3")) {
-                Media mediaFile = new Media(songFile.toURI().toString());
-                MediaPlayer player = new MediaPlayer(mediaFile);
-                player.setOnError(() -> {
-                    SongExport.failCount++;
-                    mainScreen.consoleArea.appendText(Localizer.getLocalizedText("errorMp3").replace("%BEATMAP%", beatmap.getBeatmapFullname()));
-                    mainScreen.consoleArea.appendText("\n");
-                    mainScreen.consoleArea.appendText(player.getError().getClass().getName() + " : " + player.getError().getMessage());
-                    mainScreen.consoleArea.appendText("\n");
-                    player.getError().printStackTrace();
-                    player.dispose();
-                });
-                long duration;
-                while (player.getStatus() == MediaPlayer.Status.UNKNOWN) {
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException ignored) {
-                    }
-                }
-                if (player.getStatus() != MediaPlayer.Status.DISPOSED)
-                    duration = (long) mediaFile.getDuration().toSeconds();
-                else {
-                    continue;
-                }
+            String audioFilename = beatmap.getFileMap().get(beatmap.getMetadata().getAudioFilename());
+            File songFile = getFileFromHash(audioFilename);
+            //Determine song length using FFmpeg
+            try {
+                Encoder encoder = new Encoder();
+                MultimediaInfo info = encoder.getInfo(songFile);
+                long duration = info.getDuration() / 1000;
+                //Beatmap songs can only be MP3s or Vorbis ogg.
                 songMap.put(beatmap.getFileMap().get(beatmap.getMetadata().getAudioFilename()),
-                        new Song(songFile, beatmap.getBeatmapId(), false, duration));
-            } else {
-                try {
-                    VorbisFile vorbisFile = new VorbisFile(songFile);
-                    //Nominal bitrate is not accurate enough though. About 10 seconds in error
-                    long duration = (songFile.length() * 8) / vorbisFile.getInfo().getBitrateNominal();
-                    vorbisFile.close();
-                    songMap.put(beatmap.getFileMap().get(beatmap.getMetadata().getAudioFilename()),
-                            new Song(songFile, beatmap.getBeatmapId(), true, duration));
-                } catch (IOException e) {
-                    SongExport.failCount++;
-                    mainScreen.consoleArea.appendText(Localizer.getLocalizedText("errorOgg").replace("%BEATMAP%", beatmap.getBeatmapFullname()));
+                        new Song(songFile, beatmap.getBeatmapId(),
+                                beatmap.getMetadata().getAudioFilename().toLowerCase().endsWith(".mp3"), duration));
+            } catch (EncoderException e) {
+                SongExport.failCount++;
+                Platform.runLater(() -> {
+                    mainScreen.consoleArea.appendText(Localizer.getLocalizedText("errorSong").replace("%BEATMAP%",
+                            beatmap.getBeatmapFullname()));
                     mainScreen.consoleArea.appendText("\n");
                     mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage());
                     mainScreen.consoleArea.appendText("\n");
-                    e.printStackTrace();
-                }
+                });
+                e.printStackTrace();
             }
+            progress++;
+            int finalProgress = progress;
+            Platform.runLater(() -> mainScreen.mainProgress.setProgress((double) finalProgress / Global.INSTANCE.beatmapList.size()));
         }
         return new ArrayList<>(songMap.values());
     }
