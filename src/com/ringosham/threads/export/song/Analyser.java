@@ -43,10 +43,11 @@ class Analyser {
                 Encoder encoder = new Encoder();
                 MultimediaInfo info = encoder.getInfo(songFile);
                 long duration = info.getDuration() / 1000;
+                int bitrate = info.getAudio().getBitRate();
                 //Beatmap songs can only be MP3s or Vorbis ogg.
                 songMap.put(beatmap.getFileMap().get(beatmap.getMetadata().getAudioFilename()),
                         new Song(songFile, beatmap.getBeatmapId(),
-                                beatmap.getMetadata().getAudioFilename().toLowerCase().endsWith(".mp3"), duration));
+                                beatmap.getMetadata().getAudioFilename().toLowerCase().endsWith(".mp3"), duration, bitrate));
             } catch (EncoderException e) {
                 SongExport.failCount++;
                 Platform.runLater(() -> {

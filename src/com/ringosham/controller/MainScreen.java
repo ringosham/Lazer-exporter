@@ -18,33 +18,25 @@ import java.io.IOException;
 public class MainScreen {
 
     @FXML
-    public MenuItem menuSettings;
-    @FXML
-    public MenuItem menuClose;
-    @FXML
-    public MenuItem menuAbout;
-    @FXML
     public Label statusText;
     @FXML
     public ProgressBar mainProgress;
     @FXML
     public ProgressBar subProgress;
     @FXML
-    public Button importList;
+    private Button importList;
     @FXML
-    public Button exportMap;
+    private Button exportMap;
     @FXML
-    public Button exportList;
+    private Button exportList;
     @FXML
-    public Button exportSongs;
+    private Button exportSongs;
     @FXML
     public TableView beatmapList;
     @FXML
     public TextArea consoleArea;
     @FXML
-    public Button downloadMaps;
-    @FXML
-    public MenuItem launchGame;
+    private Button downloadMaps;
 
     //Stages
     private Stage settingsStage = new Stage();

@@ -22,6 +22,7 @@ public class Global {
     private Locale locale;
     private String username;
     private String password;
+    private final File convertDir = new File(System.getProperty("java.io.tmpdir") + "/convertOgg");
 
     private Global() {
     }
@@ -111,6 +112,10 @@ public class Global {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public File getConvertDir() {
+        return convertDir;
     }
 
     private static class Defaults {

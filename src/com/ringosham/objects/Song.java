@@ -9,12 +9,14 @@ public class Song {
     private File outputLocation;
     private File fileLocation;
     private long lengthInSeconds;
+    private int bitrate;
 
-    public Song(File fileLocation, int beatmapID, boolean isOgg, long lengthInSeconds) {
+    public Song(File fileLocation, int beatmapID, boolean isOgg, long lengthInSeconds, int bitrate) {
         this.fileLocation = fileLocation;
         this.beatmapID = beatmapID;
         this.isOgg = isOgg;
         this.lengthInSeconds = lengthInSeconds;
+        this.bitrate = bitrate;
     }
 
     public boolean isOgg() {
@@ -41,11 +43,19 @@ public class Song {
         return fileLocation;
     }
 
+    public void setFileLocation(File fileLocation) {
+        this.fileLocation = fileLocation;
+    }
+
     public long getLengthInSeconds() {
         return lengthInSeconds;
     }
 
     public int getBeatmapID() {
         return beatmapID;
+    }
+
+    public int getBitrate() {
+        return bitrate;
     }
 }
