@@ -99,7 +99,7 @@ public class LoadTask extends Task<Void> {
                 beatmapMetadata.get(3).add(beatmapMetadataSet.getString(4));
                 beatmapMetadata.get(4).add(beatmapMetadataSet.getString(5));
                 beatmapMetadata.get(5).add(beatmapMetadataSet.getString(6).toLowerCase());
-                beatmapMetadata.get(6).add(beatmapMetadataSet.getString(7));
+                beatmapMetadata.get(6).add(beatmapMetadataSet.getString(7).toLowerCase());
             }
             connection.close();
             //Process the data and stored them as objects.
