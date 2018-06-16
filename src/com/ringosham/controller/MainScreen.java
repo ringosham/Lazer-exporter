@@ -4,6 +4,7 @@ import com.ringosham.locale.Localizer;
 import com.ringosham.objects.Global;
 import com.ringosham.threads.export.beatmap.BeatmapExport;
 import com.ringosham.threads.export.list.ListExport;
+import com.ringosham.threads.imports.ListImport;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -94,9 +95,15 @@ public class MainScreen {
 
     public void importList() {
         unbindNodes();
-        File importDir = getChooserFile(true);
-        if (importDir == null)
+        File importFile = getChooserFile(true);
+        if (importFile == null)
             return;
+        ListImport importer = new ListImport(this, importFile);
+        statusText.textProperty().bind(importer.messageProperty());
+        Thread thread = new Thread(importer);
+        thread.setDaemon(true);
+        thread.start();
+        Global.INSTANCE.inProgress = true;
         disableButtons();
     }
 
@@ -126,12 +133,13 @@ public class MainScreen {
         File exportDir = getChooserFile(false);
         if (exportDir == null)
             return;
-        ListExport export = new ListExport(exportDir);
+        ListExport export = new ListExport(this, exportDir);
         mainProgress.progressProperty().bind(export.progressProperty());
         statusText.textProperty().bind(export.messageProperty());
         Thread thread = new Thread(export);
         thread.setDaemon(true);
         thread.start();
+        Global.INSTANCE.inProgress = true;
         disableButtons();
     }
 
