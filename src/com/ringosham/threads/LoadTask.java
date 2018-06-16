@@ -99,7 +99,10 @@ public class LoadTask extends Task<Void> {
                 beatmapMetadata.get(3).add(beatmapMetadataSet.getString(4));
                 beatmapMetadata.get(4).add(beatmapMetadataSet.getString(5));
                 beatmapMetadata.get(5).add(beatmapMetadataSet.getString(6).toLowerCase());
-                beatmapMetadata.get(6).add(beatmapMetadataSet.getString(7).toLowerCase());
+                String coverArt = beatmapMetadataSet.getString(7);
+                if (coverArt != null)
+                    coverArt = coverArt.toLowerCase();
+                beatmapMetadata.get(6).add(coverArt);
             }
             connection.close();
             //Process the data and stored them as objects.
@@ -166,7 +169,10 @@ public class LoadTask extends Task<Void> {
                 Parent root = loader.load();
                 stage.resizableProperty().setValue(true);
                 MainScreen controller = loader.getController();
-                stage.setOnCloseRequest(e -> controller.exit());
+                stage.setOnCloseRequest(e -> {
+                    e.consume();
+                    controller.exit();
+                });
                 stage.setScene(new Scene(root));
                 stage.show();
             } catch (IOException e) {

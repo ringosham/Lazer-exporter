@@ -44,16 +44,16 @@ class Tagger {
                     applyTags(mp3, song);
                     changesMade = true;
                 } else {
-                    String artist = null;
-                    String title = null;
-                    //This will preserve some data from old ID3v1 tags, but it will be overwritten with ID3v2 to support album arts.
-                    if (mp3.hasId3v1Tag()) {
-                        ID3v1 v1Tag = mp3.getId3v1Tag();
-                        artist = v1Tag.getArtist();
-                        title = v1Tag.getTitle();
-                        mp3.removeId3v1Tag();
-                    }
                     if (mp3.hasId3v2Tag()) {
+                        String artist = null;
+                        String title = null;
+                        //This will preserve some data from old ID3v1 tags, but it will be overwritten with ID3v2 to support album arts.
+                        if (mp3.hasId3v1Tag()) {
+                            ID3v1 v1Tag = mp3.getId3v1Tag();
+                            artist = v1Tag.getArtist();
+                            title = v1Tag.getTitle();
+                            mp3.removeId3v1Tag();
+                        }
                         v2Tag = mp3.getId3v2Tag();
                         if (artist == null)
                             artist = v2Tag.getArtist();
@@ -62,7 +62,7 @@ class Tagger {
                         if ((title == null || artist == null)) {
                             applyTags(mp3, song);
                             changesMade = true;
-                        } else if ((title.isEmpty() || artist.isEmpty())) {
+                        } else if ((title.trim().isEmpty() || artist.trim().isEmpty())) {
                             applyTags(mp3, song);
                             changesMade = true;
                         }
@@ -94,7 +94,7 @@ class Tagger {
     private void applyTags(Mp3File mp3, Song song) {
         Metadata metadata = getMetadataFromSong(song.getBeatmapID());
         assert metadata != null;
-        if (metadata.getUnicodeTitle() != null && metadata.getUnicodeArtist() != null)
+        if (metadata.getUnicodeTitle() == null || metadata.getUnicodeArtist() == null)
             Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("applying")
                     .replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist())));
         else
@@ -105,8 +105,13 @@ class Tagger {
 
     private ID3v24Tag generateTag(Song song, Metadata metadata) {
         ID3v24Tag tag = new ID3v24Tag();
-        tag.setTitle(metadata.getTitle());
-        tag.setArtist(metadata.getArtist());
+        if (metadata.getUnicodeTitle() == null || metadata.getUnicodeArtist() == null) {
+            tag.setTitle(metadata.getTitle());
+            tag.setArtist(metadata.getArtist());
+        } else {
+            tag.setTitle(metadata.getUnicodeTitle());
+            tag.setArtist(metadata.getUnicodeArtist());
+        }
         File albumArt = getBackgroundFromFilename(song.getBeatmapID(), metadata.getBackgroundFilename());
         if (albumArt != null) {
             String mimeType;
@@ -139,6 +144,8 @@ class Tagger {
     }
 
     private File getBackgroundFromFilename(int beatmapID, String filename) {
+        if (filename == null)
+            return null;
         for (Beatmap beatmap : Global.INSTANCE.beatmapList) {
             if (beatmap.getBeatmapId() == beatmapID) {
                 String hash = beatmap.getFileMap().get(filename);

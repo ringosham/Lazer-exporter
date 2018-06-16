@@ -3,6 +3,7 @@ package com.ringosham.controller;
 import com.ringosham.locale.Localizer;
 import com.ringosham.objects.Global;
 import com.ringosham.threads.export.beatmap.BeatmapExport;
+import com.ringosham.threads.export.list.ListExport;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -47,6 +49,7 @@ public class MainScreen {
     private boolean shownDisclaimer = false;
 
     public void initialize() {
+        downloadMaps.setDisable(true);
         statusText.setText(Localizer.getLocalizedText("readyStatus").replace("%BEATMAPCOUNT%", Integer.toString(Global.INSTANCE.beatmapList.size())));
     }
 
@@ -91,7 +94,9 @@ public class MainScreen {
 
     public void importList() {
         unbindNodes();
-        File importDir = getChooserDirectory(true);
+        File importDir = getChooserFile(true);
+        if (importDir == null)
+            return;
         disableButtons();
     }
 
@@ -118,13 +123,21 @@ public class MainScreen {
 
     public void exportList() {
         unbindNodes();
-        File exportDir = getChooserDirectory(false);
+        File exportDir = getChooserFile(false);
+        if (exportDir == null)
+            return;
+        ListExport export = new ListExport(exportDir);
+        mainProgress.progressProperty().bind(export.progressProperty());
+        statusText.textProperty().bind(export.messageProperty());
+        Thread thread = new Thread(export);
+        thread.setDaemon(true);
+        thread.start();
         disableButtons();
     }
 
     public void exportMaps() {
         unbindNodes();
-        File exportDir = getChooserDirectory(false);
+        File exportDir = getChooserDirectory();
         if (exportDir == null)
             return;
         BeatmapExport export = new BeatmapExport(this, exportDir);
@@ -159,12 +172,23 @@ public class MainScreen {
         subProgress.progressProperty().unbind();
     }
 
-    private File getChooserDirectory(boolean isImport) {
-        DirectoryChooser chooser = new DirectoryChooser();
+    private File getChooserFile(boolean isImport) {
+        FileChooser chooser = new FileChooser();
         if (isImport)
-            chooser.setTitle(Localizer.getLocalizedText("chooseImportDir"));
+            chooser.setTitle(Localizer.getLocalizedText("chooseImportFile"));
         else
-            chooser.setTitle(Localizer.getLocalizedText("chooseExportDir"));
+            chooser.setTitle(Localizer.getLocalizedText("chooseExportFile"));
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("XML file", "*.xml");
+        chooser.getExtensionFilters().add(filter);
+        if (isImport)
+            return chooser.showOpenDialog(null);
+        else
+            return chooser.showSaveDialog(null);
+    }
+
+    private File getChooserDirectory() {
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle(Localizer.getLocalizedText("chooseExportDir"));
         return chooser.showDialog(null);
     }
 

@@ -50,7 +50,7 @@ class Copier {
                 filename = getValidFileName(filename);
             } else
                 filename = getBeatmapFullname(song.getBeatmapID());
-            if (metadata.getUnicodeTitle() != null && metadata.getUnicodeArtist() != null)
+            if (metadata.getUnicodeTitle() == null || metadata.getUnicodeArtist() == null)
                 Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("copying")
                         .replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist())));
             else

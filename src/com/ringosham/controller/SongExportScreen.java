@@ -95,7 +95,6 @@ public class SongExportScreen {
                 ((RadioButton) renameOptions.getSelectedToggle()).getText().equals(Localizer.getLocalizedText("renameBeatmap")),
                 filterDuplicates.isSelected(), romajiNaming.isSelected(), seconds, exportDirectory);
         SongExport export = new SongExport(mainScreen, settings);
-        mainScreen.statusText.textProperty().bind(export.messageProperty());
         Thread thread = new Thread(export);
         thread.setDaemon(true);
         Global.INSTANCE.inProgress = true;

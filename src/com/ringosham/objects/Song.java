@@ -58,4 +58,8 @@ public class Song {
     public int getBitrate() {
         return bitrate;
     }
+
+    public void setOgg(boolean ogg) {
+        isOgg = ogg;
+    }
 }

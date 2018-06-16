@@ -26,7 +26,7 @@ class Converter {
     void run() {
         Metadata metadata = getMetadataFromSong(song.getBeatmapID());
         assert metadata != null;
-        if (metadata.getUnicodeTitle() != null && metadata.getUnicodeArtist() != null)
+        if (metadata.getUnicodeTitle() == null || metadata.getUnicodeArtist() == null)
             Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("converting")
                     .replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist())));
         else
@@ -65,6 +65,7 @@ class Converter {
                 }
             });
             song.setFileLocation(output);
+            song.setOgg(false);
         } catch (EncoderException e) {
             Platform.runLater(() -> {
                 String error = Localizer.getLocalizedText("errorConvert").replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist());
