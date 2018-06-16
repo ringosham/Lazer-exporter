@@ -3,16 +3,19 @@ package com.ringosham.threads.imports;
 import com.ringosham.controller.MainScreen;
 import com.ringosham.locale.Localizer;
 import com.ringosham.objects.Beatmap;
+import com.ringosham.objects.BeatmapView;
 import com.ringosham.objects.Global;
 import com.ringosham.objects.xml.BeatmapListXML;
 import com.ringosham.objects.xml.BeatmapXML;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListImport extends Task<Void> {
@@ -45,16 +48,22 @@ public class ListImport extends Task<Void> {
         }
         updateMessage(Localizer.getLocalizedText("processingXML"));
         List<BeatmapXML> list = xml.getBeatmaps();
+        //Preparing view.
         list.sort((o1, o2) -> {
             if (isBeatmapInstalled(o1.getBeatmapID()) && !isBeatmapInstalled(o2.getBeatmapID()))
-                return -1;
-            else if (!isBeatmapInstalled(o1.getBeatmapID()) && isBeatmapInstalled(o2.getBeatmapID()))
                 return 1;
+            else if (!isBeatmapInstalled(o1.getBeatmapID()) && isBeatmapInstalled(o2.getBeatmapID()))
+                return -1;
             else {
                 return Integer.compare(o1.getBeatmapID(), o2.getBeatmapID());
             }
         });
-
+        //Convert data to viewable objects for TableView
+        List<BeatmapView> view = new ArrayList<>();
+        for (BeatmapXML beatmap : list)
+            view.add(new BeatmapView(isBeatmapInstalled(beatmap.getBeatmapID()), beatmap));
+        Platform.runLater(() -> mainScreen.beatmapList.setItems(FXCollections.observableArrayList(view)));
+        updateMessage(Localizer.getLocalizedText("taskSuccess"));
         finish();
         return null;
     }

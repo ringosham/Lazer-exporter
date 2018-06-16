@@ -30,6 +30,7 @@ public class LoadTask extends Task<Void> {
 
     @Override
     protected Void call() {
+        Global.INSTANCE.beatmapList.clear();
         updateTitle("Loading configs...");
         try {
             Global.INSTANCE.loadConfig();
@@ -81,6 +82,8 @@ public class LoadTask extends Task<Void> {
                 While this has no effect as the files are supposed to be in Windows, whereas file names are case-insensitive
                 in NTFS, this may affect users in macOS and Linux.
                 Filename refers to the actual file. While AudioFile is an attribute from the beatmap file.
+                Both needed to be lower cased as a result.
+                The game source looks up a compare file names while ignoring case, so the game has no problem.
              */
             while (beatmapSetInfoSet.next()) {
                 beatmapSetInfo.get(0).add(beatmapSetInfoSet.getString(1));

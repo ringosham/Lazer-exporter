@@ -1,6 +1,7 @@
 package com.ringosham.controller;
 
 import com.ringosham.locale.Localizer;
+import com.ringosham.objects.BeatmapView;
 import com.ringosham.objects.Global;
 import com.ringosham.threads.export.beatmap.BeatmapExport;
 import com.ringosham.threads.export.list.ListExport;
@@ -11,6 +12,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -35,7 +38,15 @@ public class MainScreen {
     @FXML
     private Button exportSongs;
     @FXML
-    public TableView beatmapList;
+    public TableView<BeatmapView> beatmapList;
+    @FXML
+    public TableColumn<BeatmapView, Boolean> columnInstalled;
+    @FXML
+    public TableColumn<BeatmapView, Integer> columnID;
+    @FXML
+    public TableColumn<BeatmapView, String> columnTitle;
+    @FXML
+    public TableColumn<BeatmapView, String> columnArtist;
     @FXML
     public TextArea consoleArea;
     @FXML
@@ -52,6 +63,25 @@ public class MainScreen {
     public void initialize() {
         downloadMaps.setDisable(true);
         statusText.setText(Localizer.getLocalizedText("readyStatus").replace("%BEATMAPCOUNT%", Integer.toString(Global.INSTANCE.beatmapList.size())));
+        //Bind table values to BeatmapView.
+        columnInstalled.setCellValueFactory(cell -> cell.getValue().getInstalledProperty());
+        columnInstalled.setCellFactory(cell -> new CheckBoxTableCell<BeatmapView, Boolean>() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                TableRow<BeatmapView> currentRow = (TableRow<BeatmapView>) getTableRow();
+                this.setDisable(false);
+                if (currentRow.getItem() != null && !empty) {
+                    if (currentRow.getItem().isInstalled()) {
+                        this.setDisable(true);
+                    }
+                }
+            }
+        });
+        columnID.setCellValueFactory(new PropertyValueFactory<>("beatmapId"));
+        columnArtist.setCellValueFactory(new PropertyValueFactory<>("artist"));
+        columnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
     }
 
     public void exit() {
@@ -216,6 +246,21 @@ public class MainScreen {
             alert.setTitle("Cannot launch process");
             alert.setContentText("Cannot launch game. This normally should not happen. If you believe this is a bug, please report it to GitHub.");
             alert.showAndWait();
+            e.printStackTrace();
+        }
+    }
+
+    public void resync() {
+        Stage stage = (Stage) statusText.getScene().getWindow();
+        stage.close();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/loading.fxml"), Localizer.getResourceBundle());
+        loader.setController(new Loading(stage));
+        try {
+            Parent root = loader.load();
+            stage.resizableProperty().setValue(false);
+            stage.setScene(new Scene(root, 400, 15));
+            stage.show();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

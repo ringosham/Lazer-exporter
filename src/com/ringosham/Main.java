@@ -12,11 +12,8 @@ public class Main extends Application {
     /*
         TODOs
         TODO Properties (Config files)
-        TODO Export as beatmap list (XML)
-        TODO Import beatmap list
         TODO Download beatmaps to lazer (The game hasn't supported yet. This will be placeholder)
         TODO Osu account login (Required for downloading beatmaps)
-        TODO Export songs (Same functionality as osz song exporter)
         TODO UI Design (Remember to restrict maximize and minimize buttons in sub windows)
      */
 
