@@ -139,7 +139,7 @@ public class MainScreen {
 
     public void downloadMaps() throws IOException {
         unbindNodes();
-        loadStage(loginStage, Localizer.getLocalizedText("loginTitle"), "../fxml/login.fxml", new Login(this, loginStage));
+        loadStage(loginStage, Localizer.getLocalizedText("loginTitle"), "../fxml/Login.fxml", new Login(this, loginStage));
     }
 
     public void exportSongs() throws IOException {

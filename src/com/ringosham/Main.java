@@ -14,6 +14,8 @@ public class Main extends Application {
         TODO Properties (Config files)
         TODO Download beatmaps to lazer (The game hasn't supported yet. This will be placeholder)
         TODO Osu account login (Required for downloading beatmaps)
+        TODO Spoof user agent to download
+        TODO Hyperlinks on TableView.
         TODO UI Design (Remember to restrict maximize and minimize buttons in sub windows)
      */
 
