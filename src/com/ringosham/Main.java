@@ -15,7 +15,6 @@ public class Main extends Application {
         TODO Download beatmaps to lazer (The game hasn't supported yet. This will be placeholder)
         TODO Osu account login (Required for downloading beatmaps)
         TODO Spoof user agent to download
-        TODO Hyperlinks on TableView.
         TODO UI Design (Remember to restrict maximize and minimize buttons in sub windows)
      */
 
@@ -26,7 +25,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/loading.fxml"));
-        loader.setController(new Loading(primaryStage));
+        //Need to pass HostServices around all threads just to make hyperlinks. What the hell JavaFX.
+        loader.setController(new Loading(primaryStage, getHostServices()));
         Parent root = loader.load();
         primaryStage.resizableProperty().setValue(false);
         primaryStage.setScene(new Scene(root, 400, 15));

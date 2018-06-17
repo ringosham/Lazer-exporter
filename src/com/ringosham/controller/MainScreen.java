@@ -1,11 +1,12 @@
 package com.ringosham.controller;
 
 import com.ringosham.locale.Localizer;
-import com.ringosham.objects.BeatmapView;
 import com.ringosham.objects.Global;
+import com.ringosham.objects.view.BeatmapView;
 import com.ringosham.threads.export.beatmap.BeatmapExport;
 import com.ringosham.threads.export.list.ListExport;
 import com.ringosham.threads.imports.ListImport;
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,13 +42,13 @@ public class MainScreen {
     @FXML
     public TableView<BeatmapView> beatmapList;
     @FXML
-    public TableColumn<BeatmapView, Boolean> columnInstalled;
+    private TableColumn<BeatmapView, Boolean> columnInstalled;
     @FXML
-    public TableColumn<BeatmapView, Integer> columnID;
+    private TableColumn<BeatmapView, Hyperlink> columnID;
     @FXML
-    public TableColumn<BeatmapView, String> columnTitle;
+    private TableColumn<BeatmapView, String> columnTitle;
     @FXML
-    public TableColumn<BeatmapView, String> columnArtist;
+    private TableColumn<BeatmapView, String> columnArtist;
     @FXML
     public TextArea consoleArea;
     @FXML
@@ -59,6 +61,11 @@ public class MainScreen {
     private Stage loginStage = new Stage();
 
     private boolean shownDisclaimer = false;
+    private HostServices hostServices;
+
+    public MainScreen(HostServices hostServices) {
+        this.hostServices = hostServices;
+    }
 
     public void initialize() {
         downloadMaps.setDisable(true);
@@ -80,6 +87,7 @@ public class MainScreen {
             }
         });
         columnID.setCellValueFactory(new PropertyValueFactory<>("beatmapId"));
+        columnID.setCellFactory(new HyperlinkCell());
         columnArtist.setCellValueFactory(new PropertyValueFactory<>("artist"));
         columnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
     }
@@ -128,7 +136,7 @@ public class MainScreen {
         File importFile = getChooserFile(true);
         if (importFile == null)
             return;
-        ListImport importer = new ListImport(this, importFile);
+        ListImport importer = new ListImport(this, importFile, hostServices);
         statusText.textProperty().bind(importer.messageProperty());
         Thread thread = new Thread(importer);
         thread.setDaemon(true);
@@ -198,10 +206,14 @@ public class MainScreen {
 
     public void enableButtons() {
         importList.setDisable(false);
-        downloadMaps.setDisable(false);
         exportList.setDisable(false);
         exportMap.setDisable(false);
         exportSongs.setDisable(false);
+    }
+
+    public void enableAllButtons() {
+        downloadMaps.setDisable(false);
+        enableButtons();
     }
 
     private void unbindNodes() {
@@ -254,7 +266,7 @@ public class MainScreen {
         Stage stage = (Stage) statusText.getScene().getWindow();
         stage.close();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/loading.fxml"), Localizer.getResourceBundle());
-        loader.setController(new Loading(stage));
+        loader.setController(new Loading(stage, hostServices));
         try {
             Parent root = loader.load();
             stage.resizableProperty().setValue(false);
@@ -262,6 +274,18 @@ public class MainScreen {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private class HyperlinkCell implements Callback<TableColumn<BeatmapView, Hyperlink>, TableCell<BeatmapView, Hyperlink>> {
+        @Override
+        public TableCell<BeatmapView, Hyperlink> call(TableColumn<BeatmapView, Hyperlink> args) {
+            return new TableCell<BeatmapView, Hyperlink>() {
+                @Override
+                protected void updateItem(Hyperlink item, boolean empty) {
+                    setGraphic(item);
+                }
+            };
         }
     }
 }

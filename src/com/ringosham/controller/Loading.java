@@ -1,18 +1,21 @@
 package com.ringosham.controller;
 
 import com.ringosham.threads.LoadTask;
+import javafx.application.HostServices;
 import javafx.stage.Stage;
 
 public class Loading {
 
     private Stage stage;
+    private HostServices hostServices;
 
-    public Loading(Stage stage) {
+    public Loading(Stage stage, HostServices hostServices) {
         this.stage = stage;
+        this.hostServices = hostServices;
     }
 
     public void initialize() {
-        LoadTask task = new LoadTask(stage);
+        LoadTask task = new LoadTask(stage, hostServices);
         stage.titleProperty().bind(task.titleProperty());
         Thread thread = new Thread(task);
         thread.setDaemon(true);

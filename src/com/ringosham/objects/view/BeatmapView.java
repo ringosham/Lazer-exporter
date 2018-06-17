@@ -1,20 +1,23 @@
-package com.ringosham.objects;
+package com.ringosham.objects.view;
 
 import com.ringosham.objects.xml.BeatmapXML;
+import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.control.Hyperlink;
 
 public class BeatmapView {
     private final BooleanProperty booleanProperty = new SimpleBooleanProperty();
     private final boolean isInstalled;
     private final String title;
     private final String artist;
-    private final int beatmapId;
+    private final Hyperlink beatmapId;
 
-    public BeatmapView(boolean isInstalled, BeatmapXML xml) {
+    public BeatmapView(boolean isInstalled, BeatmapXML xml, HostServices hostServices) {
         this.title = xml.getTitle();
         this.artist = xml.getArtist();
-        this.beatmapId = xml.getBeatmapID();
+        this.beatmapId = new Hyperlink(Integer.toString(xml.getBeatmapID()));
+        beatmapId.setOnAction(e -> hostServices.showDocument("https://osu.ppy.sh/beatmapsets/" + xml.getBeatmapID()));
         this.isInstalled = isInstalled;
         booleanProperty.set(isInstalled);
     }
@@ -35,7 +38,7 @@ public class BeatmapView {
         return artist;
     }
 
-    public int getBeatmapId() {
+    public Hyperlink getBeatmapId() {
         return beatmapId;
     }
 }

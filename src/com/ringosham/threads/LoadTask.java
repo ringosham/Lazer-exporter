@@ -5,6 +5,7 @@ import com.ringosham.locale.Localizer;
 import com.ringosham.objects.Beatmap;
 import com.ringosham.objects.Global;
 import com.ringosham.objects.Metadata;
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
@@ -23,9 +24,11 @@ import java.util.List;
 
 public class LoadTask extends Task<Void> {
     private Stage stage;
+    private HostServices hostServices;
 
-    public LoadTask(Stage stage) {
+    public LoadTask(Stage stage, HostServices hostServices) {
         this.stage = stage;
+        this.hostServices = hostServices;
     }
 
     @Override
@@ -168,6 +171,7 @@ public class LoadTask extends Task<Void> {
         Platform.runLater(() -> {
             stage.close();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/mainScreen.fxml"), Localizer.getResourceBundle());
+            loader.setController(new MainScreen(hostServices));
             try {
                 Parent root = loader.load();
                 stage.resizableProperty().setValue(true);

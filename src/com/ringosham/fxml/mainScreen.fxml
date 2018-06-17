@@ -5,8 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-            minHeight="600.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121"
-            fx:controller="com.ringosham.controller.MainScreen">
+            minHeight="600.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121">
     <MenuBar maxHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Menu mnemonicParsing="false" text="%menu.file">
             <MenuItem fx:id="launchGame" mnemonicParsing="false" onAction="#launchGame" text="%menu.file.launchGame"/>
