@@ -7,20 +7,20 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" minHeight="-Infinity" prefHeight="223.0" prefWidth="311.0"
             xmlns="http://javafx.com/javafx/8.0.121">
     <children>
-        <Button layoutX="222.0" layoutY="184.0" mnemonicParsing="false" text="%loginTitle"
-                AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="222.0" AnchorPane.rightAnchor="14.0"
-                AnchorPane.topAnchor="191.0"/>
+        <Button fx:id="loginButton" layoutX="222.0" layoutY="184.0" mnemonicParsing="false" onAction="#onLogin"
+                text="%loginTitle" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="222.0"
+                AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="191.0"/>
         <Label layoutX="14.0" layoutY="14.0" text="%loginExplanation" AnchorPane.bottomAnchor="192.0"
                AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0"/>
         <Label layoutX="14.0" layoutY="31.0" text="%loginSaveInfo" wrapText="true" AnchorPane.bottomAnchor="160.0"
                AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="31.0"/>
-        <Label layoutX="14.0" layoutY="75.0" text="%username" AnchorPane.bottomAnchor="131.0"
-               AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="75.0"/>
-        <TextField layoutX="14.0" layoutY="102.0" AnchorPane.bottomAnchor="101.0" AnchorPane.leftAnchor="14.0"
-                   AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="102.0"/>
+        <Label layoutX="14.0" layoutY="75.0" text="%email" AnchorPane.bottomAnchor="131.0" AnchorPane.leftAnchor="14.0"
+               AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="75.0"/>
+        <TextField fx:id="username" layoutX="14.0" layoutY="102.0" AnchorPane.bottomAnchor="101.0"
+                   AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="102.0"/>
         <Label layoutX="14.0" layoutY="128.0" text="%password" AnchorPane.bottomAnchor="78.0"
                AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="128.0"/>
-        <PasswordField layoutX="14.0" layoutY="153.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="14.0"
-                       AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="153.0"/>
+        <PasswordField fx:id="password" layoutX="14.0" layoutY="153.0" AnchorPane.bottomAnchor="50.0"
+                       AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="153.0"/>
     </children>
 </AnchorPane>

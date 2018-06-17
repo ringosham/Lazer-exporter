@@ -114,6 +114,11 @@ public class Global {
         this.password = password;
     }
 
+    public void clearLoginDetails() {
+        this.username = null;
+        this.password = null;
+    }
+
     public File getConvertDir() {
         return convertDir;
     }
