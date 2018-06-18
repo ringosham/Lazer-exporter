@@ -1,9 +1,8 @@
-package com.ringosham.threads.imports;
+package com.ringosham.threads.imports.download;
 
 import com.ringosham.controller.MainScreen;
 import com.ringosham.locale.Localizer;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -13,25 +12,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.*;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Downloader extends Task<Void> {
-    //Since the old website is being replaced, the new url will be used to authenticate.
-    private static final String homepage = "https://osu.ppy.sh/home";
+class Authenticator {
     private static final String loginUrl = "https://osu.ppy.sh/session";
-    private static final String downloadUrl = "https://osu.ppy.sh/d/";
+
     private final MainScreen mainScreen;
     private final Stage loginStage;
-    private static CookieManager cookieManager = new CookieManager();
     private final String email;
     private final String password;
     private Button loginButton;
 
-    public Downloader(MainScreen mainScreen, Stage loginStage, Button loginButton, String email, String password) {
+    Authenticator(MainScreen mainScreen, Stage loginStage, Button loginButton, String email, String password) {
         this.mainScreen = mainScreen;
         this.loginStage = loginStage;
         this.loginButton = loginButton;
@@ -39,15 +35,7 @@ public class Downloader extends Task<Void> {
         this.password = password;
     }
 
-    @Override
-    protected Void call() {
-        if (!loginProcess())
-            return null;
-
-        return null;
-    }
-
-    private boolean loginProcess() {
+    boolean loginProcess() {
         /*
             Logging in requires 3 things in form data
            -CSRF token (obtained through cookies. XSRF-token = X-CSRF-token)
@@ -62,9 +50,9 @@ public class Downloader extends Task<Void> {
             x-csrf-token - Token required for authentication
          */
         //Cookies are needed before authenticating
-        if (cookieManager.getCookieStore().getCookies().isEmpty()) {
+        if (BeatmapImport.getCookieManager().getCookieStore().getCookies().isEmpty()) {
             try {
-                getCookies();
+                BeatmapImport.getCookies();
             } catch (IOException e) {
                 Platform.runLater(() -> {
                     mainScreen.consoleArea.appendText(Localizer.getLocalizedText("serverConnectionFail") + "\n");
@@ -87,7 +75,7 @@ public class Downloader extends Task<Void> {
             //The post data
             String encodeEmail = URLEncoder.encode(email, StandardCharsets.UTF_8.displayName());
             String encodePassword = URLEncoder.encode(password, StandardCharsets.UTF_8.displayName());
-            String postData = "_token=" + getToken() + "&username=" + encodeEmail + "&password=" + encodePassword;
+            String postData = "_token=" + BeatmapImport.getToken() + "&username=" + encodeEmail + "&password=" + encodePassword;
             byte[] postBytes = postData.getBytes(StandardCharsets.UTF_8);
             //The request header.
             //A copy of Chrome on Windows 10 visiting the osu website
@@ -101,8 +89,8 @@ public class Downloader extends Task<Void> {
             loginConnection.setRequestProperty("Accept", "*/*;q=0.5, text/javascript, application/javascript, application/ecmascript, application/x-ecmascript");
             loginConnection.setRequestProperty("DNT", "1");
             loginConnection.setRequestProperty("X-Requested-With", "XMLHttpRequest");
-            loginConnection.setRequestProperty("Cookie", getCookieString());
-            loginConnection.setRequestProperty("X-CSRF-Token", getToken());
+            loginConnection.setRequestProperty("Cookie", BeatmapImport.getCookieString());
+            loginConnection.setRequestProperty("X-CSRF-Token", BeatmapImport.getToken());
             //Connection configurations
             loginConnection.setInstanceFollowRedirects(true);
             loginConnection.setDoOutput(true);
@@ -159,32 +147,5 @@ public class Downloader extends Task<Void> {
             e.printStackTrace();
         }
         return true;
-    }
-
-    private void getCookies() throws IOException {
-        URL url = new URL(homepage);
-        URLConnection connection = url.openConnection();
-        connection.connect();
-        List<String> cookies = connection.getHeaderFields().get("Set-Cookie");
-        for (String cookie : cookies)
-            cookieManager.getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
-    }
-
-    private String getCookieString() {
-        cookieManager.getCookieStore();
-        StringBuilder cookieString = new StringBuilder();
-        for (HttpCookie httpCookie : cookieManager.getCookieStore().getCookies()) {
-            cookieString.append(httpCookie.toString());
-            cookieString.append("; ");
-        }
-        return cookieString.substring(0, cookieString.toString().length() - 2);
-    }
-
-    private String getToken() {
-        for (HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {
-            if (cookie.getName().toLowerCase().equals("xsrf-token"))
-                return cookie.getValue();
-        }
-        return null;
     }
 }

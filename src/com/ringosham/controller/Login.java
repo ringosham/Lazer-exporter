@@ -1,7 +1,7 @@
 package com.ringosham.controller;
 
 import com.ringosham.objects.Global;
-import com.ringosham.threads.imports.Downloader;
+import com.ringosham.threads.imports.download.BeatmapImport;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -50,9 +50,9 @@ public class Login {
     }
 
     private void startLoginTask() {
-        Downloader downloader = new Downloader(mainScreen, currentStage, loginButton, email.getText(), password.getText());
+        BeatmapImport beatmapImport = new BeatmapImport(mainScreen, currentStage, loginButton, email.getText(), password.getText());
         loginButton.setDisable(true);
-        Thread thread = new Thread(downloader);
+        Thread thread = new Thread(beatmapImport);
         thread.setDaemon(true);
         thread.start();
     }
