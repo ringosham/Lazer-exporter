@@ -15,7 +15,7 @@ public class Login {
     //Standard RFC 3522 email regex.
     private static final String emailRegex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])";
     @FXML
-    public Button loginButton;
+    private Button loginButton;
     @FXML
     private TextField email;
     @FXML
@@ -37,18 +37,20 @@ public class Login {
     public void onLogin() {
         if (!email.getText().matches(emailRegex)) {
             email.setStyle("-fx-text-box-boarder: red; -fx-focus-color: red");
+            email.requestFocus();
             return;
         }
         //Passwords must be at least 8 characters long. Stated in the website
         if (password.getText().trim().length() < 8) {
             password.setStyle("-fx-text-box-boarder: red; -fx-focus-color: red");
+            password.requestFocus();
             return;
         }
         startLoginTask();
     }
 
     private void startLoginTask() {
-        Downloader downloader = new Downloader(mainScreen, currentStage, email.getText(), password.getText());
+        Downloader downloader = new Downloader(mainScreen, currentStage, loginButton, email.getText(), password.getText());
         loginButton.setDisable(true);
         Thread thread = new Thread(downloader);
         thread.setDaemon(true);

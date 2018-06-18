@@ -16,7 +16,7 @@
                AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="31.0"/>
         <Label layoutX="14.0" layoutY="75.0" text="%email" AnchorPane.bottomAnchor="131.0" AnchorPane.leftAnchor="14.0"
                AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="75.0"/>
-        <TextField fx:id="username" layoutX="14.0" layoutY="102.0" AnchorPane.bottomAnchor="101.0"
+        <TextField fx:id="email" layoutX="14.0" layoutY="102.0" AnchorPane.bottomAnchor="101.0"
                    AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="102.0"/>
         <Label layoutX="14.0" layoutY="128.0" text="%password" AnchorPane.bottomAnchor="78.0"
                AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="128.0"/>
