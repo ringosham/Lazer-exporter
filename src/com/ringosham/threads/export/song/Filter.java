@@ -1,7 +1,13 @@
+/*
+ * Copyright (c) 2018. Ringosham.
+ * Licensed under the Apache license. Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package com.ringosham.threads.export.song;
 
+import com.ringosham.Global;
 import com.ringosham.objects.Beatmap;
-import com.ringosham.objects.Global;
 import com.ringosham.objects.Song;
 
 import java.util.Iterator;

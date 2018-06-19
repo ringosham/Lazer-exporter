@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2018. Ringosham.
+ * Licensed under the Apache license. Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package com.ringosham.objects;
 
 import java.util.HashMap;

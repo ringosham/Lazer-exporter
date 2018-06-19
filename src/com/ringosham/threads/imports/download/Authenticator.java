@@ -1,5 +1,12 @@
+/*
+ * Copyright (c) 2018. Ringosham.
+ * Licensed under the Apache license. Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package com.ringosham.threads.imports.download;
 
+import com.ringosham.Global;
 import com.ringosham.controller.Login;
 import com.ringosham.controller.MainScreen;
 import com.ringosham.locale.Localizer;
@@ -124,6 +131,7 @@ class Authenticator {
                     alert.show();
                     loginScreen.enableElements();
                 });
+                Global.INSTANCE.clearLoginDetails();
                 return false;
             } else {
                 //Login success. Get the new token and get out of here.

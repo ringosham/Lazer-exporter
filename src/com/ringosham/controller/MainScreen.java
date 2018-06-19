@@ -1,7 +1,13 @@
+/*
+ * Copyright (c) 2018. Ringosham.
+ * Licensed under the Apache license. Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package com.ringosham.controller;
 
+import com.ringosham.Global;
 import com.ringosham.locale.Localizer;
-import com.ringosham.objects.Global;
 import com.ringosham.objects.view.BeatmapView;
 import com.ringosham.threads.export.beatmap.BeatmapExport;
 import com.ringosham.threads.export.list.ListExport;

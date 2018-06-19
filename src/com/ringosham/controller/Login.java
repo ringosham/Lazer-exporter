@@ -1,6 +1,12 @@
+/*
+ * Copyright (c) 2018. Ringosham.
+ * Licensed under the Apache license. Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package com.ringosham.controller;
 
-import com.ringosham.objects.Global;
+import com.ringosham.Global;
 import com.ringosham.threads.imports.download.BeatmapImport;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

@@ -1,9 +1,15 @@
+/*
+ * Copyright (c) 2018. Ringosham.
+ * Licensed under the Apache license. Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package com.ringosham.threads.export.song;
 
+import com.ringosham.Global;
 import com.ringosham.controller.MainScreen;
 import com.ringosham.locale.Localizer;
 import com.ringosham.objects.ExportSettings;
-import com.ringosham.objects.Global;
 import com.ringosham.objects.Song;
 import javafx.application.Platform;
 import javafx.concurrent.Task;

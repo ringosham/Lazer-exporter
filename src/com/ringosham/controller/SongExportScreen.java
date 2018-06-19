@@ -1,8 +1,14 @@
+/*
+ * Copyright (c) 2018. Ringosham.
+ * Licensed under the Apache license. Version 2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package com.ringosham.controller;
 
+import com.ringosham.Global;
 import com.ringosham.locale.Localizer;
 import com.ringosham.objects.ExportSettings;
-import com.ringosham.objects.Global;
 import com.ringosham.threads.export.song.SongExport;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
