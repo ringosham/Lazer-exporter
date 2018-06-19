@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringosham.
+ * Copyright (c) 2018. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -111,7 +111,7 @@ public class MainScreen {
     }
 
     public void settingsWindow() throws IOException {
-        loadStage(settingsStage, Localizer.getLocalizedText("settings"), "../fxml/settings.fxml");
+        loadStage(settingsStage, Localizer.getLocalizedText("settings"), "../fxml/settings.fxml", new SettingScreen(this));
     }
 
     private void loadStage(Stage stage, String title, String resourcePath) throws IOException {
@@ -268,9 +268,13 @@ public class MainScreen {
         }
     }
 
-    public void resync() {
+    void resync() {
         Stage stage = (Stage) statusText.getScene().getWindow();
         stage.close();
+        loginStage.close();
+        exportStage.close();
+        settingsStage.close();
+        aboutStage.close();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/loading.fxml"), Localizer.getResourceBundle());
         loader.setController(new Loading(stage, hostServices));
         try {

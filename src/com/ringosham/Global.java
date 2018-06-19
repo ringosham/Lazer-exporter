@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringosham.
+ * Copyright (c) 2018. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -25,7 +25,6 @@ public class Global {
     public boolean inProgress;
     private Properties config = new Properties();
 
-    private File lastExport;
     private File lazerDirectory;
     private Locale locale;
     private String email;
@@ -44,18 +43,18 @@ public class Global {
         }
         FileInputStream in = new FileInputStream(configFile);
         config.load(in);
-        lastExport = new File(config.getProperty("lastExport", Defaults.lastExport));
         //There are no ports of osu!lazer for macOS and Linux.
         //This is planned, but there are currently no support.
         String defaultLazerDir = Defaults.getDefaultDirectory();
         lazerDirectory = new File(config.getProperty("lazerDirectory", defaultLazerDir));
-        locale = new Locale(config.getProperty("locale", Defaults.locale.toString()));
+        //Wow, the Locale class is this dumb.
+        //It cannot process both en_US and en-US
+        locale = Locale.forLanguageTag(config.getProperty("locale", Defaults.locale.toString()).replace("_", "-"));
         in.close();
     }
 
     private void initConfig() throws IOException {
         FileOutputStream out = new FileOutputStream(configFile);
-        config.setProperty("lastExport", Defaults.lastExport);
         config.setProperty("lazerDirectory", Defaults.getDefaultDirectory());
         config.setProperty("locale", Defaults.locale.toString());
         config.store(out, "Lazer exporter config");
@@ -63,7 +62,6 @@ public class Global {
     }
 
     public void configFailsafe() {
-        lastExport = new File("");
         String defaultLazerDir;
         defaultLazerDir = Defaults.getDefaultDirectory();
         lazerDirectory = new File(defaultLazerDir);
@@ -71,15 +69,14 @@ public class Global {
 
     public void saveConfig() throws IOException {
         FileOutputStream out = new FileOutputStream(configFile);
-        config.setProperty("lastExport", lastExport.getAbsolutePath());
         config.setProperty("lazerDirectory", lazerDirectory.getAbsolutePath());
-        config.setProperty("locale", locale.toLanguageTag());
+        config.setProperty("locale", locale.toString());
         config.store(out, "Lazer exporter config");
         out.close();
     }
 
     public String getDatabaseAbsolutePath() {
-        return lazerDirectory.getAbsolutePath().replaceAll("\\\\", "/") + "/client.db";
+        return lazerDirectory.getAbsolutePath() + "/client.db";
     }
 
     public Locale getLocale() {
@@ -88,14 +85,6 @@ public class Global {
 
     public void setLocale(Locale locale) {
         this.locale = locale;
-    }
-
-    public File getLastExport() {
-        return lastExport;
-    }
-
-    public void setLastExport(File lastExport) {
-        this.lastExport = lastExport;
     }
 
     public File getLazerDirectory() {

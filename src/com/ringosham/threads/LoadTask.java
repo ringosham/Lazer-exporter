@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringosham.
+ * Copyright (c) 2018. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -166,6 +166,7 @@ public class LoadTask extends Task<Void> {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle(Localizer.getLocalizedText("databaseFail"));
+                alert.setHeaderText(Localizer.getLocalizedText("databaseFail"));
                 alert.setContentText(Localizer.getLocalizedText("databaseFailDesc"));
                 alert.showAndWait();
                 Platform.exit();
@@ -201,6 +202,7 @@ public class LoadTask extends Task<Void> {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle(Localizer.getLocalizedText("notFoundTitle"));
+                alert.setHeaderText(Localizer.getLocalizedText("notFoundTitle"));
                 alert.setContentText(Localizer.getLocalizedText("notFoundDesc"));
                 alert.showAndWait();
                 DirectoryChooser chooser = new DirectoryChooser();
@@ -213,6 +215,7 @@ public class LoadTask extends Task<Void> {
                     } catch (IOException e) {
                         Alert error = new Alert(Alert.AlertType.ERROR);
                         error.setTitle(Localizer.getLocalizedText("failedSaveConfig"));
+                        error.setHeaderText(Localizer.getLocalizedText("failedSaveConfig"));
                         error.setContentText(Localizer.getLocalizedText("failedSaveConfigDesc"));
                         error.showAndWait();
                         e.printStackTrace();
@@ -220,7 +223,8 @@ public class LoadTask extends Task<Void> {
                 } else {
                     Alert alert1 = new Alert(Alert.AlertType.ERROR);
                     alert1.setTitle(Localizer.getLocalizedText("dirInvalid"));
-                    alert1.setTitle(Localizer.getLocalizedText("dirInvalidDesc"));
+                    alert1.setHeaderText(Localizer.getLocalizedText("dirInvalid"));
+                    alert1.setContentText(Localizer.getLocalizedText("dirInvalidDesc"));
                     alert1.showAndWait();
                 }
             });

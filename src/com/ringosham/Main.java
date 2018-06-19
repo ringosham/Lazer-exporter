@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringosham.
+ * Copyright (c) 2018. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -17,7 +17,7 @@ public class Main extends Application {
 
     /*
         TODOs
-        TODO Properties (Config files)
+        TODO Update default directories as the game has compatibility with other OS
         TODO UI Design (Remember to restrict maximize and minimize buttons in sub windows)
      */
 

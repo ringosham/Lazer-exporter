@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringosham.
+ * Copyright (c) 2018. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -146,6 +146,7 @@ class Authenticator {
                 mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle(Localizer.getLocalizedText("loginException"));
+                alert.setHeaderText(Localizer.getLocalizedText("loginException"));
                 alert.setContentText(Localizer.getLocalizedText("loginExceptionDesc"));
                 alert.show();
                 loginScreen.enableElements();

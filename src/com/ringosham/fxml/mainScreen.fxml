@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
 <!--
-  ~ Copyright (c) 2018. Ringosham.
+  ~ Copyright (c) 2018. Ringo Sham.
   ~ Licensed under the Apache license. Version 2.0
   ~ http://www.apache.org/licenses/LICENSE-2.0
   -->
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
             minHeight="600.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121">
     <MenuBar maxHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -64,7 +64,7 @@
             <TableColumn fx:id="columnInstalled" maxWidth="75.0" minWidth="80.0" sortable="false"
                          text="%table.installed"/>
             <TableColumn fx:id="columnID" editable="false" maxWidth="90.0" minWidth="90.0" prefWidth="90.0"
-                         text="%table.id"/>
+                         sortable="false" text="%table.id"/>
             <TableColumn fx:id="columnTitle" editable="false" minWidth="-Infinity" prefWidth="246.0"
                          text="%table.title"/>
             <TableColumn fx:id="columnArtist" editable="false" maxWidth="4000.0" minWidth="-Infinity" prefWidth="173.0"
