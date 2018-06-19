@@ -114,10 +114,6 @@ public class MainScreen {
         loadStage(settingsStage, Localizer.getLocalizedText("settings"), "../fxml/settings.fxml", new SettingScreen(this));
     }
 
-    private void loadStage(Stage stage, String title, String resourcePath) throws IOException {
-        loadStage(stage, title, resourcePath, null);
-    }
-
     private void loadStage(Stage stage, String title, String resourcePath, Object controller) throws IOException {
         if (stage.isShowing()) {
             stage.toFront();

@@ -1,7 +1,10 @@
 #Lazer exporter
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
+
 A utility for importing and exporting beatmap list, as well as extracting songs and beatmaps installed in osu!Lazer
 ##Disclaimer
-The author of this application is affiliated with ppy Pty Ltd.
+The author of this application is not affiliated with ppy Pty Ltd.
 
 "osu!" and "ppy" are trademarks of ppy Pty Ltd.
 
@@ -9,7 +12,7 @@ The author of this application is affiliated with ppy Pty Ltd.
 
 The download beatmap feature requires logging in using your account. Please note that the application does not store any of your credentials and they will only be sent to [osu.ppy.sh](https://osu.ppy.sh).
 
-If you are not comfortable of using your account on a third party application, the application provides official links to the beatmap sets as an alternative.
+If you are not comfortable of using your account on a third-party application, the application provides official links to the beatmap sets as an alternative.
 
 ###Exporting songs
 
@@ -28,7 +31,7 @@ Do not use this program for distributing songs illegally. The creator of this pr
     * Adding MP3 tags based on beatmap info
     * Filter practice beatmaps
     * Filter duplicates based on song length
-    * Conversion from ogg to mp3 (Done through FFmpeg)
+    * Conversion from .ogg to .mp3 (Done through FFmpeg)
     
 ##Building
 The artifact can be built through standard Intellij tools. Additional libraries that are not in maven are stored in /lib. Please check the README.md in /lib for more information.
@@ -37,21 +40,9 @@ The artifact can be built through standard Intellij tools. Additional libraries 
 Go to the release tab
 
 ##License
-```
-Copyright © 2018 Ringosham
- 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
-     http://www.apache.org/licenses/LICENSE-2.0
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- ```
+All code in this program, with the exception of dependencies, are under Apache License 2.0
+
+All assets used, except the GitHub Mark logo, are under CC-BY-NC 4.0
 
 ##Dependencies
 [JAVE](http://www.sauronsoftware.it/projects/jave/index.php) - Java Audio Video Encoder, also a wrapper for FFmpeg - Under GNU GPL v3 license
