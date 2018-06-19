@@ -283,6 +283,17 @@ public class MainScreen {
         }
     }
 
+    public void selectAll() {
+        for (BeatmapView beatmap : beatmapList.getItems())
+            beatmap.getQueueProperty().set(true);
+    }
+
+    public void deselectAll() {
+        for (BeatmapView beatmap : beatmapList.getItems())
+            if (!beatmap.getInstalledProperty().get())
+                beatmap.getQueueProperty().set(false);
+    }
+
     private class HyperlinkCell implements Callback<TableColumn<BeatmapView, Hyperlink>, TableCell<BeatmapView, Hyperlink>> {
         @Override
         public TableCell<BeatmapView, Hyperlink> call(TableColumn<BeatmapView, Hyperlink> args) {
