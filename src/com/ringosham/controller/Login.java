@@ -9,8 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class Login {
-    private MainScreen mainScreen;
-    private Stage currentStage;
+    private final MainScreen mainScreen;
+    private final Stage currentStage;
 
     //Standard RFC 3522 email regex.
     private static final String emailRegex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])";
@@ -23,12 +23,12 @@ public class Login {
 
     public Login(MainScreen mainScreen, Stage loginStage) {
         this.mainScreen = mainScreen;
-        currentStage = loginStage;
+        this.currentStage = loginStage;
     }
 
     public void initialize() {
-        if (Global.INSTANCE.getUsername() != null && Global.INSTANCE.getPassword() != null) {
-            email.setText(Global.INSTANCE.getUsername());
+        if (Global.INSTANCE.getEmail() != null && Global.INSTANCE.getPassword() != null) {
+            email.setText(Global.INSTANCE.getEmail());
             password.setText(Global.INSTANCE.getPassword());
             startLoginTask();
         }
@@ -49,9 +49,21 @@ public class Login {
         startLoginTask();
     }
 
-    private void startLoginTask() {
-        BeatmapImport beatmapImport = new BeatmapImport(mainScreen, currentStage, loginButton, email.getText(), password.getText());
+    private void disableElements() {
         loginButton.setDisable(true);
+        email.setDisable(true);
+        password.setDisable(true);
+    }
+
+    public void enableElements() {
+        loginButton.setDisable(false);
+        email.setDisable(false);
+        password.setDisable(false);
+    }
+
+    private void startLoginTask() {
+        BeatmapImport beatmapImport = new BeatmapImport(mainScreen, currentStage, this, email.getText(), password.getText());
+        disableElements();
         Thread thread = new Thread(beatmapImport);
         thread.setDaemon(true);
         thread.start();

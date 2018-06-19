@@ -1,20 +1,21 @@
 package com.ringosham.threads.imports.download;
 
+import com.ringosham.controller.Login;
 import com.ringosham.controller.MainScreen;
 import com.ringosham.locale.Localizer;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.HttpCookie;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,15 +23,13 @@ class Authenticator {
     private static final String loginUrl = "https://osu.ppy.sh/session";
 
     private final MainScreen mainScreen;
-    private final Stage loginStage;
     private final String email;
     private final String password;
-    private Button loginButton;
+    private Login loginScreen;
 
-    Authenticator(MainScreen mainScreen, Stage loginStage, Button loginButton, String email, String password) {
+    Authenticator(MainScreen mainScreen, Login loginScreen, String email, String password) {
         this.mainScreen = mainScreen;
-        this.loginStage = loginStage;
-        this.loginButton = loginButton;
+        this.loginScreen = loginScreen;
         this.email = email;
         this.password = password;
     }
@@ -52,7 +51,7 @@ class Authenticator {
         //Cookies are needed before authenticating
         if (BeatmapImport.getCookieManager().getCookieStore().getCookies().isEmpty()) {
             try {
-                BeatmapImport.getCookies();
+                BeatmapImport.getUnauthCookies();
             } catch (IOException e) {
                 Platform.runLater(() -> {
                     mainScreen.consoleArea.appendText(Localizer.getLocalizedText("serverConnectionFail") + "\n");
@@ -61,7 +60,7 @@ class Authenticator {
                     alert.setTitle(Localizer.getLocalizedText("serverConnectionFail"));
                     alert.setContentText(Localizer.getLocalizedText("serverConnectionFailDesc"));
                     alert.show();
-                    loginButton.setDisable(false);
+                    loginScreen.enableElements();
                 });
                 e.printStackTrace();
                 return false;
@@ -69,8 +68,8 @@ class Authenticator {
         }
         try {
             URL login = new URL(loginUrl);
-            HttpsURLConnection loginConnection = (HttpsURLConnection) login.openConnection();
-            loginConnection.setRequestMethod("POST");
+            HttpsURLConnection connection = (HttpsURLConnection) login.openConnection();
+            connection.setRequestMethod("POST");
 
             //The post data
             String encodeEmail = URLEncoder.encode(email, StandardCharsets.UTF_8.displayName());
@@ -79,32 +78,32 @@ class Authenticator {
             byte[] postBytes = postData.getBytes(StandardCharsets.UTF_8);
             //The request header.
             //A copy of Chrome on Windows 10 visiting the osu website
-            loginConnection.setRequestProperty("Content-Length", String.valueOf(postData.length()));
-            loginConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36");
-            loginConnection.setRequestProperty("Origin", "https://osu.ppy.sh");
-            loginConnection.setRequestProperty("Referer", "https://osu.ppy.sh/home");
-            loginConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            loginConnection.setRequestProperty("Accept-Encoding", "gzip, deflate, br");
-            loginConnection.setRequestProperty("Accept-Language", "en-US,en;q=0.9,zh-TW;q=0.8,zh;q=0.7");
-            loginConnection.setRequestProperty("Accept", "*/*;q=0.5, text/javascript, application/javascript, application/ecmascript, application/x-ecmascript");
-            loginConnection.setRequestProperty("DNT", "1");
-            loginConnection.setRequestProperty("X-Requested-With", "XMLHttpRequest");
-            loginConnection.setRequestProperty("Cookie", BeatmapImport.getCookieString());
-            loginConnection.setRequestProperty("X-CSRF-Token", BeatmapImport.getToken());
+            connection.setRequestProperty("Content-Length", String.valueOf(postData.length()));
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36");
+            connection.setRequestProperty("Origin", "https://osu.ppy.sh");
+            connection.setRequestProperty("Referer", "https://osu.ppy.sh/home");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            connection.setRequestProperty("Accept-Encoding", "gzip, deflate, br");
+            connection.setRequestProperty("Accept-Language", "en-US,en;q=0.9,zh-TW;q=0.8,zh;q=0.7");
+            connection.setRequestProperty("Accept", "*/*;q=0.5, text/javascript, application/javascript, application/ecmascript, application/x-ecmascript");
+            connection.setRequestProperty("DNT", "1");
+            connection.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+            connection.setRequestProperty("Cookie", BeatmapImport.getCookieString());
+            connection.setRequestProperty("X-CSRF-Token", BeatmapImport.getToken());
             //Connection configurations
-            loginConnection.setInstanceFollowRedirects(true);
-            loginConnection.setDoOutput(true);
-            loginConnection.setUseCaches(false);
+            connection.setInstanceFollowRedirects(false);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
 
-            OutputStream stream = loginConnection.getOutputStream();
+            OutputStream stream = connection.getOutputStream();
             //Write the post data to stream
             stream.write(postBytes);
             stream.close();
 
-            int responseCode = loginConnection.getResponseCode();
+            int responseCode = connection.getResponseCode();
             //Normally. A login failure would be 424.
             if (responseCode >= HttpsURLConnection.HTTP_BAD_REQUEST) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(loginConnection.getErrorStream()));
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
                 StringBuilder errorString = new StringBuilder();
                 String line;
                 while ((line = in.readLine()) != null) {
@@ -123,16 +122,15 @@ class Authenticator {
                     alert.setHeaderText(Localizer.getLocalizedText("loginFailHead"));
                     alert.setContentText(errorMessage);
                     alert.show();
-                    loginButton.setDisable(false);
+                    loginScreen.enableElements();
                 });
                 return false;
             } else {
-                BufferedReader in = new BufferedReader(new InputStreamReader(loginConnection.getInputStream()));
-                String responseString;
-                while ((responseString = in.readLine()) != null) {
-                    System.out.println(responseString);
-                }
-                Platform.runLater(loginStage::close);
+                //Login success. Get the new token and get out of here.
+                List<String> newCookies = connection.getHeaderFields().get("Set-Cookie");
+                BeatmapImport.getCookieManager().getCookieStore().removeAll();
+                for (String cookie : newCookies)
+                    BeatmapImport.getCookieManager().getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
             }
         } catch (IOException e) {
             Platform.runLater(() -> {
@@ -142,7 +140,7 @@ class Authenticator {
                 alert.setTitle(Localizer.getLocalizedText("loginException"));
                 alert.setContentText(Localizer.getLocalizedText("loginExceptionDesc"));
                 alert.show();
-                loginButton.setDisable(false);
+                loginScreen.enableElements();
             });
             e.printStackTrace();
         }

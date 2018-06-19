@@ -12,7 +12,6 @@ public class Main extends Application {
     /*
         TODOs
         TODO Properties (Config files)
-        TODO Download beatmaps to lazer (The game hasn't supported yet. This will be placeholder)
         TODO UI Design (Remember to restrict maximize and minimize buttons in sub windows)
      */
 

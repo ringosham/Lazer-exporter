@@ -71,7 +71,7 @@ public class MainScreen {
         downloadMaps.setDisable(true);
         statusText.setText(Localizer.getLocalizedText("readyStatus").replace("%BEATMAPCOUNT%", Integer.toString(Global.INSTANCE.beatmapList.size())));
         //Bind table values to BeatmapView.
-        columnInstalled.setCellValueFactory(cell -> cell.getValue().getInstalledProperty());
+        columnInstalled.setCellValueFactory(cell -> cell.getValue().getQueueProperty());
         columnInstalled.setCellFactory(cell -> new CheckBoxTableCell<BeatmapView, Boolean>() {
             @SuppressWarnings("unchecked")
             @Override
@@ -80,7 +80,7 @@ public class MainScreen {
                 TableRow<BeatmapView> currentRow = (TableRow<BeatmapView>) getTableRow();
                 this.setDisable(false);
                 if (currentRow.getItem() != null && !empty) {
-                    if (currentRow.getItem().isInstalled()) {
+                    if (currentRow.getItem().getInstalledProperty().get()) {
                         this.setDisable(true);
                     }
                 }
@@ -88,8 +88,8 @@ public class MainScreen {
         });
         columnID.setCellValueFactory(new PropertyValueFactory<>("beatmapId"));
         columnID.setCellFactory(new HyperlinkCell());
-        columnArtist.setCellValueFactory(new PropertyValueFactory<>("artist"));
-        columnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        columnArtist.setCellValueFactory(cell -> cell.getValue().getArtist());
+        columnTitle.setCellValueFactory(cell -> cell.getValue().getTitle());
     }
 
     public void exit() {

@@ -20,7 +20,7 @@ public class Global {
     private File lastExport;
     private File lazerDirectory;
     private Locale locale;
-    private String username;
+    private String email;
     private String password;
     private final File convertDir = new File(System.getProperty("java.io.tmpdir") + "/convertOgg");
 
@@ -94,16 +94,16 @@ public class Global {
         return lazerDirectory;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
     public void setLazerDirectory(File lazerDirectory) {
         this.lazerDirectory = lazerDirectory;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -115,7 +115,7 @@ public class Global {
     }
 
     public void clearLoginDetails() {
-        this.username = null;
+        this.email = null;
         this.password = null;
     }
 
