@@ -134,7 +134,7 @@ public class MainScreen {
     }
 
     public void aboutWindow() throws IOException {
-        loadStage(aboutStage, Localizer.getLocalizedText("menu.help.about"), "../fxml/about.fxml");
+        loadStage(aboutStage, Localizer.getLocalizedText("menu.help.about"), "../fxml/about.fxml", new About(hostServices));
     }
 
     public void importList() {
@@ -268,7 +268,9 @@ public class MainScreen {
         }
     }
 
-    void resync() {
+    //This must stay public as the fxml is accessing it.
+    @SuppressWarnings("WeakerAccess")
+    public void resync() {
         Stage stage = (Stage) statusText.getScene().getWindow();
         stage.close();
         loginStage.close();

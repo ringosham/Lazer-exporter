@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml"
-            xmlns="http://javafx.com/javafx"
-            fx:controller="com.ringosham.controller.About"
-            prefHeight="400.0" prefWidth="600.0">
+<!--
+  ~ Copyright (c) 2018. Ringo Sham.
+  ~ Licensed under the Apache license. Version 2.0
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  -->
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="292.0" prefWidth="321.0"
+            xmlns="http://javafx.com/javafx/8.0.121">
+    <Label layoutX="80.0" layoutY="132.0" text="Lazer Exporter" AnchorPane.topAnchor="132.0">
+        <font>
+            <Font name="Verdana" size="22.0"/>
+        </font>
+    </Label>
+    <Label layoutX="75.0" layoutY="177.0" text="Copyright © 2018 - Ringosham" AnchorPane.leftAnchor="75.0"
+           AnchorPane.topAnchor="177.0"/>
+    <Label layoutX="153.0" layoutY="160.0" text="1.0" AnchorPane.topAnchor="160.0"/>
+    <HBox layoutX="86.0" layoutY="255.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0"
+          prefWidth="150.0" AnchorPane.bottomAnchor="14.0">
+        <Label minHeight="-Infinity" prefHeight="23.0" prefWidth="84.0" text="Licensed under"/>
+        <Hyperlink fx:id="license" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="0.0"
+                   text="Apache 2.0"/>
+    </HBox>
+    <Hyperlink fx:id="github" contentDisplay="GRAPHIC_ONLY" layoutX="141.0" layoutY="207.0" minHeight="-Infinity"
+               minWidth="-Infinity" prefHeight="32.0" prefWidth="32.0" AnchorPane.bottomAnchor="53.0"
+               AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="140.0">
+        <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../assets/GitHub-Mark-32px.png"/>
+            </ImageView>
+        </graphic>
+    </Hyperlink>
+    <ImageView fitHeight="64.0" fitWidth="64.0" layoutX="129.0" layoutY="42.0" pickOnBounds="true"
+               preserveRatio="true" AnchorPane.leftAnchor="129.0" AnchorPane.rightAnchor="128.0"
+               AnchorPane.topAnchor="42.0"/>
 </AnchorPane>
