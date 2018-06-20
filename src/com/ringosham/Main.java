@@ -18,7 +18,7 @@ public class Main extends Application {
     /*
         TODOs
         TODO Update default directories as the game has compatibility with other OS
-        TODO UI Design (Remember to restrict maximize and minimize buttons in sub windows)
+        TODO Update if importing beatmaps is possible in future updates of the game
      */
 
     public static void main(String[] args) {
@@ -32,6 +32,7 @@ public class Main extends Application {
         loader.setController(new Loading(primaryStage, getHostServices()));
         Parent root = loader.load();
         primaryStage.resizableProperty().setValue(false);
+        primaryStage.getIcons().addAll(Global.INSTANCE.getAppIcon());
         primaryStage.setScene(new Scene(root, 400, 15));
         primaryStage.show();
     }

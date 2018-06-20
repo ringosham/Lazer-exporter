@@ -2,6 +2,8 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 
+![Screenshot](docs/screenshot.png)
+
 A utility for importing and exporting beatmap list, as well as extracting songs and beatmaps installed in osu!Lazer
 ##Disclaimer
 The author of this application is not affiliated with ppy Pty Ltd.

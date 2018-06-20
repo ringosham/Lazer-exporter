@@ -7,6 +7,7 @@
 package com.ringosham;
 
 import com.ringosham.objects.Beatmap;
+import javafx.scene.image.Image;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,6 +31,11 @@ public class Global {
     private String email;
     private String password;
     private final File convertDir = new File(System.getProperty("java.io.tmpdir") + "/convertOgg");
+    private static final List<Image> appIcon = new ArrayList<Image>() {{
+        add(new Image(Global.class.getResourceAsStream("assets/logo16x16.png")));
+        add(new Image(Global.class.getResourceAsStream("assets/logo32x32.png")));
+        add(new Image(Global.class.getResourceAsStream("assets/logo64x64.png")));
+    }};
 
     private Global() {
     }
@@ -118,6 +124,10 @@ public class Global {
 
     public File getConvertDir() {
         return convertDir;
+    }
+
+    public List<Image> getAppIcon() {
+        return appIcon;
     }
 
     private static class Defaults {

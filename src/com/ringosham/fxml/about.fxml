@@ -21,11 +21,10 @@
     <Label layoutX="75.0" layoutY="177.0" text="Copyright © 2018 - Ringosham" AnchorPane.leftAnchor="75.0"
            AnchorPane.topAnchor="177.0"/>
     <Label layoutX="153.0" layoutY="160.0" text="1.0" AnchorPane.topAnchor="160.0"/>
-    <HBox layoutX="86.0" layoutY="255.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0"
-          prefWidth="150.0" AnchorPane.bottomAnchor="14.0">
+    <HBox layoutX="86.0" layoutY="255.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="150.0"
+          AnchorPane.bottomAnchor="14.0">
         <Label minHeight="-Infinity" prefHeight="23.0" prefWidth="84.0" text="Licensed under"/>
-        <Hyperlink fx:id="license" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="0.0"
-                   text="Apache 2.0"/>
+        <Hyperlink fx:id="license" alignment="TOP_LEFT" contentDisplay="TOP" graphicTextGap="0.0" text="Apache 2.0"/>
     </HBox>
     <Hyperlink fx:id="github" contentDisplay="GRAPHIC_ONLY" layoutX="141.0" layoutY="207.0" minHeight="-Infinity"
                minWidth="-Infinity" prefHeight="32.0" prefWidth="32.0" AnchorPane.bottomAnchor="53.0"
@@ -36,7 +35,8 @@
             </ImageView>
         </graphic>
     </Hyperlink>
-    <ImageView fitHeight="64.0" fitWidth="64.0" layoutX="129.0" layoutY="42.0" pickOnBounds="true"
-               preserveRatio="true" AnchorPane.leftAnchor="129.0" AnchorPane.rightAnchor="128.0"
-               AnchorPane.topAnchor="42.0"/>
+    <ImageView fitHeight="64.0" fitWidth="64.0" layoutX="129.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true"
+               AnchorPane.leftAnchor="129.0" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="42.0">
+        <Image url="@../assets/logo64x64.png"/>
+    </ImageView>
 </AnchorPane>

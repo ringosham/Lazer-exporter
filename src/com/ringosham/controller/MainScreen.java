@@ -96,6 +96,10 @@ public class MainScreen {
         columnID.setCellFactory(new HyperlinkCell());
         columnArtist.setCellValueFactory(cell -> cell.getValue().getArtist());
         columnTitle.setCellValueFactory(cell -> cell.getValue().getTitle());
+        settingsStage.getIcons().addAll(Global.INSTANCE.getAppIcon());
+        aboutStage.getIcons().addAll(Global.INSTANCE.getAppIcon());
+        exportStage.getIcons().addAll(Global.INSTANCE.getAppIcon());
+        loginStage.getIcons().addAll(Global.INSTANCE.getAppIcon());
     }
 
     public void exit() {
