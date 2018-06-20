@@ -36,10 +36,10 @@ Do not use this program for distributing songs illegally. The creator of this pr
     * Conversion from .ogg to .mp3 (Done through FFmpeg)
     
 ##Building
-The artifact can be built through standard Intellij tools. Additional libraries that are not in maven are stored in /lib. Please check the README.md in /lib for more information.
+The artifact can be built through standard Intellij tools. Additional libraries that are not in maven are stored in /lib. Please check the [README.md in /lib](https://github.com/ringosham/Lazer-exporter/tree/master/lib) for more information.
 
 ##Downloads
-Go to the release tab
+Go to the [release](https://github.com/ringosham/Lazer-exporter/releases) tab
 
 ##License
 All code in this program, with the exception of dependencies, are under Apache License 2.0
