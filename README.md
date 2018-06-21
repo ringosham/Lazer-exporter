@@ -38,9 +38,17 @@ Do not use this program for distributing songs illegally. The creator of this pr
     * Filter duplicates based on song length
     * Conversion from .ogg to .mp3 (Done through FFmpeg)
     
+##Things to note
+
+The FFmpeg used for exporting songs is 32-bit only and supports both Windows and all Linux distributions.
+
+If you are using a Linux distribution, please make sure you have installed the required libraries for 32-bit compatibility.
+ 
+Currently you cannot export songs if you are running macOS, as it will **not** run on macOS.
+
 ## Building
 
-The artifact can be built through standard Intellij tools. Additional libraries that are not in maven are stored in /lib. Please check the [README.md in /lib](https://github.com/ringosham/Lazer-exporter/tree/master/lib) for more information.
+The artifact can be built through standard IntelliJ tools. Additional libraries that are not in maven are stored in /lib. Please check the [README.md in /lib](https://github.com/ringosham/Lazer-exporter/tree/master/lib) for more information.
 
 ## Downloads
 
