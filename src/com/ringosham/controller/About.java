@@ -24,6 +24,6 @@ public class About {
 
     public void initialize() {
         license.setOnAction(e -> hostServices.showDocument("https://www.apache.org/licenses/LICENSE-2.0"));
-        github.setOnAction(e -> hostServices.showDocument(""));
+        github.setOnAction(e -> hostServices.showDocument("https://github.com/ringosham/Lazer-exporter"));
     }
 }
