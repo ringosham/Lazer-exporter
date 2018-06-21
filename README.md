@@ -38,7 +38,7 @@ Do not use this program for distributing songs illegally. The creator of this pr
     * Filter duplicates based on song length
     * Conversion from .ogg to .mp3 (Done through FFmpeg)
     
-##Things to note
+## Things to note
 
 The FFmpeg used for exporting songs is 32-bit only and supports both Windows and all Linux distributions.
 
