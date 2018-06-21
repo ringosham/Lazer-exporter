@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -21,7 +21,7 @@ import java.util.Properties;
 
 public class Global {
     public static Global INSTANCE = new Global();
-    private final File configFile = Paths.get("./config.cfg").toFile();
+    private File configFile;
     public List<Beatmap> beatmapList = new ArrayList<>();
     public boolean inProgress;
     private Properties config = new Properties();
@@ -38,6 +38,11 @@ public class Global {
     }};
 
     private Global() {
+        try {
+            File jar = new File(Global.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+            configFile = new File(jar.getParentFile(), "config.cfg");
+        } catch (URISyntaxException ignored) {
+        }
     }
 
     public void loadConfig() throws IOException {
@@ -71,6 +76,7 @@ public class Global {
         String defaultLazerDir;
         defaultLazerDir = Defaults.getDefaultDirectory();
         lazerDirectory = new File(defaultLazerDir);
+        locale = Defaults.locale;
     }
 
     public void saveConfig() throws IOException {

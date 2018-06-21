@@ -177,7 +177,7 @@ public class LoadTask extends Task<Void> {
         updateTitle("Lazer exporter");
         Platform.runLater(() -> {
             stage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/mainScreen.fxml"), Localizer.getResourceBundle());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ringosham/fxml/mainScreen.fxml"), Localizer.getResourceBundle());
             loader.setController(new MainScreen(hostServices));
             try {
                 Parent root = loader.load();

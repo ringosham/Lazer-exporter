@@ -115,7 +115,7 @@ public class MainScreen {
     }
 
     public void settingsWindow() throws IOException {
-        loadStage(settingsStage, Localizer.getLocalizedText("settings"), "../fxml/settings.fxml", new SettingScreen(this));
+        loadStage(settingsStage, Localizer.getLocalizedText("settings"), "/com/ringosham/fxml/settings.fxml", new SettingScreen(this));
     }
 
     private void loadStage(Stage stage, String title, String resourcePath, Object controller) throws IOException {
@@ -134,7 +134,7 @@ public class MainScreen {
     }
 
     public void aboutWindow() throws IOException {
-        loadStage(aboutStage, Localizer.getLocalizedText("menu.help.about"), "../fxml/about.fxml", new About(hostServices));
+        loadStage(aboutStage, Localizer.getLocalizedText("menu.help.about"), "/com/ringosham/fxml/about.fxml", new About(hostServices));
     }
 
     public void importList() {
@@ -153,14 +153,14 @@ public class MainScreen {
 
     public void downloadMaps() throws IOException {
         unbindNodes();
-        loadStage(loginStage, Localizer.getLocalizedText("loginTitle"), "../fxml/Login.fxml", new Login(this, loginStage));
+        loadStage(loginStage, Localizer.getLocalizedText("loginTitle"), "/com/ringosham/fxml/Login.fxml", new Login(this, loginStage));
     }
 
     public void exportSongs() throws IOException {
         unbindNodes();
         if (!shownDisclaimer)
             showDisclaimer();
-        loadStage(exportStage, Localizer.getLocalizedText("exportSongs"), "../fxml/songExport.fxml", new SongExportScreen(this, exportStage));
+        loadStage(exportStage, Localizer.getLocalizedText("exportSongs"), "/com/ringosham/fxml/songExport.fxml", new SongExportScreen(this, exportStage));
     }
 
     private void showDisclaimer() {
@@ -277,7 +277,7 @@ public class MainScreen {
         exportStage.close();
         settingsStage.close();
         aboutStage.close();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/loading.fxml"), Localizer.getResourceBundle());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ringosham/fxml/loading.fxml"), Localizer.getResourceBundle());
         loader.setController(new Loading(stage, hostServices));
         try {
             Parent root = loader.load();
