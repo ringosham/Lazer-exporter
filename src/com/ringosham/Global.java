@@ -28,6 +28,7 @@ public class Global {
 
     private File lazerDirectory;
     private Locale locale;
+    private boolean videoDownload;
     private String email;
     private String password;
     private final File convertDir = new File(System.getProperty("java.io.tmpdir") + "/convertOgg");
@@ -58,9 +59,9 @@ public class Global {
         //This is planned, but there are currently no support.
         String defaultLazerDir = Defaults.getDefaultDirectory();
         lazerDirectory = new File(config.getProperty("lazerDirectory", defaultLazerDir));
-        //Wow, the Locale class is this dumb.
-        //It cannot process both en_US and en-US
-        locale = Locale.forLanguageTag(config.getProperty("locale", Defaults.locale.toString()).replace("_", "-"));
+        String localeString = config.getProperty("locale", Defaults.locale.toString()).toLowerCase().replace("_", "-");
+        locale = Locale.forLanguageTag(localeString);
+        videoDownload = Boolean.parseBoolean(config.getProperty("videoDownload", String.valueOf(Defaults.videoDownload)));
         in.close();
     }
 
@@ -68,6 +69,7 @@ public class Global {
         FileOutputStream out = new FileOutputStream(configFile);
         config.setProperty("lazerDirectory", Defaults.getDefaultDirectory());
         config.setProperty("locale", Defaults.locale.toString());
+        config.setProperty("videoDownload", String.valueOf(Defaults.videoDownload));
         config.store(out, "Lazer exporter config");
         out.close();
     }
@@ -83,6 +85,7 @@ public class Global {
         FileOutputStream out = new FileOutputStream(configFile);
         config.setProperty("lazerDirectory", lazerDirectory.getAbsolutePath());
         config.setProperty("locale", locale.toString());
+        config.setProperty("videoDownload", String.valueOf(videoDownload));
         config.store(out, "Lazer exporter config");
         out.close();
     }
@@ -136,9 +139,13 @@ public class Global {
         return appIcon;
     }
 
+    public boolean isVideoDownload() {
+        return videoDownload;
+    }
+
     private static class Defaults {
-        private static final String lastExport = "";
         private static final Locale locale = Locale.US;
+        private static final boolean videoDownload = true;
 
         private static String getDefaultDirectory() {
             String os = System.getProperty("os.name").toLowerCase();

@@ -5,7 +5,6 @@
   ~ Licensed under the Apache license. Version 2.0
   ~ http://www.apache.org/licenses/LICENSE-2.0
   -->
-
 <!--suppress ALL -->
 
 <?import javafx.geometry.Insets?>
@@ -39,14 +38,14 @@
         <CheckBox fx:id="overrideTags" mnemonicParsing="false" text="%overwriteTags" GridPane.columnIndex="1"
                   GridPane.rowIndex="2"/>
         <Label text="%renamingOptions" GridPane.rowIndex="3"/>
-        <RadioButton fx:id="renameBeatmap" mnemonicParsing="false" selected="true" text="%renameBeatmap"
-                     GridPane.rowIndex="4">
+        <RadioButton fx:id="renameBeatmap" mnemonicParsing="false" onAction="#onRenameID" selected="true"
+                     text="%renameBeatmap" GridPane.rowIndex="4">
             <toggleGroup>
                 <ToggleGroup fx:id="renameOptions"/>
             </toggleGroup>
         </RadioButton>
-        <RadioButton fx:id="useBeatmapID" mnemonicParsing="false" text="%renameAfterID" toggleGroup="$renameOptions"
-                     GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+        <RadioButton fx:id="useBeatmapID" mnemonicParsing="false" onAction="#onRenameID" text="%renameAfterID"
+                     toggleGroup="$renameOptions" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
         <CheckBox fx:id="overwriteCheckbox" mnemonicParsing="false" text="%overwriteFile" GridPane.columnIndex="1"/>
         <CheckBox fx:id="romajiNaming" mnemonicParsing="false" text="%romajiNaming" GridPane.columnIndex="1"
                   GridPane.rowIndex="3"/>

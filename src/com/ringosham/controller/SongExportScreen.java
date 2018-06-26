@@ -73,12 +73,22 @@ public class SongExportScreen {
         romajiNaming.setTooltip(new Tooltip(romajiTooltip));
         overrideTags.setDisable(true);
         filterPractice.setSelected(true);
-        filterDuplicates.setSelected(true);
-        filterSeconds.setText("10");
-        filterSeconds.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.length() > 2 || !newValue.matches("\\d*") || newValue.equals("0"))
-                filterSeconds.setText(oldValue);
-        });
+        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+            //macOS cannot run the FFmpeg included. These options needed to be disabled.
+            convertCheckbox.setDisable(true);
+            filterDuplicates.setDisable(true);
+            filterSeconds.setDisable(true);
+            useBeatmapID.setSelected(true);
+            useBeatmapID.setDisable(true);
+            renameBeatmap.setDisable(true);
+        } else {
+            filterDuplicates.setSelected(true);
+            filterSeconds.setText("10");
+            filterSeconds.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue.length() > 2 || !newValue.matches("\\d*") || newValue.equals("0"))
+                    filterSeconds.setText(oldValue);
+            });
+        }
     }
 
     @FXML
@@ -130,6 +140,16 @@ public class SongExportScreen {
             filterSeconds.setDisable(false);
             useBeatmapID.setDisable(false);
             renameBeatmap.setDisable(false);
+        }
+    }
+
+    @FXML
+    public void onRenameID() {
+        if (useBeatmapID.isSelected()) {
+            romajiNaming.setSelected(true);
+            romajiNaming.setDisable(true);
+        } else {
+            romajiNaming.setDisable(false);
         }
     }
 }

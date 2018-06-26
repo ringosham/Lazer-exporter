@@ -23,7 +23,8 @@ import java.util.Locale;
 
 public class SettingScreen {
     private final ObservableList<Language> options = FXCollections.observableArrayList(
-            new Language("English", Locale.US)
+            new Language("English", Locale.US),
+            new Language("中文(繁體)", Locale.TRADITIONAL_CHINESE)
     );
     @FXML
     private TextField gameDirectory;
@@ -111,7 +112,8 @@ public class SettingScreen {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle(Localizer.getLocalizedText("selectGameDir"));
         File dir = chooser.showDialog(null);
-        checkGameDir(dir);
+        if (dir != null)
+            checkGameDir(dir);
     }
 
     private boolean checkGameDir(File dir) {

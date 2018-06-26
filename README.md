@@ -45,7 +45,7 @@ The FFmpeg used for exporting songs is 32-bit only and supports both Windows and
 
 If you are using a Linux distribution, please make sure you have installed the required libraries for 32-bit compatibility.
  
-Currently you cannot export songs if you are running macOS, as it will **not** run on macOS.
+If you are using macOS, exporting songs will still be available but with limited functionality.
 
 ## Building
 
