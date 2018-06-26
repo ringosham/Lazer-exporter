@@ -30,6 +30,8 @@ public class SettingScreen {
     private TextField gameDirectory;
     @FXML
     private ComboBox<Language> languageOption;
+    @FXML
+    private CheckBox videoDownload;
     private boolean isLanguageChanged = false;
     private MainScreen mainScreen;
 
@@ -72,6 +74,7 @@ public class SettingScreen {
         int selectedIndex = getIndexFromLocale(Global.INSTANCE.getLocale());
         languageOption.getSelectionModel().select(selectedIndex);
         languageOption.valueProperty().addListener((ObsValue, oldValue, newValue) -> isLanguageChanged = true);
+        videoDownload.setSelected(Global.INSTANCE.isVideoDownload());
     }
 
     private int getIndexFromLocale(Locale locale) {
@@ -92,6 +95,7 @@ public class SettingScreen {
             return;
         Global.INSTANCE.setLazerDirectory(new File(gameDirectory.getText()));
         Global.INSTANCE.setLocale(languageOption.getSelectionModel().getSelectedItem().getLocale());
+        Global.INSTANCE.setVideoDownload(videoDownload.isSelected());
         try {
             Global.INSTANCE.saveConfig();
         } catch (IOException e) {

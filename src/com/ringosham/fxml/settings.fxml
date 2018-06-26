@@ -8,7 +8,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="194.0" prefWidth="453.0"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="230.0" prefWidth="453.0"
             xmlns="http://javafx.com/javafx/8.0.121">
     <Label layoutX="14.0" layoutY="14.0" text="%gameDirectory" AnchorPane.leftAnchor="14.0"
            AnchorPane.topAnchor="14.0"/>
@@ -26,4 +26,6 @@
     <Label layoutX="14.0" layoutY="96.0" text="%language" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="96.0"/>
     <ComboBox fx:id="languageOption" layoutX="14.0" layoutY="113.0" prefWidth="150.0" AnchorPane.leftAnchor="14.0"
               AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="113.0"/>
+    <CheckBox fx:id="videoDownload" layoutX="14.0" layoutY="154.0" mnemonicParsing="false" text="%videoDownload"
+              AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="154.0"/>
 </AnchorPane>

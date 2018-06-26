@@ -20,6 +20,7 @@ import java.util.List;
 class Downloader {
     private static final String downloadUrlPrefix = "https://osu.ppy.sh/beatmapsets/";
     private static final String downloadUrlSuffix = "/download";
+    private static final String downloadNoVidUrlSuffix = "/download?noVideo=1";
     private final MainScreen mainScreen;
     private final List<BeatmapXML> beatmaps;
 
@@ -40,7 +41,11 @@ class Downloader {
             File osz = new File(Global.INSTANCE.getLazerDirectory(), "/files/" + getValidFileName(filename));
             if (!osz.exists()) {
                 try {
-                    URL url = new URL(downloadUrlPrefix + beatmap.getBeatmapID() + downloadUrlSuffix);
+                    URL url;
+                    if (Global.INSTANCE.isVideoDownload())
+                        url = new URL(downloadUrlPrefix + beatmap.getBeatmapID() + downloadUrlSuffix);
+                    else
+                        url = new URL(downloadUrlPrefix + beatmap.getBeatmapID() + downloadNoVidUrlSuffix);
                     HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
 

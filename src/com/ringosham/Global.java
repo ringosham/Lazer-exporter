@@ -143,6 +143,10 @@ public class Global {
         return videoDownload;
     }
 
+    public void setVideoDownload(boolean videoDownload) {
+        this.videoDownload = videoDownload;
+    }
+
     private static class Defaults {
         private static final Locale locale = Locale.US;
         private static final boolean videoDownload = true;
