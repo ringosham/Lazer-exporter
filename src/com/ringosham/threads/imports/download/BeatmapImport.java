@@ -9,12 +9,10 @@ package com.ringosham.threads.imports.download;
 import com.ringosham.Global;
 import com.ringosham.controller.Login;
 import com.ringosham.controller.MainScreen;
-import com.ringosham.locale.Localizer;
 import com.ringosham.objects.view.BeatmapView;
 import com.ringosham.objects.xml.BeatmapXML;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -77,16 +75,6 @@ public class BeatmapImport extends Task<Void> {
     @Override
     protected Void call() {
         List<BeatmapXML> downloadList = getTableItems();
-        if (downloadList.isEmpty()) {
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle(Localizer.getLocalizedText("noMapSelect"));
-                alert.setContentText(Localizer.getLocalizedText("noMapSelectDesc"));
-                alert.show();
-                loginScreen.enableElements();
-            });
-            return null;
-        }
         Authenticator authenticator = new Authenticator(mainScreen, loginScreen, email, password);
         if (!authenticator.loginProcess())
             return null;

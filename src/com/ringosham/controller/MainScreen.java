@@ -152,6 +152,21 @@ public class MainScreen {
     }
 
     public void downloadMaps() throws IOException {
+        boolean selectedBeatmaps = false;
+        for (BeatmapView beatmap : beatmapList.getItems()) {
+            if (beatmap.getQueueProperty().get() && !beatmap.getInstalledProperty().get()) {
+                selectedBeatmaps = true;
+                break;
+            }
+        }
+        if (!selectedBeatmaps) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(Localizer.getLocalizedText("noMapSelect"));
+            alert.setHeaderText(Localizer.getLocalizedText("noMapSelect"));
+            alert.setContentText(Localizer.getLocalizedText("noMapSelectDesc"));
+            alert.showAndWait();
+            return;
+        }
         unbindNodes();
         loadStage(loginStage, Localizer.getLocalizedText("loginTitle"), "/com/ringosham/fxml/Login.fxml", new Login(this, loginStage));
     }
