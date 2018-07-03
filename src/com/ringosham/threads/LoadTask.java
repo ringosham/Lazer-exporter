@@ -44,12 +44,8 @@ public class LoadTask extends Task<Void> {
         try {
             Global.INSTANCE.loadConfig();
         } catch (IOException e) {
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Failed loading config file");
-                alert.setContentText("Failed to load configuration file. Defaults will be used instead");
-                alert.show();
-            });
+            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, "Failed loading config file",
+                    "Failed to load configuration file. Defaults will be used instead");
             e.printStackTrace();
             Global.INSTANCE.configFailsafe();
         }
@@ -92,7 +88,7 @@ public class LoadTask extends Task<Void> {
                 in NTFS, this may affect users in macOS and Linux.
                 Filename refers to the actual file. While AudioFile is an attribute from the beatmap file.
                 Both needed to be lower cased as a result.
-                The game source looks up a compare file names while ignoring case, so the game has no problem.
+                The game source looks up and compare file names while ignoring case, so the game has no problems.
              */
             while (beatmapSetInfoSet.next()) {
                 beatmapSetInfo.get(0).add(beatmapSetInfoSet.getString(1));
@@ -118,20 +114,15 @@ public class LoadTask extends Task<Void> {
             }
             connection.close();
             //Process the data and stored them as objects.
-            //There is always one beatmap in the database (Circles by nekodex). So using index 0 is safe.
+            //There is always at least one beatmap in the database (Circles by nekodex). So using index 0 is safe.
             boolean nullIDFound = false;
             for (int i = 0; i < beatmapSetInfo.get(0).size(); i++) {
                 String beatmapID = beatmapSetInfo.get(0).get(i);
                 String onlineString = beatmapSetInfo.get(1).get(i);
                 if (onlineString == null) {
                     if (!nullIDFound) {
-                        Platform.runLater(() -> {
-                            Alert alert = new Alert(Alert.AlertType.WARNING);
-                            alert.setTitle(Localizer.getLocalizedText("nullID"));
-                            alert.setHeaderText(Localizer.getLocalizedText("nullIDHead"));
-                            alert.setContentText(Localizer.getLocalizedText("nullIDDesc"));
-                            alert.show();
-                        });
+                        Global.INSTANCE.showAlert(Alert.AlertType.WARNING, Localizer.getLocalizedText("nullID"),
+                                Localizer.getLocalizedText("nullIDHead"), Localizer.getLocalizedText("nullIDDesc"));
                         nullIDFound = true;
                     }
                     continue;
@@ -163,14 +154,8 @@ public class LoadTask extends Task<Void> {
                 Global.INSTANCE.beatmapList.add(new Beatmap(onlineID, metadata, fileMap));
             }
         } catch (SQLException e) {
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle(Localizer.getLocalizedText("databaseFail"));
-                alert.setHeaderText(Localizer.getLocalizedText("databaseFail"));
-                alert.setContentText(Localizer.getLocalizedText("databaseFailDesc"));
-                alert.showAndWait();
-                Platform.exit();
-            });
+            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("databaseFail"),
+                    Localizer.getLocalizedText("databaseFailDesc"));
             e.printStackTrace();
             return null;
         }
@@ -199,12 +184,9 @@ public class LoadTask extends Task<Void> {
     private void selectInstallDirectory() {
         Global.INSTANCE.setLazerDirectory(null);
         while (Global.INSTANCE.getLazerDirectory() == null) {
+            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("notFoundTitle"),
+                    Localizer.getLocalizedText("notFoundDesc"));
             Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle(Localizer.getLocalizedText("notFoundTitle"));
-                alert.setHeaderText(Localizer.getLocalizedText("notFoundTitle"));
-                alert.setContentText(Localizer.getLocalizedText("notFoundDesc"));
-                alert.showAndWait();
                 DirectoryChooser chooser = new DirectoryChooser();
                 chooser.setTitle(Localizer.getLocalizedText("selectGameDir"));
                 File dir = chooser.showDialog(null);
@@ -213,20 +195,13 @@ public class LoadTask extends Task<Void> {
                     try {
                         Global.INSTANCE.saveConfig();
                     } catch (IOException e) {
-                        Alert error = new Alert(Alert.AlertType.ERROR);
-                        error.setTitle(Localizer.getLocalizedText("failedSaveConfig"));
-                        error.setHeaderText(Localizer.getLocalizedText("failedSaveConfig"));
-                        error.setContentText(Localizer.getLocalizedText("failedSaveConfigDesc"));
-                        error.showAndWait();
+                        Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("failedSaveConfig"),
+                                Localizer.getLocalizedText("failedSaveConfigDesc"));
                         e.printStackTrace();
                     }
-                } else {
-                    Alert alert1 = new Alert(Alert.AlertType.ERROR);
-                    alert1.setTitle(Localizer.getLocalizedText("dirInvalid"));
-                    alert1.setHeaderText(Localizer.getLocalizedText("dirInvalid"));
-                    alert1.setContentText(Localizer.getLocalizedText("dirInvalidDesc"));
-                    alert1.showAndWait();
-                }
+                } else
+                    Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dirInvalid"),
+                            Localizer.getLocalizedText("dirInvalidDesc"));
             });
         }
     }

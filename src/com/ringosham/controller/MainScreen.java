@@ -160,11 +160,8 @@ public class MainScreen {
             }
         }
         if (!selectedBeatmaps) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle(Localizer.getLocalizedText("noMapSelect"));
-            alert.setHeaderText(Localizer.getLocalizedText("noMapSelect"));
-            alert.setContentText(Localizer.getLocalizedText("noMapSelectDesc"));
-            alert.showAndWait();
+            Global.INSTANCE.showAlert(Alert.AlertType.INFORMATION, Localizer.getLocalizedText("noMapSelect"),
+                    Localizer.getLocalizedText("noMapSelectDesc"));
             return;
         }
         unbindNodes();
@@ -179,11 +176,8 @@ public class MainScreen {
     }
 
     private void showDisclaimer() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(Localizer.getLocalizedText("disclaimer"));
-        alert.setHeaderText(Localizer.getLocalizedText("disclaimerHead"));
-        alert.setContentText(Localizer.getLocalizedText("disclaimerDesc"));
-        alert.showAndWait();
+        Global.INSTANCE.showAlert(Alert.AlertType.INFORMATION, Localizer.getLocalizedText("disclaimer"),
+                Localizer.getLocalizedText("disclaimerHead"), Localizer.getLocalizedText("disclaimerDesc"));
         shownDisclaimer = true;
     }
 
@@ -275,10 +269,8 @@ public class MainScreen {
         try {
             Runtime.getRuntime().exec(gameExecutable);
         } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Cannot launch process");
-            alert.setContentText("Cannot launch game. This normally should not happen. If you believe this is a bug, please report it to GitHub.");
-            alert.showAndWait();
+            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("failLaunchGame"),
+                    Localizer.getLocalizedText("failLaunchGameDesc"));
             e.printStackTrace();
         }
     }

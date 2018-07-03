@@ -18,7 +18,7 @@ public class About {
     @FXML
     private Hyperlink github;
 
-    public About(HostServices hostServices) {
+    About(HostServices hostServices) {
         this.hostServices = hostServices;
     }
 

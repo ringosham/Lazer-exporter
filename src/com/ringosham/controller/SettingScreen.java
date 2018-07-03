@@ -99,11 +99,8 @@ public class SettingScreen {
         try {
             Global.INSTANCE.saveConfig();
         } catch (IOException e) {
-            Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setTitle(Localizer.getLocalizedText("failedSaveConfig"));
-            error.setHeaderText(Localizer.getLocalizedText("failedSaveConfig"));
-            error.setContentText(Localizer.getLocalizedText("failedSaveConfigDesc"));
-            error.showAndWait();
+            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("failedSaveConfig"),
+                    Localizer.getLocalizedText("failedSaveConfigDesc"));
             e.printStackTrace();
         }
         if (isLanguageChanged)
@@ -125,11 +122,8 @@ public class SettingScreen {
             gameDirectory.setText(dir.getAbsolutePath());
             return true;
         } else {
-            Alert alert1 = new Alert(Alert.AlertType.ERROR);
-            alert1.setTitle(Localizer.getLocalizedText("dirInvalid"));
-            alert1.setHeaderText(Localizer.getLocalizedText("dirInvalid"));
-            alert1.setContentText(Localizer.getLocalizedText("dirInvalidDesc"));
-            alert1.showAndWait();
+            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dirInvalid"),
+                    Localizer.getLocalizedText("dirInvalidDesc"));
             return false;
         }
     }

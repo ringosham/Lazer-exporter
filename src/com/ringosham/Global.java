@@ -7,6 +7,8 @@
 package com.ringosham;
 
 import com.ringosham.objects.Beatmap;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
 import java.io.File;
@@ -162,5 +164,24 @@ public class Global {
                 defaultLazerDir = "";
             return defaultLazerDir;
         }
+    }
+
+    public void showAlert(Alert.AlertType alertType, String title, String content) {
+        showAlert(alertType, title, title, content);
+    }
+
+    public void showAlert(Alert.AlertType alertType, String title, String headerText, String content) {
+        if (!Platform.isFxApplicationThread())
+            Platform.runLater(() -> invokeAlertBox(alertType, title, headerText, content));
+        else
+            invokeAlertBox(alertType, title, headerText, content);
+    }
+
+    private void invokeAlertBox(Alert.AlertType alertType, String title, String headerText, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }
