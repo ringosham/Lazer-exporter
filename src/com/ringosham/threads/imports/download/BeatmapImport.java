@@ -29,7 +29,7 @@ public class BeatmapImport extends Task<Void> {
     private static final String homepage = "https://osu.ppy.sh/home";
     private final MainScreen mainScreen;
     private final Stage loginStage;
-    private static CookieManager cookieManager = new CookieManager();
+    private static final CookieManager cookieManager = new CookieManager();
     private final String email;
     private final String password;
     private Login loginScreen;

@@ -33,7 +33,7 @@ public class SettingScreen {
     @FXML
     private CheckBox videoDownload;
     private boolean isLanguageChanged = false;
-    private MainScreen mainScreen;
+    private final MainScreen mainScreen;
 
     SettingScreen(MainScreen mainScreen) {
         this.mainScreen = mainScreen;

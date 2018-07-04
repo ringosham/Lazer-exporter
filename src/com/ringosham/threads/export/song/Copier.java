@@ -24,7 +24,7 @@ class Copier {
     private final boolean overwrite;
     private final boolean romajiNaming;
     private final boolean renameAsBeatmap;
-    private MainScreen mainScreen;
+    private final MainScreen mainScreen;
     private List<Song> songList;
     private File exportDirectory;
 

@@ -28,7 +28,7 @@ import java.util.List;
 public class ListImport extends Task<Void> {
     private final MainScreen mainScreen;
     private final File importFile;
-    private HostServices hostServices;
+    private final HostServices hostServices;
 
     public ListImport(MainScreen mainScreen, File importFile, HostServices hostServices) {
         this.mainScreen = mainScreen;

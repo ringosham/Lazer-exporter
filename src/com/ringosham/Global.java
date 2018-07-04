@@ -22,11 +22,11 @@ import java.util.Locale;
 import java.util.Properties;
 
 public class Global {
-    public static Global INSTANCE = new Global();
+    public static final Global INSTANCE = new Global();
     private File configFile;
-    public List<Beatmap> beatmapList = new ArrayList<>();
+    public final List<Beatmap> beatmapList = new ArrayList<>();
     public boolean inProgress;
-    private Properties config = new Properties();
+    private final Properties config = new Properties();
 
     private File lazerDirectory;
     private Locale locale;

@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 class Analyser {
-    private MainScreen mainScreen;
+    private final MainScreen mainScreen;
 
     Analyser(MainScreen mainScreen) {
         this.mainScreen = mainScreen;

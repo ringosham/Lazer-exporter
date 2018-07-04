@@ -32,7 +32,7 @@ class Authenticator {
     private final MainScreen mainScreen;
     private final String email;
     private final String password;
-    private Login loginScreen;
+    private final Login loginScreen;
 
     Authenticator(MainScreen mainScreen, Login loginScreen, String email, String password) {
         this.mainScreen = mainScreen;

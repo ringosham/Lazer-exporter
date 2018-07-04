@@ -9,7 +9,7 @@ package com.ringosham.objects;
 import java.util.HashMap;
 
 public class Beatmap {
-    private int beatmapId;
+    private final int beatmapId;
     private Metadata metadata;
     private HashMap<String, String> fileMap;
 

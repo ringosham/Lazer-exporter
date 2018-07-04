@@ -61,13 +61,13 @@ public class MainScreen {
     private Button downloadMaps;
 
     //Stages
-    private Stage settingsStage = new Stage();
-    private Stage aboutStage = new Stage();
-    private Stage exportStage = new Stage();
-    private Stage loginStage = new Stage();
+    private final Stage settingsStage = new Stage();
+    private final Stage aboutStage = new Stage();
+    private final Stage exportStage = new Stage();
+    private final Stage loginStage = new Stage();
 
     private boolean shownDisclaimer = false;
-    private HostServices hostServices;
+    private final HostServices hostServices;
 
     public MainScreen(HostServices hostServices) {
         this.hostServices = hostServices;

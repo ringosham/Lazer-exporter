@@ -29,8 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class LoadTask extends Task<Void> {
-    private Stage stage;
-    private HostServices hostServices;
+    private final Stage stage;
+    private final HostServices hostServices;
 
     public LoadTask(Stage stage, HostServices hostServices) {
         this.stage = stage;
