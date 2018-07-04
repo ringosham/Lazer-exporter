@@ -22,7 +22,7 @@ import java.util.zip.ZipOutputStream;
 
 public class BeatmapExport extends Task<Void> {
     private final MainScreen mainScreen;
-    private File exportDir;
+    private final File exportDir;
     private int failCount = 0;
 
     public BeatmapExport(MainScreen mainScreen, File exportDir) {

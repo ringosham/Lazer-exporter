@@ -10,8 +10,8 @@ import java.util.HashMap;
 
 public class Beatmap {
     private final int beatmapId;
-    private Metadata metadata;
-    private HashMap<String, String> fileMap;
+    private final Metadata metadata;
+    private final HashMap<String, String> fileMap;
 
     public Beatmap(int beatmapId, Metadata metadata, HashMap<String, String> fileMap) {
         this.beatmapId = beatmapId;

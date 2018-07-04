@@ -137,11 +137,11 @@ public class SettingScreen {
             this.locale = locale;
         }
 
-        public String getName() {
+        String getName() {
             return name;
         }
 
-        public Locale getLocale() {
+        Locale getLocale() {
             return locale;
         }
     }

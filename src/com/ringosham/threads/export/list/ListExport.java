@@ -69,7 +69,7 @@ public class ListExport extends Task<Void> {
         }
         updateProgress(0, 0);
         updateMessage(Localizer.getLocalizedText("taskSuccess"));
-        Platform.runLater(() -> mainScreen.enableButtons());
+        Platform.runLater(mainScreen::enableButtons);
         Global.INSTANCE.inProgress = false;
         return null;
     }

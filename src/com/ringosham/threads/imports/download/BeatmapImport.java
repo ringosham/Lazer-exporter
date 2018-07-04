@@ -32,7 +32,7 @@ public class BeatmapImport extends Task<Void> {
     private static final CookieManager cookieManager = new CookieManager();
     private final String email;
     private final String password;
-    private Login loginScreen;
+    private final Login loginScreen;
 
     public BeatmapImport(MainScreen mainScreen, Stage loginStage, Login loginScreen, String email, String password) {
         this.mainScreen = mainScreen;
