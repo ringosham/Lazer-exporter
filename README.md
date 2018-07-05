@@ -41,15 +41,15 @@ Do not use this program for distributing songs illegally. The creator of this pr
     
 ## Things to note
 
-The FFmpeg used for exporting songs is 32-bit only and supports both Windows and all Linux distributions.
+The FFmpeg used for exporting songs supports both 32 bit and 64 bit with the following requirements.
 
-If you are using a Linux distribution, please make sure you have installed the required libraries for 32-bit compatibility.
- 
-If you are using macOS, exporting songs will still be available but with limited functionality.
+* Windows 7 and above
+* macOS 10.7 and above
+* Any Linux distributions (I don't think anyone would be running an ancient kernel anyway)
 
 ## Building
 
-The artifact can be built through standard IntelliJ tools. Additional libraries that are not in maven are stored in /lib. Please check the [README.md in /lib](https://github.com/ringosham/Lazer-exporter/tree/master/lib) for more information.
+Just use the standard IntelliJ build tools.
 
 ## Downloads
 
@@ -63,8 +63,10 @@ All assets used, except the GitHub Mark logo, are under CC-BY-NC 4.0
 
 ## Dependencies
 
-[JAVE](http://www.sauronsoftware.it/projects/jave/index.php) - Java Audio Video Encoder, also a wrapper for FFmpeg - Under GNU GPL v3 license
+[ffmpeg-cli-wrapper](https://github.com/bramp/ffmpeg-cli-wrapper) - Java wrapper around the FFmpeg command line tool - Under BSD-2-Clause license
 
-[mp3agic](https://github.com/mpatric/mp3agic) - Java library for reading/manipulating ID3 tags - Under MIT License
+[FFmpeg project](https://ffmpeg.org) - Cross-platform audio and video transcoder - Under GNU GPL v3 license
+
+[mp3agic](https://github.com/mpatric/mp3agic) - Java library for reading/manipulating ID3 tags - Under MIT license
 
 [SQLite JDBC](https://xerial.org/) - SQLite JDBC library - Under Apache 2.0 license

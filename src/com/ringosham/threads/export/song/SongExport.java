@@ -16,8 +16,10 @@ import javafx.concurrent.Task;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Comparator;
 import java.util.List;
 
@@ -34,6 +36,53 @@ public class SongExport extends Task<Void> {
     @Override
     protected Void call() {
         List<Song> songList;
+        Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("initializing")));
+        //Extract executables from jar, based on arch and os
+        String os = System.getProperty("os.name").toLowerCase();
+        String arch = System.getProperty("sun.arch.data.model");
+        String amd64Path = "/com/ringosham/bin/amd64/";
+        String ia32Path = "/com/ringosham/bin/ia32/";
+        File ffmpeg = new File(System.getProperty("java.io.tmpdir"), "ffmpeg" + (os.contains("win") ? ".exe" : ""));
+        File ffprobe = new File(System.getProperty("java.io.tmpdir"), "ffprobe" + (os.contains("win") ? ".exe" : ""));
+        InputStream ffmpegStream;
+        InputStream ffprobeStream;
+        boolean isUnixFs;
+        if (os.contains("win")) {
+            ffmpegStream = getClass().
+                    getResourceAsStream(arch.equals("64") ? amd64Path : ia32Path + "windows/ffmpeg.exe");
+            ffprobeStream = getClass().
+                    getResourceAsStream(arch.equals("64") ? amd64Path : ia32Path + "windows/ffprobe.exe");
+            isUnixFs = false;
+        } else if (os.contains("mac")) {
+            ffmpegStream = getClass().
+                    getResourceAsStream(amd64Path + "macos/ffmpeg");
+            ffprobeStream = getClass().
+                    getResourceAsStream(amd64Path + "macos/ffprobe");
+            isUnixFs = true;
+        } else {
+            ffmpegStream = getClass().
+                    getResourceAsStream(arch.equals("64") ? amd64Path : ia32Path + "linux/ffmpeg");
+            ffprobeStream = getClass().
+                    getResourceAsStream(arch.equals("64") ? amd64Path : ia32Path + "linux/ffprobe");
+            isUnixFs = true;
+        }
+        try {
+            copyExecutables(ffmpeg, ffprobe, ffmpegStream, ffprobeStream, isUnixFs);
+        } catch (IOException e) {
+            failCount++;
+            Platform.runLater(() -> {
+                mainScreen.mainProgress.setProgress(0);
+                mainScreen.subProgress.setProgress(0);
+                mainScreen.statusText.setText(Localizer.getLocalizedText("taskFinishWithFailure")
+                        .replace("%FAILCOUNT%", Integer.toString(failCount)));
+                mainScreen.consoleArea.appendText(Localizer.getLocalizedText("failInitialize") + "\n");
+                mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
+                mainScreen.enableButtons();
+            });
+            Global.INSTANCE.inProgress = false;
+            e.printStackTrace();
+            return null;
+        }
         Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("analysing")));
         Analyser analyser = new Analyser(mainScreen);
         songList = analyser.run();
@@ -85,6 +134,15 @@ public class SongExport extends Task<Void> {
         return null;
     }
 
+    private void copyExecutables(File ffmpeg, File ffprobe, InputStream ffmpegStream, InputStream ffprobeStream, boolean isUnixFs) throws IOException {
+        Files.copy(ffmpegStream, ffmpeg.toPath());
+        Files.copy(ffprobeStream, ffprobe.toPath());
+        if (isUnixFs) {
+            Files.setPosixFilePermissions(ffmpeg.toPath(), PosixFilePermissions.fromString("rwxrwxr-x"));
+            Files.setPosixFilePermissions(ffprobe.toPath(), PosixFilePermissions.fromString("rwxrwxr-x"));
+        }
+    }
+
     //Clean up
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void cleanUp() throws IOException {
@@ -94,5 +152,10 @@ public class SongExport extends Task<Void> {
                 .sorted(Comparator.reverseOrder())
                 .map(Path::toFile)
                 .forEach(File::delete);
+        String os = System.getProperty("os.name").toLowerCase();
+        File ffmpeg = new File(System.getProperty("java.io.tmpdir"), "ffmpeg" + (os.contains("win") ? ".exe" : ""));
+        File ffprobe = new File(System.getProperty("java.io.tmpdir"), "ffprobe" + (os.contains("win") ? ".exe" : ""));
+        Files.delete(ffmpeg.toPath());
+        Files.delete(ffprobe.toPath());
     }
 }
