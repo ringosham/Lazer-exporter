@@ -86,7 +86,7 @@ public class BeatmapImport extends Task<Void> {
         });
         Global.INSTANCE.inProgress = true;
         Downloader downloader = new Downloader(mainScreen, downloadList);
-        downloader.downloadBeatmap();
+        downloader.downloadTask();
         Global.INSTANCE.inProgress = false;
         Platform.runLater(mainScreen::enableAllButtons);
         return null;

@@ -122,7 +122,7 @@ class Authenticator {
                 else
                     errorMessage = errorString.toString();
                 Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("loginFail"),
-                        Localizer.getLocalizedText("loginFailHead"), Localizer.getLocalizedText(errorMessage));
+                        Localizer.getLocalizedText("loginFailHead"), errorMessage);
                 Platform.runLater(loginScreen::enableElements);
                 Global.INSTANCE.clearLoginDetails();
                 return false;
