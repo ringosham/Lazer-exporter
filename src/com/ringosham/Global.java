@@ -31,6 +31,7 @@ public class Global {
     private boolean videoDownload;
     private String email;
     private String password;
+    private File gameExecutable;
     private final File convertDir = new File(System.getProperty("java.io.tmpdir") + "/convertOgg");
     private static final List<Image> appIcon = new ArrayList<Image>() {{
         add(new Image(Global.class.getResourceAsStream("assets/logo16x16.png")));
@@ -62,6 +63,7 @@ public class Global {
         String localeString = config.getProperty("locale", Defaults.locale.toString()).toLowerCase().replace("_", "-");
         locale = Locale.forLanguageTag(localeString);
         videoDownload = Boolean.parseBoolean(config.getProperty("videoDownload", String.valueOf(Defaults.videoDownload)));
+        gameExecutable = new File(config.getProperty("gameExecutable", Defaults.getDefaultGameExecutable()));
         in.close();
     }
 
@@ -79,6 +81,7 @@ public class Global {
         defaultLazerDir = Defaults.getDefaultDirectory();
         lazerDirectory = new File(defaultLazerDir);
         locale = Defaults.locale;
+        gameExecutable = new File(Defaults.getDefaultGameExecutable());
     }
 
     public void saveConfig() throws IOException {
@@ -86,6 +89,7 @@ public class Global {
         config.setProperty("lazerDirectory", lazerDirectory.getAbsolutePath());
         config.setProperty("locale", locale.toString());
         config.setProperty("videoDownload", String.valueOf(videoDownload));
+        config.setProperty("gameExectable", gameExecutable.getAbsolutePath());
         config.store(out, "Lazer exporter config");
         out.close();
     }
@@ -147,6 +151,14 @@ public class Global {
         this.videoDownload = videoDownload;
     }
 
+    public File getGameExecutable() {
+        return gameExecutable;
+    }
+
+    public void setGameExecutable(File gameExecutable) {
+        this.gameExecutable = gameExecutable;
+    }
+
     private static class Defaults {
         private static final Locale locale = Locale.US;
         private static final boolean videoDownload = true;
@@ -159,8 +171,20 @@ public class Global {
             else if (os.contains("mac"))
                 defaultLazerDir = "";
             else
-                defaultLazerDir = "";
+                defaultLazerDir = System.getenv("user.home") + "/.local/share/osu";
             return defaultLazerDir;
+        }
+
+        private static String getDefaultGameExecutable() {
+            String os = System.getProperty("os.name").toLowerCase();
+            String defaultExectable;
+            if (os.contains("win"))
+                defaultExectable = System.getenv("localappdata").replaceAll("\\\\", "/") + "/osulazer/osu!.exe";
+            else if (os.contains("mac"))
+                defaultExectable = "/Applications/.app";
+            else
+                defaultExectable = "/usr/bin/osu-lazer";
+            return defaultExectable;
         }
     }
 }

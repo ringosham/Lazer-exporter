@@ -19,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -54,7 +55,7 @@ public class LoadTask extends Task<Void> {
             Global.INSTANCE.configFailsafe();
         }
         updateTitle(Localizer.getLocalizedText("checkInstall"));
-        if (!Global.INSTANCE.getLazerDirectory().exists()) {
+        if (!Global.INSTANCE.getLazerDirectory().exists() || !Global.INSTANCE.getGameExecutable().exists()) {
             selectInstallDirectory();
         } else if (!new File(Global.INSTANCE.getDatabaseAbsolutePath()).exists()) {
             selectInstallDirectory();
@@ -229,5 +230,23 @@ public class LoadTask extends Task<Void> {
                 }
             });
         }
+        Platform.runLater(() -> {
+            FileChooser chooser = new FileChooser();
+            chooser.setTitle(Localizer.getLocalizedText("selectGameExec"));
+            File game = null;
+            while (game == null)
+                game = chooser.showOpenDialog(null);
+            Global.INSTANCE.setGameExecutable(game);
+            try {
+                Global.INSTANCE.saveConfig();
+            } catch (IOException e) {
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle(Localizer.getLocalizedText("failedSaveConfig"));
+                error.setHeaderText(Localizer.getLocalizedText("failedSaveConfig"));
+                error.setContentText(Localizer.getLocalizedText("failedSaveConfigDesc"));
+                error.showAndWait();
+                e.printStackTrace();
+            }
+        });
     }
 }

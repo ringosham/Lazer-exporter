@@ -250,13 +250,9 @@ public class MainScreen {
 
     public void launchGame() {
         String os = System.getProperty("os.name").toLowerCase();
-        String gameExecutable;
-        if (os.contains("win"))
-            gameExecutable = System.getenv("localappdata").replaceAll("\\\\", "/") + "/osulazer/osu!.exe";
-        else if (os.contains("mac"))
-            gameExecutable = "";
-        else
-            gameExecutable = "";
+        String gameExecutable = Global.INSTANCE.getGameExecutable().getAbsolutePath();
+        if (os.contains("mac"))
+            gameExecutable = "open " + gameExecutable;
         try {
             Runtime.getRuntime().exec(gameExecutable);
         } catch (IOException e) {

@@ -8,7 +8,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="230.0" prefWidth="453.0"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="291.0" prefWidth="453.0"
             xmlns="http://javafx.com/javafx/8.0.121">
     <Label layoutX="14.0" layoutY="14.0" text="%gameDirectory" AnchorPane.leftAnchor="14.0"
            AnchorPane.topAnchor="14.0"/>
@@ -20,12 +20,17 @@
     <TextField fx:id="gameDirectory" layoutX="14.0" layoutY="37.0" minHeight="-Infinity" prefHeight="25.0"
                prefWidth="572.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0"
                AnchorPane.topAnchor="37.0"/>
-    <Button layoutX="521.0" layoutY="71.0" minHeight="-Infinity" mnemonicParsing="false" onAction="#changeGameDir"
-            prefHeight="25.0" prefWidth="65.0" text="%browse" AnchorPane.rightAnchor="14.0"
-            AnchorPane.topAnchor="71.0"/>
-    <Label layoutX="14.0" layoutY="96.0" text="%language" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="96.0"/>
-    <ComboBox fx:id="languageOption" layoutX="14.0" layoutY="113.0" prefWidth="150.0" AnchorPane.leftAnchor="14.0"
-              AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="113.0"/>
-    <CheckBox fx:id="videoDownload" layoutX="14.0" layoutY="154.0" mnemonicParsing="false" text="%videoDownload"
-              AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="154.0"/>
+    <Button layoutX="374.0" layoutY="71.0" mnemonicParsing="false" onAction="#changeGameDir" text="%browse"
+            AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="71.0"/>
+    <Label layoutX="13.0" layoutY="177.0" text="%language" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="177.0"/>
+    <ComboBox fx:id="languageOption" layoutX="14.0" layoutY="194.0" prefWidth="150.0" AnchorPane.leftAnchor="14.0"
+              AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="194.0"/>
+    <CheckBox fx:id="videoDownload" layoutX="16.0" layoutY="228.0" mnemonicParsing="false" text="%videoDownload"
+              AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="228.0"/>
+    <Label layoutX="14.0" layoutY="96.0" text="%selectGameExec" AnchorPane.leftAnchor="14.0"
+           AnchorPane.topAnchor="96.0"/>
+    <TextField fx:id="gameExecutable" layoutX="14.0" layoutY="113.0" AnchorPane.leftAnchor="14.0"
+               AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="113.0"/>
+    <Button layoutX="374.0" layoutY="146.0" mnemonicParsing="false" onAction="#changeGameExec" text="%browse"
+            AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="146.0"/>
 </AnchorPane>
