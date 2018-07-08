@@ -124,7 +124,7 @@ public class LoadTask extends Task<Void> {
             for (int i = 0; i < beatmapSetInfo.get(0).size(); i++) {
                 String beatmapID = beatmapSetInfo.get(0).get(i);
                 String onlineString = beatmapSetInfo.get(1).get(i);
-                if (onlineString == null) {
+                if (onlineString == null && !beatmapID.equals("1")) {
                     if (!nullIDFound) {
                         Platform.runLater(() -> {
                             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -137,7 +137,13 @@ public class LoadTask extends Task<Void> {
                     }
                     continue;
                 }
-                int onlineID = Integer.parseInt(onlineString);
+                int onlineID;
+                if (beatmapID.equals("1"))
+                    onlineID = -1;
+                else {
+                    assert onlineString != null;
+                    onlineID = Integer.parseInt(onlineString);
+                }
                 String metadataID = beatmapSetInfo.get(2).get(i);
                 HashMap<String, String> fileMap = new HashMap<>();
                 for (int j = 0; j < fileInfo.get(0).size(); j++)
