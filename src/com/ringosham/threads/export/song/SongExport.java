@@ -11,6 +11,7 @@ import com.ringosham.controller.MainScreen;
 import com.ringosham.locale.Localizer;
 import com.ringosham.objects.ExportSettings;
 import com.ringosham.objects.Song;
+import it.sauronsoftware.jave.FFMPEGLocator;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 
@@ -27,6 +28,7 @@ public class SongExport extends Task<Void> {
     static int failCount = 0;
     private MainScreen mainScreen;
     private ExportSettings settings;
+    static FFMPEGLocator locator;
 
     public SongExport(MainScreen mainScreen, ExportSettings settings) {
         this.mainScreen = mainScreen;
@@ -39,13 +41,13 @@ public class SongExport extends Task<Void> {
         Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("initializing")));
         //Extract executables from jar, based on arch and os
         String os = System.getProperty("os.name").toLowerCase();
-        String arch = System.getProperty("sun.arch.data.model");
+        //String arch = System.getProperty("sun.arch.data.model");
         String amd64Path = "/com/ringosham/bin/amd64/";
-        String ia32Path = "/com/ringosham/bin/ia32/";
+        //String ia32Path = "/com/ringosham/bin/ia32/";
         File ffmpeg = new File(System.getProperty("java.io.tmpdir"), "ffmpeg" + (os.contains("win") ? ".exe" : ""));
         InputStream ffmpegStream;
-        boolean isUnixFs;
         //These os checks are just there in case I want to include newer binaries.
+        /*boolean isUnixFs;
         if (os.contains("win")) {
             ffmpegStream = getClass().
                     getResourceAsStream(arch.equals("64") ? amd64Path : ia32Path + "windows/ffmpeg.exe");
@@ -59,26 +61,38 @@ public class SongExport extends Task<Void> {
             ffmpegStream = getClass().
                     getResourceAsStream(arch.equals("64") ? amd64Path : ia32Path + "linux/ffmpeg");
             isUnixFs = true;
-        }
-        try {
-            copyExecutables(ffmpeg, ffmpegStream, isUnixFs);
-        } catch (IOException e) {
-            failCount++;
-            Platform.runLater(() -> {
-                mainScreen.mainProgress.setProgress(0);
-                mainScreen.subProgress.setProgress(0);
-                mainScreen.statusText.setText(Localizer.getLocalizedText("taskFinishWithFailure")
-                        .replace("%FAILCOUNT%", Integer.toString(failCount)));
-                mainScreen.consoleArea.appendText(Localizer.getLocalizedText("failInitialize") + "\n");
-                mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
-                mainScreen.enableButtons();
-            });
-            Global.INSTANCE.inProgress = false;
-            e.printStackTrace();
-            return null;
+        }*/
+        boolean customExecutable = false;
+        if (os.contains("mac")) {
+            ffmpegStream = getClass().getResourceAsStream(amd64Path + "macos/ffmpeg");
+            try {
+                copyExecutables(ffmpeg, ffmpegStream, true);
+            } catch (IOException e) {
+                failCount++;
+                Platform.runLater(() -> {
+                    mainScreen.mainProgress.setProgress(0);
+                    mainScreen.subProgress.setProgress(0);
+                    mainScreen.statusText.setText(Localizer.getLocalizedText("taskFinishWithFailure")
+                            .replace("%FAILCOUNT%", Integer.toString(failCount)));
+                    mainScreen.consoleArea.appendText(Localizer.getLocalizedText("failInitialize") + "\n");
+                    mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
+                    mainScreen.enableButtons();
+                });
+                Global.INSTANCE.inProgress = false;
+                e.printStackTrace();
+                return null;
+            }
+            customExecutable = true;
+            locator = new FFMPEGLocator() {
+                @Override
+                protected String getFFMPEGExecutablePath() {
+                    String os = System.getProperty("os.name");
+                    return new File(System.getProperty("java.io.tmpdir"), "ffmpeg" + (os.contains("win") ? ".exe" : "")).getAbsolutePath();
+                }
+            };
         }
         Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("analysing")));
-        Analyser analyser = new Analyser(mainScreen);
+        Analyser analyser = new Analyser(mainScreen, customExecutable);
         songList = analyser.run();
         if (settings.isFilterPractice() || settings.isFilterDuplicates()) {
             Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("filtering")));
@@ -94,7 +108,7 @@ public class SongExport extends Task<Void> {
             int size = songList.size();
             for (Song song : songList) {
                 if (song.isOgg())
-                    new Converter(mainScreen, song).run();
+                    new Converter(mainScreen, song, customExecutable).run();
                 progress++;
                 int finalProgress = progress;
                 Platform.runLater(() -> mainScreen.mainProgress.setProgress((double) finalProgress / size));

@@ -24,9 +24,11 @@ import java.util.Map;
 
 class Analyser {
     private MainScreen mainScreen;
+    private boolean customExecutable;
 
-    Analyser(MainScreen mainScreen) {
+    Analyser(MainScreen mainScreen, boolean customExecutable) {
         this.mainScreen = mainScreen;
+        this.customExecutable = customExecutable;
     }
 
     List<Song> run() {
@@ -45,7 +47,11 @@ class Analyser {
             String audioFilename = beatmap.getFileMap().get(beatmap.getMetadata().getAudioFilename());
             File songFile = getFileFromHash(audioFilename);
             try {
-                Encoder encoder = new Encoder();
+                Encoder encoder;
+                if (customExecutable)
+                    encoder = new Encoder(SongExport.locator);
+                else
+                    encoder = new Encoder();
                 MultimediaInfo info = encoder.getInfo(songFile);
                 long duration = info.getDuration() / 1000;
                 int bitrate = info.getAudio().getBitRate();

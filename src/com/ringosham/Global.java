@@ -169,7 +169,7 @@ public class Global {
             if (os.contains("win"))
                 defaultLazerDir = System.getenv("AppData").replaceAll("\\\\", "/") + "/osu";
             else if (os.contains("mac"))
-                defaultLazerDir = "";
+                defaultLazerDir = System.getenv("user.home") + "/osu";
             else
                 defaultLazerDir = System.getenv("user.home") + "/.local/share/osu";
             return defaultLazerDir;
@@ -177,14 +177,16 @@ public class Global {
 
         private static String getDefaultGameExecutable() {
             String os = System.getProperty("os.name").toLowerCase();
-            String defaultExectable;
+            String defaultExecutable;
             if (os.contains("win"))
-                defaultExectable = System.getenv("localappdata").replaceAll("\\\\", "/") + "/osulazer/osu!.exe";
+                defaultExecutable = System.getenv("localappdata").replaceAll("\\\\", "/") + "/osulazer/osu!.exe";
             else if (os.contains("mac"))
-                defaultExectable = "/Applications/.app";
+                //Lazer will replace the unofficial stable anyway.
+                defaultExecutable = "/Applications/osu!.app";
             else
-                defaultExectable = "/usr/bin/osu-lazer";
-            return defaultExectable;
+                //Based on Arch Linux AUR
+                defaultExecutable = "/usr/bin/osu-lazer";
+            return defaultExecutable;
         }
     }
 }

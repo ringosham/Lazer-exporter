@@ -252,6 +252,7 @@ public class MainScreen {
         String os = System.getProperty("os.name").toLowerCase();
         String gameExecutable = Global.INSTANCE.getGameExecutable().getAbsolutePath();
         if (os.contains("mac"))
+            //This is how you open a mac container.
             gameExecutable = "open " + gameExecutable;
         try {
             Runtime.getRuntime().exec(gameExecutable);
