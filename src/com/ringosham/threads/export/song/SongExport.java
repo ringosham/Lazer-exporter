@@ -159,8 +159,7 @@ public class SongExport extends Task<Void> {
                 .forEach(File::delete);
         String os = System.getProperty("os.name").toLowerCase();
         File ffmpeg = new File(System.getProperty("java.io.tmpdir"), "ffmpeg" + (os.contains("win") ? ".exe" : ""));
-        File ffprobe = new File(System.getProperty("java.io.tmpdir"), "ffprobe" + (os.contains("win") ? ".exe" : ""));
-        Files.delete(ffmpeg.toPath());
-        Files.delete(ffprobe.toPath());
+        if (ffmpeg.exists())
+            Files.delete(ffmpeg.toPath());
     }
 }
