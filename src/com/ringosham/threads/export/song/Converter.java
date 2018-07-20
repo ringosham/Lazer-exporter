@@ -12,11 +12,8 @@ import com.ringosham.locale.Localizer;
 import com.ringosham.objects.Beatmap;
 import com.ringosham.objects.Metadata;
 import com.ringosham.objects.Song;
+import it.sauronsoftware.jave.*;
 import javafx.application.Platform;
-import net.bramp.ffmpeg.FFmpeg;
-import net.bramp.ffmpeg.FFmpegExecutor;
-import net.bramp.ffmpeg.builder.FFmpegBuilder;
-import net.bramp.ffmpeg.job.FFmpegJob;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,28 +51,34 @@ class Converter {
             }
         }
         File output = new File(Global.INSTANCE.getConvertDir().getAbsolutePath(), UUID.randomUUID().toString() + ".mp3");
-        String os = System.getProperty("os.name").toLowerCase();
-        File ffmpegExecutable = new File(System.getProperty("java.io.tmpdir"), "ffmpeg" + (os.contains("win") ? ".exe" : ""));
+        boolean isMac = System.getProperty("os.name").toLowerCase().contains("mac");
+        Encoder encoder = new Encoder();
+        AudioAttributes audioInfo = new AudioAttributes();
+        audioInfo.setBitRate(song.getBitrate());
+        EncodingAttributes attributes = new EncodingAttributes();
+        attributes.setAudioAttributes(audioInfo);
+        attributes.setFormat("mp3");
         try {
-            FFmpeg ffmpeg = new FFmpeg(ffmpegExecutable.getAbsolutePath());
-            FFmpegBuilder builder = new FFmpegBuilder();
-            builder.setInput(song.getFileLocation().getAbsolutePath())
-                    .overrideOutputFiles(true)
-                    .addOutput(output.getAbsolutePath())
-                    .done();
-            FFmpegExecutor executor = new FFmpegExecutor(ffmpeg);
-            FFmpegJob job = executor.createJob(builder, progress -> {
-                double progressValue = (double) progress.out_time_ns / song.getLengthInSeconds();
-                Platform.runLater(() -> mainScreen.subProgress.setProgress(progressValue));
-                if (progressValue == 1)
-                    taskFinish = true;
+            encoder.encode(song.getFileLocation(), output, attributes, new EncoderProgressListener() {
+                @Override
+                public void sourceInfo(MultimediaInfo multimediaInfo) {
+                }
+
+                @Override
+                public void progress(int i) {
+                    if (isMac)
+                        Platform.runLater(() -> mainScreen.subProgress.setProgress(-1));
+                    else
+                        Platform.runLater(() -> mainScreen.subProgress.setProgress((double) i / 1000));
+                }
+
+                @Override
+                public void message(String s) {
+                }
             });
-            job.run();
-            while (!taskFinish)
-                Thread.sleep(1);
             song.setFileLocation(output);
             song.setOgg(false);
-        } catch (Exception e) {
+        } catch (EncoderException e) {
             Platform.runLater(() -> {
                 String error = Localizer.getLocalizedText("errorConvert").replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist());
                 mainScreen.consoleArea.appendText(error + "\n");

@@ -43,31 +43,25 @@ public class SongExport extends Task<Void> {
         String amd64Path = "/com/ringosham/bin/amd64/";
         String ia32Path = "/com/ringosham/bin/ia32/";
         File ffmpeg = new File(System.getProperty("java.io.tmpdir"), "ffmpeg" + (os.contains("win") ? ".exe" : ""));
-        File ffprobe = new File(System.getProperty("java.io.tmpdir"), "ffprobe" + (os.contains("win") ? ".exe" : ""));
         InputStream ffmpegStream;
-        InputStream ffprobeStream;
         boolean isUnixFs;
+        //These os checks are just there in case I want to include newer binaries.
         if (os.contains("win")) {
             ffmpegStream = getClass().
                     getResourceAsStream(arch.equals("64") ? amd64Path : ia32Path + "windows/ffmpeg.exe");
-            ffprobeStream = getClass().
-                    getResourceAsStream(arch.equals("64") ? amd64Path : ia32Path + "windows/ffprobe.exe");
             isUnixFs = false;
         } else if (os.contains("mac")) {
+            //macOS and Mac OS X have been 64 bit for a long time as far as I know. So I don't think a 32 bit version is needed.
             ffmpegStream = getClass().
                     getResourceAsStream(amd64Path + "macos/ffmpeg");
-            ffprobeStream = getClass().
-                    getResourceAsStream(amd64Path + "macos/ffprobe");
             isUnixFs = true;
         } else {
             ffmpegStream = getClass().
                     getResourceAsStream(arch.equals("64") ? amd64Path : ia32Path + "linux/ffmpeg");
-            ffprobeStream = getClass().
-                    getResourceAsStream(arch.equals("64") ? amd64Path : ia32Path + "linux/ffprobe");
             isUnixFs = true;
         }
         try {
-            copyExecutables(ffmpeg, ffprobe, ffmpegStream, ffprobeStream, isUnixFs);
+            copyExecutables(ffmpeg, ffmpegStream, isUnixFs);
         } catch (IOException e) {
             failCount++;
             Platform.runLater(() -> {
@@ -134,13 +128,10 @@ public class SongExport extends Task<Void> {
         return null;
     }
 
-    private void copyExecutables(File ffmpeg, File ffprobe, InputStream ffmpegStream, InputStream ffprobeStream, boolean isUnixFs) throws IOException {
+    private void copyExecutables(File ffmpeg, InputStream ffmpegStream, boolean isUnixFs) throws IOException {
         Files.copy(ffmpegStream, ffmpeg.toPath());
-        Files.copy(ffprobeStream, ffprobe.toPath());
-        if (isUnixFs) {
+        if (isUnixFs)
             Files.setPosixFilePermissions(ffmpeg.toPath(), PosixFilePermissions.fromString("rwxrwxr-x"));
-            Files.setPosixFilePermissions(ffprobe.toPath(), PosixFilePermissions.fromString("rwxrwxr-x"));
-        }
     }
 
     //Clean up

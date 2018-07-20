@@ -44,8 +44,9 @@ Do not use this program for distributing songs illegally. The creator of this pr
 The FFmpeg used for exporting songs supports both 32 bit and 64 bit with the following requirements.
 
 * Windows 7 and above
-* macOS 10.7 and above
-* Any Linux distributions (I don't think anyone would be running an ancient kernel anyway)
+* macOS 10.6 and above
+* Any Linux distributions
+  * The binary used is 32 bit. Please make sure you have the required libraries to enable 32 bit compatibility
 
 ## Building
 
@@ -63,7 +64,7 @@ All assets used, except the GitHub Mark logo, are under CC-BY-NC 4.0
 
 ## Dependencies
 
-[ffmpeg-cli-wrapper](https://github.com/bramp/ffmpeg-cli-wrapper) - Java wrapper around the FFmpeg command line tool - Under BSD-2-Clause license
+[JAVE](https://sauronsoftware.it/index.php) - Java FFmpeg wrapper - Under GNU GPL v3 license
 
 [FFmpeg project](https://ffmpeg.org) - Cross-platform audio and video transcoder - Under GNU GPL v3 license
 
