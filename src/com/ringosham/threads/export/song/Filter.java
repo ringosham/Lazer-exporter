@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class Filter {
+class Filter {
     private final List<Song> songList;
     private final boolean filterPractice;
     private final boolean filterDuplicates;

@@ -7,12 +7,12 @@
 package com.ringosham.objects;
 
 public class Metadata {
-    private String artist;
-    private String title;
-    private String unicodeArtist;
-    private String unicodeTitle;
-    private String audioFilename;
-    private String backgroundFilename;
+    private final String artist;
+    private final String title;
+    private final String unicodeArtist;
+    private final String unicodeTitle;
+    private final String audioFilename;
+    private final String backgroundFilename;
 
     public Metadata(String artist, String title, String unicodeArtist, String unicodeTitle, String audioFilename, String backgroundFilename) {
         this.artist = artist;

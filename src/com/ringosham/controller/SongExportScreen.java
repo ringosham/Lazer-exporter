@@ -42,8 +42,8 @@ public class SongExportScreen {
     @FXML
     private CheckBox romajiNaming;
 
-    private MainScreen mainScreen;
-    private Stage currentStage;
+    private final MainScreen mainScreen;
+    private final Stage currentStage;
 
     SongExportScreen(MainScreen mainScreen, Stage exportStage) {
         this.mainScreen = mainScreen;

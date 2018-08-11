@@ -9,13 +9,13 @@ package com.ringosham.objects;
 import java.io.File;
 
 public class Song {
-    private int beatmapID;
+    private final int beatmapID;
     private boolean isOgg;
     private boolean isFullVersion;
     private File outputLocation;
     private File fileLocation;
-    private long lengthInSeconds;
-    private int bitrate;
+    private final long lengthInSeconds;
+    private final int bitrate;
 
     public Song(File fileLocation, int beatmapID, boolean isOgg, long lengthInSeconds, int bitrate) {
         this.fileLocation = fileLocation;

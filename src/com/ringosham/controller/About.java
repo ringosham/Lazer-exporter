@@ -11,14 +11,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
 
 public class About {
-    private HostServices hostServices;
+    private final HostServices hostServices;
 
     @FXML
     private Hyperlink license;
     @FXML
     private Hyperlink github;
 
-    public About(HostServices hostServices) {
+    About(HostServices hostServices) {
         this.hostServices = hostServices;
     }
 

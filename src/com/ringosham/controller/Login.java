@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 public class Login {
@@ -38,6 +39,10 @@ public class Login {
             password.setText(Global.INSTANCE.getPassword());
             startLoginTask();
         }
+        password.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                onLogin();
+        });
     }
 
     public void onLogin() {

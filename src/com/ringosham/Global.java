@@ -7,6 +7,8 @@
 package com.ringosham;
 
 import com.ringosham.objects.Beatmap;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
 import java.io.File;
@@ -20,11 +22,11 @@ import java.util.Locale;
 import java.util.Properties;
 
 public class Global {
-    public static Global INSTANCE = new Global();
+    public static final Global INSTANCE = new Global();
     private File configFile;
-    public List<Beatmap> beatmapList = new ArrayList<>();
+    public final List<Beatmap> beatmapList = new ArrayList<>();
     public boolean inProgress;
-    private Properties config = new Properties();
+    private final Properties config = new Properties();
 
     private File lazerDirectory;
     private Locale locale;
@@ -188,5 +190,24 @@ public class Global {
                 defaultExecutable = "/usr/bin/osu-lazer";
             return defaultExecutable;
         }
+    }
+
+    public void showAlert(Alert.AlertType alertType, String title, String content) {
+        showAlert(alertType, title, title, content);
+    }
+
+    public void showAlert(Alert.AlertType alertType, String title, String headerText, String content) {
+        if (!Platform.isFxApplicationThread())
+            Platform.runLater(() -> invokeAlertBox(alertType, title, headerText, content));
+        else
+            invokeAlertBox(alertType, title, headerText, content);
+    }
+
+    private void invokeAlertBox(Alert.AlertType alertType, String title, String headerText, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

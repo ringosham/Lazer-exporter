@@ -61,13 +61,13 @@ public class MainScreen {
     private Button downloadMaps;
 
     //Stages
-    private Stage settingsStage = new Stage();
-    private Stage aboutStage = new Stage();
-    private Stage exportStage = new Stage();
-    private Stage loginStage = new Stage();
+    private final Stage settingsStage = new Stage();
+    private final Stage aboutStage = new Stage();
+    private final Stage exportStage = new Stage();
+    private final Stage loginStage = new Stage();
 
     private boolean shownDisclaimer = false;
-    private HostServices hostServices;
+    private final HostServices hostServices;
 
     public MainScreen(HostServices hostServices) {
         this.hostServices = hostServices;
@@ -152,6 +152,18 @@ public class MainScreen {
     }
 
     public void downloadMaps() throws IOException {
+        boolean selectedBeatmaps = false;
+        for (BeatmapView beatmap : beatmapList.getItems()) {
+            if (beatmap.getQueueProperty().get() && !beatmap.getInstalledProperty().get()) {
+                selectedBeatmaps = true;
+                break;
+            }
+        }
+        if (!selectedBeatmaps) {
+            Global.INSTANCE.showAlert(Alert.AlertType.INFORMATION, Localizer.getLocalizedText("noMapSelect"),
+                    Localizer.getLocalizedText("noMapSelectDesc"));
+            return;
+        }
         unbindNodes();
         loadStage(loginStage, Localizer.getLocalizedText("loginTitle"), "/com/ringosham/fxml/Login.fxml", new Login(this, loginStage));
     }
@@ -164,11 +176,8 @@ public class MainScreen {
     }
 
     private void showDisclaimer() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(Localizer.getLocalizedText("disclaimer"));
-        alert.setHeaderText(Localizer.getLocalizedText("disclaimerHead"));
-        alert.setContentText(Localizer.getLocalizedText("disclaimerDesc"));
-        alert.showAndWait();
+        Global.INSTANCE.showAlert(Alert.AlertType.INFORMATION, Localizer.getLocalizedText("disclaimer"),
+                Localizer.getLocalizedText("disclaimerHead"), Localizer.getLocalizedText("disclaimerDesc"));
         shownDisclaimer = true;
     }
 
@@ -257,10 +266,8 @@ public class MainScreen {
         try {
             Runtime.getRuntime().exec(gameExecutable);
         } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Cannot launch process");
-            alert.setContentText("Cannot launch game. This normally should not happen. If you believe this is a bug, please report it to GitHub.");
-            alert.showAndWait();
+            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("failLaunchGame"),
+                    Localizer.getLocalizedText("failLaunchGameDesc"));
             e.printStackTrace();
         }
     }

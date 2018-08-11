@@ -86,7 +86,7 @@
         </font>
     </TextArea>
     <HBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="484.0" prefHeight="25.0" prefWidth="164.0" spacing="10.0"
-          AnchorPane.bottomAnchor="172.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="484.0">
+          AnchorPane.bottomAnchor="172.0" AnchorPane.rightAnchor="14.0">
         <Button mnemonicParsing="false" onAction="#deselectAll" text="%deselectAll"/>
         <Button mnemonicParsing="false" onAction="#selectAll" text="%selectAll"/>
     </HBox>

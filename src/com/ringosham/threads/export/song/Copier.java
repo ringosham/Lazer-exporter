@@ -24,9 +24,9 @@ class Copier {
     private final boolean overwrite;
     private final boolean romajiNaming;
     private final boolean renameAsBeatmap;
-    private MainScreen mainScreen;
-    private List<Song> songList;
-    private File exportDirectory;
+    private final MainScreen mainScreen;
+    private final List<Song> songList;
+    private final File exportDirectory;
 
     Copier(MainScreen mainScreen, List<Song> songList, boolean overwrite, boolean romajiNaming, boolean renameAsBeatmap, File exportDirectory) {
         this.mainScreen = mainScreen;

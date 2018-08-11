@@ -22,8 +22,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class ListExport extends Task<Void> {
-    private MainScreen mainScreen;
-    private File exportFile;
+    private final MainScreen mainScreen;
+    private final File exportFile;
 
     public ListExport(MainScreen mainScreen, File exportFile) {
         this.mainScreen = mainScreen;
@@ -69,7 +69,7 @@ public class ListExport extends Task<Void> {
         }
         updateProgress(0, 0);
         updateMessage(Localizer.getLocalizedText("taskSuccess"));
-        Platform.runLater(() -> mainScreen.enableButtons());
+        Platform.runLater(mainScreen::enableButtons);
         Global.INSTANCE.inProgress = false;
         return null;
     }

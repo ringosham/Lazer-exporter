@@ -21,8 +21,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class BeatmapExport extends Task<Void> {
-    private MainScreen mainScreen;
-    private File exportDir;
+    private final MainScreen mainScreen;
+    private final File exportDir;
     private int failCount = 0;
 
     public BeatmapExport(MainScreen mainScreen, File exportDir) {

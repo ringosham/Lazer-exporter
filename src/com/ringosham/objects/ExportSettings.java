@@ -9,16 +9,16 @@ package com.ringosham.objects;
 import java.io.File;
 
 public class ExportSettings {
-    private boolean convertOgg;
-    private boolean filterPractice;
-    private boolean overwrite;
-    private boolean applyTags;
-    private boolean overrideTags;
-    private boolean renameAsBeatmap;
-    private boolean filterDuplicates;
-    private boolean romajiNaming;
-    private int filterSeconds;
-    private File exportDirectory;
+    private final boolean convertOgg;
+    private final boolean filterPractice;
+    private final boolean overwrite;
+    private final boolean applyTags;
+    private final boolean overrideTags;
+    private final boolean renameAsBeatmap;
+    private final boolean filterDuplicates;
+    private final boolean romajiNaming;
+    private final int filterSeconds;
+    private final File exportDirectory;
 
 
     public ExportSettings(boolean convertOgg, boolean filterPractice, boolean overwrite, boolean applyTags, boolean overrideTags, boolean renameAsBeatmap, boolean filterDuplicates, boolean romajiNaming, int filterSeconds, File exportDirectory) {

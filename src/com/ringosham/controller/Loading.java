@@ -12,8 +12,8 @@ import javafx.stage.Stage;
 
 public class Loading {
 
-    private Stage stage;
-    private HostServices hostServices;
+    private final Stage stage;
+    private final HostServices hostServices;
 
     public Loading(Stage stage, HostServices hostServices) {
         this.stage = stage;

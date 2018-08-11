@@ -26,8 +26,8 @@ import java.util.List;
 
 public class SongExport extends Task<Void> {
     static int failCount = 0;
-    private MainScreen mainScreen;
-    private ExportSettings settings;
+    private final MainScreen mainScreen;
+    private final ExportSettings settings;
     static FFMPEGLocator locator;
 
     public SongExport(MainScreen mainScreen, ExportSettings settings) {

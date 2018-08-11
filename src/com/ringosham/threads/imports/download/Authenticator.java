@@ -32,7 +32,7 @@ class Authenticator {
     private final MainScreen mainScreen;
     private final String email;
     private final String password;
-    private Login loginScreen;
+    private final Login loginScreen;
 
     Authenticator(MainScreen mainScreen, Login loginScreen, String email, String password) {
         this.mainScreen = mainScreen;
@@ -60,13 +60,11 @@ class Authenticator {
             try {
                 BeatmapImport.getUnauthCookies();
             } catch (IOException e) {
+                Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("serverConnectionFail"),
+                        Localizer.getLocalizedText("serverConnectionFailDesc"));
                 Platform.runLater(() -> {
                     mainScreen.consoleArea.appendText(Localizer.getLocalizedText("serverConnectionFail") + "\n");
                     mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle(Localizer.getLocalizedText("serverConnectionFail"));
-                    alert.setContentText(Localizer.getLocalizedText("serverConnectionFailDesc"));
-                    alert.show();
                     loginScreen.enableElements();
                 });
                 e.printStackTrace();
@@ -123,14 +121,9 @@ class Authenticator {
                     errorMessage = matcher.group(1);
                 else
                     errorMessage = errorString.toString();
-                Platform.runLater(() -> {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle(Localizer.getLocalizedText("loginFail"));
-                    alert.setHeaderText(Localizer.getLocalizedText("loginFailHead"));
-                    alert.setContentText(errorMessage);
-                    alert.show();
-                    loginScreen.enableElements();
-                });
+                Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("loginFail"),
+                        Localizer.getLocalizedText("loginFailHead"), errorMessage);
+                Platform.runLater(loginScreen::enableElements);
                 Global.INSTANCE.clearLoginDetails();
                 return false;
             } else {
@@ -141,14 +134,11 @@ class Authenticator {
                     BeatmapImport.getCookieManager().getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
             }
         } catch (IOException e) {
+            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("loginException"),
+                    Localizer.getLocalizedText("loginExceptionDesc"));
             Platform.runLater(() -> {
                 mainScreen.consoleArea.appendText(Localizer.getLocalizedText("loginException") + "\n");
                 mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle(Localizer.getLocalizedText("loginException"));
-                alert.setHeaderText(Localizer.getLocalizedText("loginException"));
-                alert.setContentText(Localizer.getLocalizedText("loginExceptionDesc"));
-                alert.show();
                 loginScreen.enableElements();
             });
             e.printStackTrace();
