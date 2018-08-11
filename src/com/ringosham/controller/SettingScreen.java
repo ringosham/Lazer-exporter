@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
@@ -32,6 +33,8 @@ public class SettingScreen {
     private ComboBox<Language> languageOption;
     @FXML
     private CheckBox videoDownload;
+    @FXML
+    private TextField gameExecutable;
     private boolean isLanguageChanged = false;
     private final MainScreen mainScreen;
 
@@ -75,6 +78,7 @@ public class SettingScreen {
         languageOption.getSelectionModel().select(selectedIndex);
         languageOption.valueProperty().addListener((ObsValue, oldValue, newValue) -> isLanguageChanged = true);
         videoDownload.setSelected(Global.INSTANCE.isVideoDownload());
+        gameExecutable.setText(Global.INSTANCE.getGameExecutable().getAbsolutePath());
     }
 
     private int getIndexFromLocale(Locale locale) {
@@ -96,6 +100,7 @@ public class SettingScreen {
         Global.INSTANCE.setLazerDirectory(new File(gameDirectory.getText()));
         Global.INSTANCE.setLocale(languageOption.getSelectionModel().getSelectedItem().getLocale());
         Global.INSTANCE.setVideoDownload(videoDownload.isSelected());
+        Global.INSTANCE.setGameExecutable(new File(gameExecutable.getText()));
         try {
             Global.INSTANCE.saveConfig();
         } catch (IOException e) {
@@ -126,6 +131,14 @@ public class SettingScreen {
                     Localizer.getLocalizedText("dirInvalidDesc"));
             return false;
         }
+    }
+
+    public void changeGameExec() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle(Localizer.getLocalizedText("selectGameExec"));
+        File game = chooser.showOpenDialog(null);
+        if (game != null)
+            gameExecutable.setText(game.getAbsolutePath());
     }
 
     private class Language {

@@ -23,10 +23,12 @@ import java.util.UUID;
 class Converter {
     private final MainScreen mainScreen;
     private final Song song;
+    private boolean customExecutable;
 
-    Converter(MainScreen mainScreen, Song song) {
+    Converter(MainScreen mainScreen, Song song, boolean customExecutable) {
         this.mainScreen = mainScreen;
         this.song = song;
+        this.customExecutable = customExecutable;
     }
 
     void run() {
@@ -49,7 +51,12 @@ class Converter {
             }
         }
         File output = new File(Global.INSTANCE.getConvertDir().getAbsolutePath(), UUID.randomUUID().toString() + ".mp3");
-        Encoder encoder = new Encoder();
+        boolean isMac = System.getProperty("os.name").toLowerCase().contains("mac");
+        Encoder encoder;
+        if (customExecutable)
+            encoder = new Encoder(SongExport.locator);
+        else
+            encoder = new Encoder();
         AudioAttributes audioInfo = new AudioAttributes();
         audioInfo.setBitRate(song.getBitrate());
         EncodingAttributes attributes = new EncodingAttributes();
@@ -63,7 +70,10 @@ class Converter {
 
                 @Override
                 public void progress(int i) {
-                    Platform.runLater(() -> mainScreen.subProgress.setProgress((double) i / 1000));
+                    if (isMac)
+                        Platform.runLater(() -> mainScreen.subProgress.setProgress(-1));
+                    else
+                        Platform.runLater(() -> mainScreen.subProgress.setProgress((double) i / 1000));
                 }
 
                 @Override

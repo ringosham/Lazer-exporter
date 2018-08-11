@@ -19,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -50,7 +51,7 @@ public class LoadTask extends Task<Void> {
             Global.INSTANCE.configFailsafe();
         }
         updateTitle(Localizer.getLocalizedText("checkInstall"));
-        if (!Global.INSTANCE.getLazerDirectory().exists()) {
+        if (!Global.INSTANCE.getLazerDirectory().exists() || !Global.INSTANCE.getGameExecutable().exists()) {
             selectInstallDirectory();
         } else if (!new File(Global.INSTANCE.getDatabaseAbsolutePath()).exists()) {
             selectInstallDirectory();
@@ -119,7 +120,7 @@ public class LoadTask extends Task<Void> {
             for (int i = 0; i < beatmapSetInfo.get(0).size(); i++) {
                 String beatmapID = beatmapSetInfo.get(0).get(i);
                 String onlineString = beatmapSetInfo.get(1).get(i);
-                if (onlineString == null) {
+                if (onlineString == null && !beatmapID.equals("1")) {
                     if (!nullIDFound) {
                         Global.INSTANCE.showAlert(Alert.AlertType.WARNING, Localizer.getLocalizedText("nullID"),
                                 Localizer.getLocalizedText("nullIDHead"), Localizer.getLocalizedText("nullIDDesc"));
@@ -127,7 +128,13 @@ public class LoadTask extends Task<Void> {
                     }
                     continue;
                 }
-                int onlineID = Integer.parseInt(onlineString);
+                int onlineID;
+                if (beatmapID.equals("1"))
+                    onlineID = -1;
+                else {
+                    assert onlineString != null;
+                    onlineID = Integer.parseInt(onlineString);
+                }
                 String metadataID = beatmapSetInfo.get(2).get(i);
                 HashMap<String, String> fileMap = new HashMap<>();
                 for (int j = 0; j < fileInfo.get(0).size(); j++)
@@ -204,5 +211,23 @@ public class LoadTask extends Task<Void> {
                             Localizer.getLocalizedText("dirInvalidDesc"));
             });
         }
+        Platform.runLater(() -> {
+            FileChooser chooser = new FileChooser();
+            chooser.setTitle(Localizer.getLocalizedText("selectGameExec"));
+            File game = null;
+            while (game == null)
+                game = chooser.showOpenDialog(null);
+            Global.INSTANCE.setGameExecutable(game);
+            try {
+                Global.INSTANCE.saveConfig();
+            } catch (IOException e) {
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle(Localizer.getLocalizedText("failedSaveConfig"));
+                error.setHeaderText(Localizer.getLocalizedText("failedSaveConfig"));
+                error.setContentText(Localizer.getLocalizedText("failedSaveConfigDesc"));
+                error.showAndWait();
+                e.printStackTrace();
+            }
+        });
     }
 }

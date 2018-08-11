@@ -8,7 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.xerial:sqlite-jdbc:3.23.1" level="project" />
-    <orderEntry type="library" name="jave-1.0.2" level="project" />
     <orderEntry type="library" name="com.mpatric:mp3agic:0.9.1" level="project" />
+    <orderEntry type="library" name="jave-1.0.2" level="project" />
   </component>
 </module>

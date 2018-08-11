@@ -20,7 +20,7 @@
     </Label>
     <Label layoutX="75.0" layoutY="177.0" text="Copyright © 2018 - Ringosham" AnchorPane.leftAnchor="75.0"
            AnchorPane.topAnchor="177.0"/>
-    <Label layoutX="153.0" layoutY="160.0" text="1.0" AnchorPane.topAnchor="160.0"/>
+    <Label layoutX="153.0" layoutY="160.0" text="1.2" AnchorPane.topAnchor="160.0"/>
     <HBox layoutX="86.0" layoutY="255.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="150.0"
           AnchorPane.bottomAnchor="14.0">
         <Label minHeight="-Infinity" prefHeight="23.0" prefWidth="84.0" text="Licensed under"/>

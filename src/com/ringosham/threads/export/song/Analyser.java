@@ -24,18 +24,15 @@ import java.util.Map;
 
 class Analyser {
     private final MainScreen mainScreen;
+    private boolean customExecutable;
 
-    Analyser(MainScreen mainScreen) {
+    Analyser(MainScreen mainScreen, boolean customExecutable) {
         this.mainScreen = mainScreen;
+        this.customExecutable = customExecutable;
     }
 
     List<Song> run() {
         //Using a HashMap filters files that are exactly the same (Hash matches)
-        /*
-            FFmpeg ports (x86, x86_64) GPL v3
-            (macOS, Windows (Unoffical) [https://ffmpeg.zeranoe.com/builds])
-            (Linux (Official) [https://johnvansickle.com/ffmpeg/])
-         */
         /*
             Since the game hashes every file that is imported. We can just use the hashes stored in the database instead of
             hashing them ourselves.
@@ -49,32 +46,30 @@ class Analyser {
         for (Beatmap beatmap : Global.INSTANCE.beatmapList) {
             String audioFilename = beatmap.getFileMap().get(beatmap.getMetadata().getAudioFilename());
             File songFile = getFileFromHash(audioFilename);
-            if (!System.getProperty("os.name").toLowerCase().contains("mac")) {
-                //Determine song length using FFmpeg
-                try {
-                    Encoder encoder = new Encoder();
-                    MultimediaInfo info = encoder.getInfo(songFile);
-                    long duration = info.getDuration() / 1000;
-                    int bitrate = info.getAudio().getBitRate();
-                    //Beatmap songs can only be MP3s or Vorbis ogg.
-                    songMap.put(beatmap.getFileMap().get(beatmap.getMetadata().getAudioFilename()),
-                            new Song(songFile, beatmap.getBeatmapId(),
-                                    beatmap.getMetadata().getAudioFilename().toLowerCase().endsWith(".ogg"), duration, bitrate));
-                } catch (EncoderException e) {
-                    SongExport.failCount++;
-                    Platform.runLater(() -> {
-                        mainScreen.consoleArea.appendText(Localizer.getLocalizedText("errorSong").replace("%BEATMAP%",
-                                beatmap.getBeatmapFullname()));
-                        mainScreen.consoleArea.appendText("\n");
-                        mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage());
-                        mainScreen.consoleArea.appendText("\n");
-                    });
-                    e.printStackTrace();
-                }
-            } else
+            try {
+                Encoder encoder;
+                if (customExecutable)
+                    encoder = new Encoder(SongExport.locator);
+                else
+                    encoder = new Encoder();
+                MultimediaInfo info = encoder.getInfo(songFile);
+                long duration = info.getDuration() / 1000;
+                int bitrate = info.getAudio().getBitRate();
+                //Beatmap songs can only be MP3s or Vorbis ogg.
                 songMap.put(beatmap.getFileMap().get(beatmap.getMetadata().getAudioFilename()),
                         new Song(songFile, beatmap.getBeatmapId(),
-                                beatmap.getMetadata().getAudioFilename().toLowerCase().endsWith("ogg"), -1, -1));
+                                beatmap.getMetadata().getAudioFilename().toLowerCase().endsWith(".ogg"), duration, bitrate));
+            } catch (EncoderException e) {
+                SongExport.failCount++;
+                Platform.runLater(() -> {
+                    mainScreen.consoleArea.appendText(Localizer.getLocalizedText("errorSong").replace("%BEATMAP%",
+                            beatmap.getBeatmapFullname()));
+                    mainScreen.consoleArea.appendText("\n");
+                    mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage());
+                    mainScreen.consoleArea.appendText("\n");
+                });
+                e.printStackTrace();
+            }
             progress++;
             int finalProgress = progress;
             Platform.runLater(() -> mainScreen.mainProgress.setProgress((double) finalProgress / Global.INSTANCE.beatmapList.size()));
