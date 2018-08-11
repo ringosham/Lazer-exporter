@@ -221,11 +221,8 @@ public class LoadTask extends Task<Void> {
             try {
                 Global.INSTANCE.saveConfig();
             } catch (IOException e) {
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setTitle(Localizer.getLocalizedText("failedSaveConfig"));
-                error.setHeaderText(Localizer.getLocalizedText("failedSaveConfig"));
-                error.setContentText(Localizer.getLocalizedText("failedSaveConfigDesc"));
-                error.showAndWait();
+                Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("failedSaveConfig"),
+                        Localizer.getLocalizedText("failedSaveConfig"), Localizer.getLocalizedText("failedSaveConfigDesc"));
                 e.printStackTrace();
             }
         });

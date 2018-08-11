@@ -23,7 +23,7 @@ import java.util.UUID;
 class Converter {
     private final MainScreen mainScreen;
     private final Song song;
-    private boolean customExecutable;
+    private final boolean customExecutable;
 
     Converter(MainScreen mainScreen, Song song, boolean customExecutable) {
         this.mainScreen = mainScreen;

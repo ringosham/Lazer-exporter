@@ -24,7 +24,7 @@ import java.util.Map;
 
 class Analyser {
     private final MainScreen mainScreen;
-    private boolean customExecutable;
+    private final boolean customExecutable;
 
     Analyser(MainScreen mainScreen, boolean customExecutable) {
         this.mainScreen = mainScreen;
