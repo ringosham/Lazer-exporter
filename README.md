@@ -50,7 +50,7 @@ The FFmpeg used for exporting songs supports both 32 bit and 64 bit with the fol
 
 ## Building
 
-Just use the standard IntelliJ build tools.
+The artifact can be built through standard IntelliJ tools. Additional libraries that are not in maven are stored in /lib. Please check the [README.md in /lib](https://github.com/ringosham/Lazer-exporter/tree/master/lib) for more information.
 
 ## Downloads
 
