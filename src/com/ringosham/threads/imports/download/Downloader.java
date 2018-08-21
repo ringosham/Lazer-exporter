@@ -101,7 +101,7 @@ class Downloader {
                 String line;
                 while ((line = reader.readLine()) != null)
                     errorString.append(line);
-                if (errorString.toString().equals("slow down")) {
+                if (errorString.toString().contains("slow down")) {
                     int timeout = 30;
                     while (timeout >= 0) {
                         int finalTimeout = timeout;
@@ -116,7 +116,8 @@ class Downloader {
                     in.close();
                     out.close();
                     return false;
-                }
+                } else
+                    throw new IOException(errorString.toString());
             } else {
                 final byte[] data = new byte[1024];
                 long downloadedSize = 0;
