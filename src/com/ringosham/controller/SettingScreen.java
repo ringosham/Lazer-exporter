@@ -134,9 +134,27 @@ public class SettingScreen {
     }
 
     public void changeGameExec() {
-        FileChooser chooser = new FileChooser();
-        chooser.setTitle(Localizer.getLocalizedText("selectGameExec"));
-        File game = chooser.showOpenDialog(null);
+        String os = System.getProperty("os.name").toLowerCase();
+        File game = null;
+        if (os.contains("win") || os.contains("nix")) {
+            FileChooser chooser = new FileChooser();
+            chooser.setTitle(Localizer.getLocalizedText("selectGameExec"));
+            if (os.contains("win"))
+                chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("osu! Executable", "osu!.exe"));
+            else
+                //Assumes the executable in Arch linux AUR
+                chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("osu! Executable", "osu-lazer"));
+            game = chooser.showOpenDialog(null);
+        } else {
+            DirectoryChooser chooser = new DirectoryChooser();
+            chooser.setTitle(Localizer.getLocalizedText("selectGameExec"));
+            while (game == null || !game.getName().equals("osu!.app")) {
+                game = chooser.showDialog(null);
+                if (game == null)
+                    break;
+                Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("invalidExec"), Localizer.getLocalizedText("invalidExecDesc"));
+            }
+        }
         if (game != null)
             gameExecutable.setText(game.getAbsolutePath());
     }
