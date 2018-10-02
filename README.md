@@ -41,6 +41,8 @@ Do not use this program for distributing songs illegally. The creator of this pr
     
 ## Things to note
 
+The album art provided in beatmaps are (mostly) in 16:9 ratio. As a result, most music player may not be able to display them except a few exceptions (E.g. VLC in desktop)
+
 The FFmpeg used for exporting songs supports both 32 bit and 64 bit with the following requirements.
 
 * Windows 7 and above
