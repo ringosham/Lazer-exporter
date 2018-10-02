@@ -28,6 +28,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LoadTask extends Task<Void> {
     private final Stage stage;
@@ -89,7 +90,7 @@ public class LoadTask extends Task<Void> {
                 in NTFS, this may affect users in macOS and Linux.
                 Filename refers to the actual file. While AudioFile is an attribute from the beatmap file.
                 Both needed to be lower cased as a result.
-                The game source looks up and compare file names while ignoring case, so the game has no problems.
+                The game itself looks up and compare file names while ignoring case, so it has no problems.
              */
             while (beatmapSetInfoSet.next()) {
                 beatmapSetInfo.get(0).add(beatmapSetInfoSet.getString(1));
@@ -120,6 +121,7 @@ public class LoadTask extends Task<Void> {
             for (int i = 0; i < beatmapSetInfo.get(0).size(); i++) {
                 String beatmapID = beatmapSetInfo.get(0).get(i);
                 String onlineString = beatmapSetInfo.get(1).get(i);
+                //The default beatmap always starts with ID 1 and no online beatmap ID
                 if (onlineString == null && !beatmapID.equals("1")) {
                     if (!nullIDFound) {
                         Global.INSTANCE.showAlert(Alert.AlertType.WARNING, Localizer.getLocalizedText("nullID"),
@@ -190,13 +192,16 @@ public class LoadTask extends Task<Void> {
 
     private void selectInstallDirectory() {
         Global.INSTANCE.setLazerDirectory(null);
-        while (Global.INSTANCE.getLazerDirectory() == null) {
+        AtomicBoolean setup = new AtomicBoolean(false);
+        Platform.runLater(() -> {
             Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("notFoundTitle"),
                     Localizer.getLocalizedText("notFoundDesc"));
-            Platform.runLater(() -> {
+            while (Global.INSTANCE.getLazerDirectory() == null) {
                 DirectoryChooser chooser = new DirectoryChooser();
                 chooser.setTitle(Localizer.getLocalizedText("selectGameDir"));
                 File dir = chooser.showDialog(null);
+                if (dir == null)
+                    System.exit(0);
                 if (new File(dir, "client.db").exists()) {
                     Global.INSTANCE.setLazerDirectory(dir);
                     try {
@@ -209,14 +214,30 @@ public class LoadTask extends Task<Void> {
                 } else
                     Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dirInvalid"),
                             Localizer.getLocalizedText("dirInvalidDesc"));
-            });
-        }
-        Platform.runLater(() -> {
-            FileChooser chooser = new FileChooser();
-            chooser.setTitle(Localizer.getLocalizedText("selectGameExec"));
+            }
+            String os = System.getProperty("os.name").toLowerCase();
             File game = null;
-            while (game == null)
+            if (os.contains("win") || os.contains("nix")) {
+                FileChooser chooser = new FileChooser();
+                chooser.setTitle(Localizer.getLocalizedText("selectGameExec"));
+                if (os.contains("win"))
+                    chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("osu! Executable", "osu!.exe"));
+                else
+                    //Assumes the executable in Arch linux AUR
+                    chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("osu! Executable", "osu-lazer"));
                 game = chooser.showOpenDialog(null);
+                if (game == null)
+                    System.exit(0);
+            } else {
+                DirectoryChooser chooser = new DirectoryChooser();
+                chooser.setTitle(Localizer.getLocalizedText("selectGameExec"));
+                while (game == null || !game.getName().equals("osu!.app")) {
+                    game = chooser.showDialog(null);
+                    if (game == null)
+                        System.exit(0);
+                    Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("invalidExec"), Localizer.getLocalizedText("invalidExecDesc"));
+                }
+            }
             Global.INSTANCE.setGameExecutable(game);
             try {
                 Global.INSTANCE.saveConfig();
@@ -225,6 +246,13 @@ public class LoadTask extends Task<Void> {
                         Localizer.getLocalizedText("failedSaveConfig"), Localizer.getLocalizedText("failedSaveConfigDesc"));
                 e.printStackTrace();
             }
+            setup.set(true);
         });
+        while (!setup.get()) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ignored) {
+            }
+        }
     }
 }
