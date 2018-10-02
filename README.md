@@ -21,11 +21,11 @@ If you are not comfortable of using your account on a third-party application, t
 
 ### Exporting songs
 
-This program only copies, and depending on the settings made by the user, converts and modifies the ID3 tags of songs that are already stored the user's (The individual operating this program) computer. The copied and/or modified files are stored in the user's device only. These songs are intended for personal use only but can be manipulated by the user in any way they wish. The author of this program cannot prevent the user from performing any copyright infringing actions with the files produced by the program. Therefore, in no event shall the author be liable for any copyright infringement claims. The user should only use these files under the confines of copyright laws.
+The copied and/or modified songs by this program are stored in the user's (The individual operating this program) device only. These songs are intended for personal use only and should not be distributed without permission from their respective copyright owners. As such, in no event shall the author be liable for any copyright infringement claims. The user will have to bear all legal responsibility when distributing copyrighted properties.
 
 In short,
 
-Do not use this program for distributing songs illegally. The creator of this program is not responsible for such actions performed by the user of the program.
+Do not use this program for distributing songs illegally. The creator of this program is not responsible for such actions.
 
 ## Features
 * Import and export beatmap list
@@ -41,7 +41,7 @@ Do not use this program for distributing songs illegally. The creator of this pr
     
 ## Things to note
 
-The album art provided in beatmaps are (mostly) in 16:9 ratio. As a result, most music players may not be able to display them except a few exceptions (E.g. VLC in desktop)
+The album art provided in beatmaps are (mostly) in 16:9 ratio. As a result, most music players may not be able to display them except a few exceptions (E.g. VLC in desktop). If you don't use the apply tags feature when exporting songs, this will not affect you.
 
 The FFmpeg used for exporting songs supports both 32 bit and 64 bit with the following requirements.
 
