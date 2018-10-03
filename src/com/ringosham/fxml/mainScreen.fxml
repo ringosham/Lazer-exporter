@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-            minHeight="600.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121">
+            minHeight="750.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121">
     <MenuBar maxHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Menu mnemonicParsing="false" text="%menu.file">
             <MenuItem fx:id="launchGame" mnemonicParsing="false" onAction="#launchGame" text="%menu.file.launchGame"/>
@@ -58,8 +58,8 @@
         <Button fx:id="exportMap" mnemonicParsing="false" onAction="#exportMaps" text="%main.map"/>
     </HBox>
     <TableView fx:id="beatmapList" editable="true" layoutY="174.0" prefHeight="136.0" prefWidth="564.0"
-               AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0"
-               AnchorPane.topAnchor="174.0">
+               AnchorPane.bottomAnchor="220.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0"
+               AnchorPane.topAnchor="180.0">
         <columns>
             <TableColumn fx:id="columnInstalled" maxWidth="75.0" minWidth="80.0" sortable="false"
                          text="%table.installed"/>
@@ -86,8 +86,8 @@
         </font>
     </TextArea>
     <HBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="484.0" prefHeight="25.0" prefWidth="164.0" spacing="10.0"
-          AnchorPane.bottomAnchor="172.0" AnchorPane.rightAnchor="14.0">
-        <Button mnemonicParsing="false" onAction="#deselectAll" text="%deselectAll"/>
-        <Button mnemonicParsing="false" onAction="#selectAll" text="%selectAll"/>
+          AnchorPane.bottomAnchor="177.0" AnchorPane.rightAnchor="14.0">
+        <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#deselectAll" text="%deselectAll"/>
+        <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#selectAll" text="%selectAll"/>
     </HBox>
 </AnchorPane>

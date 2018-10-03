@@ -11,7 +11,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <FlowPane xmlns:fx="http://javafx.com/fxml/1" fx:id="pane" alignment="center" maxHeight="1.7976931348623157E308"
-          maxWidth="1.7976931348623157E308" minWidth="400.0" prefHeight="248.0" prefWidth="432.0"
+          maxWidth="1.7976931348623157E308" minWidth="500.0" prefHeight="248.0"
           xmlns="http://javafx.com/javafx/8.0.121">
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
@@ -19,7 +19,7 @@
     <Button fx:id="exportButton" mnemonicParsing="false" onAction="#onExportClick" text="%beginExport"/>
     <Separator orientation="VERTICAL" prefHeight="3.0" prefWidth="394.0" visible="false"/>
     <Label text="%hoverInstruction"/>
-    <GridPane prefHeight="120.0" prefWidth="396.0">
+    <GridPane prefHeight="120.0" prefWidth="483.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
@@ -31,24 +31,26 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         </rowConstraints>
-        <CheckBox fx:id="convertCheckbox" mnemonicParsing="false" text="%convertmp3"/>
-        <CheckBox fx:id="filterPractice" mnemonicParsing="false" text="%filterPractice" GridPane.rowIndex="1"/>
-        <CheckBox fx:id="addTags" mnemonicParsing="false" onAction="#onAddTagChecked" text="%applyTags"
-                  GridPane.rowIndex="2"/>
-        <CheckBox fx:id="overrideTags" mnemonicParsing="false" text="%overwriteTags" GridPane.columnIndex="1"
-                  GridPane.rowIndex="2"/>
-        <Label text="%renamingOptions" GridPane.rowIndex="3"/>
-        <RadioButton fx:id="renameBeatmap" mnemonicParsing="false" onAction="#onRenameID" selected="true"
-                     text="%renameBeatmap" GridPane.rowIndex="4">
+        <CheckBox fx:id="convertCheckbox" minWidth="-Infinity" mnemonicParsing="false" text="%convertmp3"/>
+        <CheckBox fx:id="filterPractice" minWidth="-Infinity" mnemonicParsing="false" text="%filterPractice"
+                  GridPane.rowIndex="1"/>
+        <CheckBox fx:id="addTags" minWidth="-Infinity" mnemonicParsing="false" onAction="#onAddTagChecked"
+                  prefHeight="21.0" text="%applyTags" GridPane.rowIndex="2"/>
+        <CheckBox fx:id="overrideTags" minWidth="-Infinity" mnemonicParsing="false" text="%overwriteTags"
+                  GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <Label minWidth="-Infinity" text="%renamingOptions" GridPane.rowIndex="3"/>
+        <RadioButton fx:id="renameBeatmap" minWidth="-Infinity" mnemonicParsing="false" onAction="#onRenameID"
+                     selected="true" text="%renameBeatmap" GridPane.rowIndex="4">
             <toggleGroup>
                 <ToggleGroup fx:id="renameOptions"/>
             </toggleGroup>
         </RadioButton>
-        <RadioButton fx:id="useBeatmapID" mnemonicParsing="false" onAction="#onRenameID" text="%renameAfterID"
-                     toggleGroup="$renameOptions" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-        <CheckBox fx:id="overwriteCheckbox" mnemonicParsing="false" text="%overwriteFile" GridPane.columnIndex="1"/>
-        <CheckBox fx:id="romajiNaming" mnemonicParsing="false" text="%romajiNaming" GridPane.columnIndex="1"
-                  GridPane.rowIndex="3"/>
+        <RadioButton fx:id="useBeatmapID" minWidth="-Infinity" mnemonicParsing="false" onAction="#onRenameID"
+                     text="%renameAfterID" toggleGroup="$renameOptions" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+        <CheckBox fx:id="overwriteCheckbox" minWidth="-Infinity" mnemonicParsing="false" text="%overwriteFile"
+                  GridPane.columnIndex="1"/>
+        <CheckBox fx:id="romajiNaming" minWidth="-Infinity" mnemonicParsing="false" text="%romajiNaming"
+                  GridPane.columnIndex="1" GridPane.rowIndex="3"/>
     </GridPane>
     <GridPane prefHeight="60.0" prefWidth="413.0">
         <columnConstraints>
@@ -59,11 +61,11 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         </rowConstraints>
         <children>
-            <CheckBox fx:id="filterDuplicates" alignment="TOP_LEFT" mnemonicParsing="false"
+            <CheckBox fx:id="filterDuplicates" alignment="TOP_LEFT" minWidth="-Infinity" mnemonicParsing="false"
                       onAction="#onFilterDuplicatesChecked" text="%filterDuplicates" GridPane.halignment="CENTER"/>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                 <children>
-                    <TextField fx:id="filterSeconds" prefHeight="25.0" prefWidth="29.0"/>
+                    <TextField fx:id="filterSeconds" minWidth="-Infinity" prefHeight="31.0" prefWidth="44.0"/>
                     <Label text="%seconds"/>
                 </children>
             </HBox>
