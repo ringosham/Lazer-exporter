@@ -134,7 +134,6 @@ public class LoadTask extends Task<Void> {
                 if (beatmapID.equals("1"))
                     onlineID = -1;
                 else {
-                    assert onlineString != null;
                     onlineID = Integer.parseInt(onlineString);
                 }
                 String metadataID = beatmapSetInfo.get(2).get(i);

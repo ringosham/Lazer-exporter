@@ -75,9 +75,5 @@ fabric.properties
 .idea/httpRequests
 
 # App config files and such
-config.cfg
-
 #Intellij plugins
 .idea/markdown*
-.idea/markdown-navigator/
-.idea/dbnavigator.xml
