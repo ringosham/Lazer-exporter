@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -95,7 +95,7 @@ class Downloader {
             int responseCode = connection.getResponseCode();
             OutputStream out = new FileOutputStream(osz);
             InputStream in = connection.getInputStream();
-            if (responseCode >= HttpsURLConnection.HTTP_BAD_REQUEST) {
+            if (responseCode >= HttpsURLConnection.HTTP_BAD_REQUEST && responseCode != HttpsURLConnection.HTTP_NOT_FOUND) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
                 StringBuilder errorString = new StringBuilder();
                 String line;

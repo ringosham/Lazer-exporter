@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -58,7 +58,7 @@ public class Global {
         }
         FileInputStream in = new FileInputStream(configFile);
         config.load(in);
-        //There are no ports of osu!lazer for macOS and Linux.
+        //There are no ports of osu!lazer for Linux.
         //This is planned, but there are currently no support.
         String defaultLazerDir = Defaults.getDefaultDirectory();
         lazerDirectory = new File(config.getProperty("lazerDirectory", defaultLazerDir));
