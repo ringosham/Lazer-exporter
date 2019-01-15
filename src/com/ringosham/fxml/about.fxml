@@ -20,7 +20,7 @@
     </Label>
     <Label alignment="CENTER" layoutX="75.0" layoutY="177.0" text="Copyright © 2018 - Ringosham"
            AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="177.0"/>
-    <Label layoutX="153.0" layoutY="160.0" text="1.4" AnchorPane.topAnchor="160.0"/>
+    <Label layoutX="153.0" layoutY="160.0" text="1.3" AnchorPane.topAnchor="160.0"/>
     <Hyperlink fx:id="license" alignment="CENTER" contentDisplay="TOP" graphicTextGap="0.0" minWidth="-Infinity"
                text="Licensed under Apache 2.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="85.0"
                AnchorPane.rightAnchor="85.0"/>
