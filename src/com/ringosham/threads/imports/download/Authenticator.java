@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -114,6 +114,8 @@ class Authenticator {
                 while ((line = in.readLine()) != null) {
                     errorString.append(line);
                 }
+                //"WHAT ARE YOU DOING HERE PARSING JSON WITH REGEX!?"
+                //Yeah I know. This looks horrifying, but importing a JSON library just for the authentication message is just not worth it.
                 Pattern pattern = Pattern.compile("\\{\"error\":\"(.*)\"}");
                 Matcher matcher = pattern.matcher(errorString.toString());
                 String errorMessage;

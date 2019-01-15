@@ -210,4 +210,12 @@ public class Global {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+    //Remove any illegal characters in the file name
+    //Many export programs I have seen forgot to eliminate illegal characters from the file name
+    public String getValidFileName(String name) {
+        return name.replaceAll("\\*", "").replaceAll("<", "").replaceAll(">", "")
+                .replaceAll("\\|", "").replaceAll("\\?", "").replaceAll(":", "")
+                .replaceAll("\"", "").replaceAll("\\\\", ",").replaceAll("/", ",");
+    }
 }

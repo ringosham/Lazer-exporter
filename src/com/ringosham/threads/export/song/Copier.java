@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -53,7 +53,7 @@ class Copier {
                     filename = metadata.getTitle() + " - " + metadata.getArtist();
                 if (song.isFullVersion())
                     filename = filename + " (Full version)";
-                filename = getValidFileName(filename);
+                filename = Global.INSTANCE.getValidFileName(filename);
             } else
                 filename = getBeatmapFullname(song.getBeatmapID());
             if (metadata.getUnicodeTitle() == null || metadata.getUnicodeArtist() == null)
@@ -102,13 +102,5 @@ class Copier {
                 return beatmap.getBeatmapFullname();
         }
         return null;
-    }
-
-    //Remove any illegal characters in the file name
-    //Many export programs I have seen forgot to eliminate illegal characters from the file name
-    private String getValidFileName(String name) {
-        return name.replaceAll("\\*", "").replaceAll("<", "").replaceAll(">", "")
-                .replaceAll("\\|", "").replaceAll("\\?", "").replaceAll(":", "")
-                .replaceAll("\"", "").replaceAll("\\\\", ",").replaceAll("/", ",");
     }
 }

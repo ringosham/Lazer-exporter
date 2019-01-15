@@ -37,7 +37,7 @@ class Downloader {
         Platform.runLater(() -> mainScreen.mainProgress.setProgress(0));
         for (BeatmapXML beatmap : beatmaps) {
             String filename = beatmap.getBeatmapID() + " " + beatmap.getArtist() + " - " + beatmap.getTitle() + ".osz";
-            File osz = new File(Global.INSTANCE.getLazerDirectory(), "/files/" + getValidFileName(filename));
+            File osz = new File(Global.INSTANCE.getLazerDirectory(), "/files/" + Global.INSTANCE.getValidFileName(filename));
             if (!osz.exists()) {
                 try {
                     URL url;
@@ -141,11 +141,5 @@ class Downloader {
         } catch (InterruptedException ignored) {
         }
         return true;
-    }
-
-    private String getValidFileName(String name) {
-        return name.replaceAll("\\*", "").replaceAll("<", "").replaceAll(">", "")
-                .replaceAll("\\|", "").replaceAll("\\?", "").replaceAll(":", "")
-                .replaceAll("\"", "").replaceAll("\\\\", ",").replaceAll("/", ",");
     }
 }
