@@ -36,7 +36,7 @@ public class BeatmapExport extends Task<Void> {
         int progress = 0;
         for (Beatmap beatmap : Global.INSTANCE.beatmapList) {
             updateMessage(Localizer.getLocalizedText("status.beatmap.exportingMap").replace("%BEATMAP%", beatmap.getBeatmapFullname()));
-            File outputFile = new File(exportDir, fixIllegalFilename(beatmap.getBeatmapFullname() + ".osz"));
+            File outputFile = new File(exportDir, Global.INSTANCE.getValidFileName(beatmap.getBeatmapFullname() + ".osz"));
             try {
                 ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(outputFile));
                 Platform.runLater(() -> mainScreen.subProgress.setProgress(0));
@@ -79,11 +79,5 @@ public class BeatmapExport extends Task<Void> {
 
     private File getFileFromHash(String hash) {
         return new File(Global.INSTANCE.getLazerDirectory(), "files/" + hash.substring(0, 1) + "/" + hash.substring(0, 2) + "/" + hash);
-    }
-
-    private String fixIllegalFilename(String filename) {
-        return filename.replaceAll("\\*", "").replaceAll("<", "").replaceAll(">", "")
-                .replaceAll("\\|", "").replaceAll("\\?", "").replaceAll(":", "")
-                .replaceAll("\"", "").replaceAll("\\\\", ",").replaceAll("/", ",");
     }
 }
