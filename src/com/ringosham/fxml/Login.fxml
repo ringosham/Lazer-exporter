@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  ~ Copyright (c) 2018. Ringo Sham.
+  ~ Copyright (c) 2019. Ringo Sham.
   ~ Licensed under the Apache license. Version 2.0
   ~ http://www.apache.org/licenses/LICENSE-2.0
   -->
@@ -14,17 +14,18 @@
             xmlns="http://javafx.com/javafx/8.0.121">
     <children>
         <Button fx:id="loginButton" layoutX="222.0" layoutY="184.0" mnemonicParsing="false" onAction="#onLogin"
-                text="%loginTitle" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="222.0"
+                text="%login.title" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="222.0"
                 AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="191.0"/>
-        <Label layoutX="14.0" layoutY="14.0" text="%loginExplanation" AnchorPane.bottomAnchor="192.0"
+        <Label layoutX="14.0" layoutY="14.0" text="%login.explanation" AnchorPane.bottomAnchor="192.0"
                AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0"/>
-        <Label layoutX="14.0" layoutY="31.0" text="%loginSaveInfo" wrapText="true" AnchorPane.bottomAnchor="160.0"
+        <Label layoutX="14.0" layoutY="31.0" text="%login.saveInfo" wrapText="true" AnchorPane.bottomAnchor="160.0"
                AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="31.0"/>
-        <Label layoutX="14.0" layoutY="75.0" text="%email" AnchorPane.bottomAnchor="131.0" AnchorPane.leftAnchor="14.0"
+        <Label layoutX="14.0" layoutY="75.0" text="%login.email" AnchorPane.bottomAnchor="131.0"
+               AnchorPane.leftAnchor="14.0"
                AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="75.0"/>
         <TextField fx:id="email" layoutX="14.0" layoutY="102.0" AnchorPane.bottomAnchor="101.0"
                    AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="102.0"/>
-        <Label layoutX="14.0" layoutY="128.0" text="%password" AnchorPane.bottomAnchor="78.0"
+        <Label layoutX="14.0" layoutY="128.0" text="%login.password" AnchorPane.bottomAnchor="78.0"
                AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="128.0"/>
         <PasswordField fx:id="password" layoutX="14.0" layoutY="153.0" AnchorPane.bottomAnchor="50.0"
                        AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="153.0"/>

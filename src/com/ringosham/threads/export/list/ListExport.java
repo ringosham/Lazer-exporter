@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -34,7 +34,7 @@ public class ListExport extends Task<Void> {
     protected Void call() {
         BeatmapListXML xml = new BeatmapListXML();
         xml.setBeatmaps(new ArrayList<>());
-        updateMessage(Localizer.getLocalizedText("parsingDb"));
+        updateMessage(Localizer.getLocalizedText("init.parsingDb"));
         int progress = 0;
         for (Beatmap beatmap : Global.INSTANCE.beatmapList) {
             //The ID -1 refers to the default beatmap (Circles by nekodex).
@@ -49,17 +49,17 @@ public class ListExport extends Task<Void> {
             progress++;
             updateProgress(progress, Global.INSTANCE.beatmapList.size());
         }
-        updateMessage(Localizer.getLocalizedText("writingFile"));
+        updateMessage(Localizer.getLocalizedText("status.list.writingFile"));
         try {
             JAXBContext context = JAXBContext.newInstance(BeatmapListXML.class);
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(xml, exportFile);
         } catch (JAXBException e) {
-            updateMessage(Localizer.getLocalizedText("taskFinishWithFailure").replace("%FAILCOUNT%",
+            updateMessage(Localizer.getLocalizedText("status.finishWithFailure").replace("%FAILCOUNT%",
                     Integer.toString(1)));
             Platform.runLater(() -> {
-                mainScreen.consoleArea.appendText(Localizer.getLocalizedText("failWriting") + "\n");
+                mainScreen.consoleArea.appendText(Localizer.getLocalizedText("status.list.failWriting") + "\n");
                 mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
                 mainScreen.enableButtons();
             });
@@ -68,7 +68,7 @@ public class ListExport extends Task<Void> {
             return null;
         }
         updateProgress(0, 0);
-        updateMessage(Localizer.getLocalizedText("taskSuccess"));
+        updateMessage(Localizer.getLocalizedText("status.success"));
         Platform.runLater(mainScreen::enableButtons);
         Global.INSTANCE.inProgress = false;
         return null;

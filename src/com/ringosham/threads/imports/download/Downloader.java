@@ -58,9 +58,9 @@ class Downloader {
         }
         Platform.runLater(() -> {
             if (failCount == 0)
-                mainScreen.statusText.setText(Localizer.getLocalizedText("taskSuccess"));
+                mainScreen.statusText.setText(Localizer.getLocalizedText("status.success"));
             else
-                mainScreen.statusText.setText(Localizer.getLocalizedText("taskFinishWithFailure")
+                mainScreen.statusText.setText(Localizer.getLocalizedText("status.finishWithFailure")
                         .replace("%FAILCOUNT%", Integer.toString(failCount)));
             mainScreen.mainProgress.setProgress(0);
             mainScreen.subProgress.setProgress(0);
@@ -69,7 +69,7 @@ class Downloader {
 
     private boolean downloadBeatmap(File osz, URL url, BeatmapXML beatmap) {
         String beatmapDisplay = beatmap.getBeatmapID() + " " + beatmap.getArtist() + " - " + beatmap.getTitle();
-        Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("downloading")
+        Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("status.download.downloading")
                 .replace("%BEATMAP%", beatmapDisplay)));
         try {
             if (osz.exists())
@@ -106,7 +106,7 @@ class Downloader {
                     while (timeout >= 0) {
                         int finalTimeout = timeout;
                         Platform.runLater(() -> {
-                            mainScreen.statusText.setText(Localizer.getLocalizedText("timeout")
+                            mainScreen.statusText.setText(Localizer.getLocalizedText("status.download.timeout")
                                     .replace("%TIMEOUT%", String.valueOf(finalTimeout)));
                             mainScreen.subProgress.setProgress(-1);
                         });
@@ -118,6 +118,8 @@ class Downloader {
                     return false;
                 } else
                     throw new IOException(errorString.toString());
+            } else if (responseCode == HttpsURLConnection.HTTP_NOT_FOUND) {
+                throw new IOException(Localizer.getLocalizedText("download.notFound"));
             } else {
                 final byte[] data = new byte[1024];
                 long downloadedSize = 0;
@@ -133,7 +135,7 @@ class Downloader {
             }
         } catch (IOException e) {
             failCount++;
-            String error = Localizer.getLocalizedText("failDownload")
+            String error = Localizer.getLocalizedText("download.failDownload")
                     .replace("%BEATMAP%", beatmap.getBeatmapID() + " " + beatmap.getArtist() + " - " + beatmap.getTitle());
             mainScreen.consoleArea.appendText(error + "\n");
             mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");

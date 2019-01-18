@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -35,7 +35,7 @@ public class BeatmapExport extends Task<Void> {
         updateProgress(0, Global.INSTANCE.beatmapList.size());
         int progress = 0;
         for (Beatmap beatmap : Global.INSTANCE.beatmapList) {
-            updateMessage(Localizer.getLocalizedText("exportingMap").replace("%BEATMAP%", beatmap.getBeatmapFullname()));
+            updateMessage(Localizer.getLocalizedText("status.beatmap.exportingMap").replace("%BEATMAP%", beatmap.getBeatmapFullname()));
             File outputFile = new File(exportDir, fixIllegalFilename(beatmap.getBeatmapFullname() + ".osz"));
             try {
                 ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(outputFile));
@@ -56,7 +56,7 @@ public class BeatmapExport extends Task<Void> {
             } catch (IOException e) {
                 failCount++;
                 Platform.runLater(() -> {
-                    mainScreen.consoleArea.appendText(Localizer.getLocalizedText("failZipping").replace("%BEATMAP%", beatmap.getBeatmapFullname()) + "\n");
+                    mainScreen.consoleArea.appendText(Localizer.getLocalizedText("status.beatmap.failZipping").replace("%BEATMAP%", beatmap.getBeatmapFullname()) + "\n");
                     mainScreen.consoleArea.appendText(e.getClass().getName() + " - " + e.getMessage() + "\n");
                 });
                 e.printStackTrace();
@@ -65,9 +65,9 @@ public class BeatmapExport extends Task<Void> {
             updateProgress(progress, Global.INSTANCE.beatmapList.size());
         }
         if (failCount == 0)
-            updateMessage(Localizer.getLocalizedText("taskSuccess"));
+            updateMessage(Localizer.getLocalizedText("status.success"));
         else
-            updateMessage(Localizer.getLocalizedText("taskFinishWithFailure").replace("%FAILCOUNT%", Integer.toString(failCount)));
+            updateMessage(Localizer.getLocalizedText("status.finishWithFailure").replace("%FAILCOUNT%", Integer.toString(failCount)));
         updateProgress(0, 0);
         Platform.runLater(() -> {
             mainScreen.enableButtons();

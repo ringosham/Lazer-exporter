@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -86,7 +86,7 @@ class Tagger {
             } catch (IOException | UnsupportedTagException | InvalidDataException | NotSupportedException e) {
                 Metadata metadata = getMetadataFromSong(song.getBeatmapID());
                 assert metadata != null;
-                String error = Localizer.getLocalizedText("errorApplyTag").replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist());
+                String error = Localizer.getLocalizedText("export.error.applyTag").replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist());
                 mainScreen.consoleArea.appendText(error + "\n");
                 mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
                 e.printStackTrace();
@@ -101,10 +101,10 @@ class Tagger {
         Metadata metadata = getMetadataFromSong(song.getBeatmapID());
         assert metadata != null;
         if (metadata.getUnicodeTitle() == null || metadata.getUnicodeArtist() == null)
-            Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("applying")
+            Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("export.process.applying")
                     .replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist())));
         else
-            Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("applying")
+            Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("export.process.applying")
                     .replace("%SONG%", metadata.getUnicodeTitle() + " - " + metadata.getUnicodeArtist())));
         mp3.setId3v2Tag(generateTag(song, metadata));
     }
@@ -141,7 +141,7 @@ class Tagger {
                 tag.setAlbumImage(artBytes, mimeType);
             } catch (IOException | IllegalArgumentException e) {
                 e.printStackTrace();
-                String error = Localizer.getLocalizedText("errorApplyImage").replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist());
+                String error = Localizer.getLocalizedText("export.error.applyImage").replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist());
                 mainScreen.consoleArea.appendText(error + "\n");
                 mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -75,7 +75,7 @@ public class MainScreen {
 
     public void initialize() {
         downloadMaps.setDisable(true);
-        statusText.setText(Localizer.getLocalizedText("readyStatus").replace("%BEATMAPCOUNT%", Integer.toString(Global.INSTANCE.beatmapList.size())));
+        statusText.setText(Localizer.getLocalizedText("status.ready").replace("%BEATMAPCOUNT%", Integer.toString(Global.INSTANCE.beatmapList.size())));
         //Bind table values to BeatmapView.
         columnInstalled.setCellValueFactory(cell -> cell.getValue().getQueueProperty());
         columnInstalled.setCellFactory(cell -> new CheckBoxTableCell<BeatmapView, Boolean>() {
@@ -104,9 +104,9 @@ public class MainScreen {
 
     public void exit() {
         if (Global.INSTANCE.inProgress) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, Localizer.getLocalizedText("confirmExitDesc"), ButtonType.YES, ButtonType.NO);
-            alert.setTitle(Localizer.getLocalizedText("confirmExit"));
-            alert.setHeaderText(Localizer.getLocalizedText("confirmExit"));
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, Localizer.getLocalizedText("dialog.exit.confirmExitDesc"), ButtonType.YES, ButtonType.NO);
+            alert.setTitle(Localizer.getLocalizedText("dialog.exit.confirmExit"));
+            alert.setHeaderText(Localizer.getLocalizedText("dialog.exit.confirmExit"));
             alert.showAndWait();
             if (alert.getResult() == ButtonType.YES)
                 Platform.exit();
@@ -115,7 +115,7 @@ public class MainScreen {
     }
 
     public void settingsWindow() throws IOException {
-        loadStage(settingsStage, Localizer.getLocalizedText("settings"), "/com/ringosham/fxml/settings.fxml", new SettingScreen(this));
+        loadStage(settingsStage, Localizer.getLocalizedText("settings.title"), "/com/ringosham/fxml/settings.fxml", new SettingScreen(this));
     }
 
     private void loadStage(Stage stage, String title, String resourcePath, Object controller) throws IOException {
@@ -160,24 +160,24 @@ public class MainScreen {
             }
         }
         if (!selectedBeatmaps) {
-            Global.INSTANCE.showAlert(Alert.AlertType.INFORMATION, Localizer.getLocalizedText("noMapSelect"),
-                    Localizer.getLocalizedText("noMapSelectDesc"));
+            Global.INSTANCE.showAlert(Alert.AlertType.INFORMATION, Localizer.getLocalizedText("dialog.download.noMapSelect"),
+                    Localizer.getLocalizedText("dialog.download.noMapSelectDesc"));
             return;
         }
         unbindNodes();
-        loadStage(loginStage, Localizer.getLocalizedText("loginTitle"), "/com/ringosham/fxml/Login.fxml", new Login(this, loginStage));
+        loadStage(loginStage, Localizer.getLocalizedText("login.title"), "/com/ringosham/fxml/Login.fxml", new Login(this, loginStage));
     }
 
     public void exportSongs() throws IOException {
         unbindNodes();
         if (!shownDisclaimer)
             showDisclaimer();
-        loadStage(exportStage, Localizer.getLocalizedText("exportSongs"), "/com/ringosham/fxml/songExport.fxml", new SongExportScreen(this, exportStage));
+        loadStage(exportStage, Localizer.getLocalizedText("export.title"), "/com/ringosham/fxml/songExport.fxml", new SongExportScreen(this, exportStage));
     }
 
     private void showDisclaimer() {
-        Global.INSTANCE.showAlert(Alert.AlertType.INFORMATION, Localizer.getLocalizedText("disclaimer"),
-                Localizer.getLocalizedText("disclaimerHead"), Localizer.getLocalizedText("disclaimerDesc"));
+        Global.INSTANCE.showAlert(Alert.AlertType.INFORMATION, Localizer.getLocalizedText("dialog.warn.disclaimer"),
+                Localizer.getLocalizedText("dialog.warn.disclaimerHead"), Localizer.getLocalizedText("dialog.warn.disclaimerDesc"));
         shownDisclaimer = true;
     }
 
@@ -240,9 +240,9 @@ public class MainScreen {
     private File getChooserFile(boolean isImport) {
         FileChooser chooser = new FileChooser();
         if (isImport)
-            chooser.setTitle(Localizer.getLocalizedText("chooseImportFile"));
+            chooser.setTitle(Localizer.getLocalizedText("dialog.import.chooseImportFile"));
         else
-            chooser.setTitle(Localizer.getLocalizedText("chooseExportFile"));
+            chooser.setTitle(Localizer.getLocalizedText("dialog.export.chooseExportFile"));
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("XML file", "*.xml");
         chooser.getExtensionFilters().add(filter);
         if (isImport)
@@ -253,7 +253,7 @@ public class MainScreen {
 
     private File getChooserDirectory() {
         DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle(Localizer.getLocalizedText("chooseExportDir"));
+        chooser.setTitle(Localizer.getLocalizedText("dialog.export.chooseExportDir"));
         return chooser.showDialog(null);
     }
 
@@ -266,8 +266,8 @@ public class MainScreen {
         try {
             Runtime.getRuntime().exec(gameExecutable);
         } catch (IOException e) {
-            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("failLaunchGame"),
-                    Localizer.getLocalizedText("failLaunchGameDesc"));
+            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dialog.error.failLaunchGame"),
+                    Localizer.getLocalizedText("dialog.error.failLaunchGameDesc"));
             e.printStackTrace();
         }
     }

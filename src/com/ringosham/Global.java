@@ -64,8 +64,8 @@ public class Global {
         lazerDirectory = new File(config.getProperty("lazerDirectory", defaultLazerDir));
         String localeString = config.getProperty("locale", Defaults.locale.toString()).toLowerCase().replace("_", "-");
         locale = Locale.forLanguageTag(localeString);
-        videoDownload = Boolean.parseBoolean(config.getProperty("videoDownload", String.valueOf(Defaults.videoDownload)));
-        gameExecutable = new File(config.getProperty("gameExecutable", Defaults.getDefaultGameExecutable()));
+        videoDownload = Boolean.parseBoolean(config.getProperty("settings.videoDownload", String.valueOf(Defaults.videoDownload)));
+        gameExecutable = new File(config.getProperty("settings.gameExecutable", Defaults.getDefaultGameExecutable()));
         in.close();
     }
 
@@ -73,7 +73,7 @@ public class Global {
         FileOutputStream out = new FileOutputStream(configFile);
         config.setProperty("lazerDirectory", Defaults.getDefaultDirectory());
         config.setProperty("locale", Defaults.locale.toString());
-        config.setProperty("videoDownload", String.valueOf(Defaults.videoDownload));
+        config.setProperty("settings.videoDownload", String.valueOf(Defaults.videoDownload));
         config.store(out, "Lazer exporter config");
         out.close();
     }
@@ -90,7 +90,7 @@ public class Global {
         FileOutputStream out = new FileOutputStream(configFile);
         config.setProperty("lazerDirectory", lazerDirectory.getAbsolutePath());
         config.setProperty("locale", locale.toString());
-        config.setProperty("videoDownload", String.valueOf(videoDownload));
+        config.setProperty("settings.videoDownload", String.valueOf(videoDownload));
         config.setProperty("gameExectable", gameExecutable.getAbsolutePath());
         config.store(out, "Lazer exporter config");
         out.close();

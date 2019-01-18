@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -38,7 +38,7 @@ public class SongExport extends Task<Void> {
     @Override
     protected Void call() {
         List<Song> songList;
-        Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("initializing")));
+        Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("export.init.initializing")));
         //Extract executables from jar, based on arch and os
         String os = System.getProperty("os.name").toLowerCase();
         //String arch = System.getProperty("sun.arch.data.model");
@@ -72,9 +72,9 @@ public class SongExport extends Task<Void> {
                 Platform.runLater(() -> {
                     mainScreen.mainProgress.setProgress(0);
                     mainScreen.subProgress.setProgress(0);
-                    mainScreen.statusText.setText(Localizer.getLocalizedText("taskFinishWithFailure")
+                    mainScreen.statusText.setText(Localizer.getLocalizedText("status.finishWithFailure")
                             .replace("%FAILCOUNT%", Integer.toString(failCount)));
-                    mainScreen.consoleArea.appendText(Localizer.getLocalizedText("failInitialize") + "\n");
+                    mainScreen.consoleArea.appendText(Localizer.getLocalizedText("export.error.initialize") + "\n");
                     mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
                     mainScreen.enableButtons();
                 });
@@ -91,11 +91,11 @@ public class SongExport extends Task<Void> {
                 }
             };
         }
-        Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("analysing")));
+        Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("export.process.analysing")));
         Analyser analyser = new Analyser(mainScreen, customExecutable);
         songList = analyser.run();
         if (settings.isFilterPractice() || settings.isFilterDuplicates()) {
-            Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("filtering")));
+            Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("export.process.filtering")));
             Platform.runLater(() -> {
                 mainScreen.mainProgress.setProgress(-1);
                 mainScreen.subProgress.setProgress(0);
@@ -119,11 +119,11 @@ public class SongExport extends Task<Void> {
                 , settings.getExportDirectory()).run();
         if (settings.isApplyTags())
             new Tagger(mainScreen, songList, settings.isOverrideTags()).run();
-        Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("cleanUp")));
+        Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("export.process.cleanUp")));
         try {
             cleanUp();
         } catch (IOException e) {
-            String error = Localizer.getLocalizedText("failCleanUp");
+            String error = Localizer.getLocalizedText("export.error.cleanUp");
             mainScreen.consoleArea.appendText(error + "\n");
             mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
             e.printStackTrace();
@@ -132,9 +132,9 @@ public class SongExport extends Task<Void> {
             mainScreen.mainProgress.setProgress(0);
             mainScreen.subProgress.setProgress(0);
             if (failCount == 0)
-                mainScreen.statusText.setText(Localizer.getLocalizedText("taskSuccess"));
+                mainScreen.statusText.setText(Localizer.getLocalizedText("status.success"));
             else
-                mainScreen.statusText.setText(Localizer.getLocalizedText("taskFinishWithFailure")
+                mainScreen.statusText.setText(Localizer.getLocalizedText("status.finishWithFailure")
                         .replace("%FAILCOUNT%", Integer.toString(failCount)));
             mainScreen.enableButtons();
         });

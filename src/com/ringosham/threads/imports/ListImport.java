@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -38,24 +38,24 @@ public class ListImport extends Task<Void> {
 
     @Override
     protected Void call() {
-        updateMessage(Localizer.getLocalizedText("parsingXML"));
+        updateMessage(Localizer.getLocalizedText("status.list.parsingXML"));
         BeatmapListXML xml;
         try {
             JAXBContext context = JAXBContext.newInstance(BeatmapListXML.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             xml = (BeatmapListXML) unmarshaller.unmarshal(importFile);
         } catch (JAXBException e) {
-            updateMessage(Localizer.getLocalizedText("taskFinishWithFailure").replace("%FAILCOUNT%",
+            updateMessage(Localizer.getLocalizedText("status.finishWithFailure").replace("%FAILCOUNT%",
                     Integer.toString(1)));
             Platform.runLater(() -> {
-                mainScreen.consoleArea.appendText(Localizer.getLocalizedText("failXML") + "\n");
+                mainScreen.consoleArea.appendText(Localizer.getLocalizedText("status.list.failXML") + "\n");
                 mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
             });
             finish();
             e.printStackTrace();
             return null;
         }
-        updateMessage(Localizer.getLocalizedText("processingXML"));
+        updateMessage(Localizer.getLocalizedText("status.list.processingXML"));
         List<BeatmapXML> list = xml.getBeatmaps();
         //Preparing view.
         list.sort((o1, o2) -> {
@@ -72,7 +72,7 @@ public class ListImport extends Task<Void> {
         for (BeatmapXML beatmap : list)
             view.add(new BeatmapView(isBeatmapInstalled(beatmap.getBeatmapID()), beatmap, hostServices));
         Platform.runLater(() -> mainScreen.beatmapList.setItems(FXCollections.observableArrayList(view)));
-        updateMessage(Localizer.getLocalizedText("taskSuccess"));
+        updateMessage(Localizer.getLocalizedText("status.success"));
         finish();
         return null;
     }

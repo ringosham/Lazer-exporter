@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -62,7 +62,7 @@ class Analyser {
             } catch (EncoderException e) {
                 SongExport.failCount++;
                 Platform.runLater(() -> {
-                    mainScreen.consoleArea.appendText(Localizer.getLocalizedText("errorSong").replace("%BEATMAP%",
+                    mainScreen.consoleArea.appendText(Localizer.getLocalizedText("export.error.song").replace("%BEATMAP%",
                             beatmap.getBeatmapFullname()));
                     mainScreen.consoleArea.appendText("\n");
                     mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage());

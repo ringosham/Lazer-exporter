@@ -57,10 +57,10 @@ class Copier {
             } else
                 filename = getBeatmapFullname(song.getBeatmapID());
             if (metadata.getUnicodeTitle() == null || metadata.getUnicodeArtist() == null)
-                Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("copying")
+                Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("export.process.copying")
                         .replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist())));
             else
-                Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("copying")
+                Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("export.process.copying")
                         .replace("%SONG%", metadata.getUnicodeTitle() + " - " + metadata.getUnicodeArtist())));
             if (!song.isOgg())
                 filename = filename + ".mp3";
@@ -75,7 +75,7 @@ class Copier {
                 song.setOutputLocation(outputFile);
             } catch (IOException e) {
                 Platform.runLater(() -> {
-                    String error = Localizer.getLocalizedText("errorCopy").replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist());
+                    String error = Localizer.getLocalizedText("export.error.copy").replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist());
                     mainScreen.consoleArea.appendText(error + "\n");
                     mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
                 });

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -51,13 +51,13 @@ public class LoadTask extends Task<Void> {
             e.printStackTrace();
             Global.INSTANCE.configFailsafe();
         }
-        updateTitle(Localizer.getLocalizedText("checkInstall"));
+        updateTitle(Localizer.getLocalizedText("init.checkInstall"));
         if (!Global.INSTANCE.getLazerDirectory().exists() || !Global.INSTANCE.getGameExecutable().exists()) {
             selectInstallDirectory();
         } else if (!new File(Global.INSTANCE.getDatabaseAbsolutePath()).exists()) {
             selectInstallDirectory();
         }
-        updateTitle(Localizer.getLocalizedText("parsingDb"));
+        updateTitle(Localizer.getLocalizedText("init.parsingDb"));
         final String jdbcUrl = "jdbc:sqlite:";
         try {
             Connection connection = DriverManager.getConnection(jdbcUrl + Global.INSTANCE.getDatabaseAbsolutePath());
@@ -124,8 +124,8 @@ public class LoadTask extends Task<Void> {
                 //The default beatmap always starts with ID 1 and no online beatmap ID
                 if (onlineString == null && !beatmapID.equals("1")) {
                     if (!nullIDFound) {
-                        Global.INSTANCE.showAlert(Alert.AlertType.WARNING, Localizer.getLocalizedText("nullID"),
-                                Localizer.getLocalizedText("nullIDHead"), Localizer.getLocalizedText("nullIDDesc"));
+                        Global.INSTANCE.showAlert(Alert.AlertType.WARNING, Localizer.getLocalizedText("dialog.warn.nullID"),
+                                Localizer.getLocalizedText("dialog.warn.nullIDHead"), Localizer.getLocalizedText("dialog.warn.nullIDDesc"));
                         nullIDFound = true;
                     }
                     continue;
@@ -162,8 +162,8 @@ public class LoadTask extends Task<Void> {
                 Global.INSTANCE.beatmapList.add(new Beatmap(onlineID, metadata, fileMap));
             }
         } catch (SQLException e) {
-            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("databaseFail"),
-                    Localizer.getLocalizedText("databaseFailDesc"));
+            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dialog.error.databaseFail"),
+                    Localizer.getLocalizedText("dialog.error.databaseFailDesc"));
             e.printStackTrace();
             return null;
         }
@@ -193,11 +193,11 @@ public class LoadTask extends Task<Void> {
         Global.INSTANCE.setLazerDirectory(null);
         AtomicBoolean setup = new AtomicBoolean(false);
         Platform.runLater(() -> {
-            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("notFoundTitle"),
-                    Localizer.getLocalizedText("notFoundDesc"));
+            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dialog.init.notFoundTitle"),
+                    Localizer.getLocalizedText("dialog.init.notFoundDesc"));
             while (Global.INSTANCE.getLazerDirectory() == null) {
                 DirectoryChooser chooser = new DirectoryChooser();
-                chooser.setTitle(Localizer.getLocalizedText("selectGameDir"));
+                chooser.setTitle(Localizer.getLocalizedText("dialog.init.selectGameDir"));
                 File dir = chooser.showDialog(null);
                 if (dir == null)
                     System.exit(0);
@@ -206,19 +206,19 @@ public class LoadTask extends Task<Void> {
                     try {
                         Global.INSTANCE.saveConfig();
                     } catch (IOException e) {
-                        Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("failedSaveConfig"),
-                                Localizer.getLocalizedText("failedSaveConfigDesc"));
+                        Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dialog.error.failedSaveConfig"),
+                                Localizer.getLocalizedText("dialog.error.failedSaveConfigDesc"));
                         e.printStackTrace();
                     }
                 } else
-                    Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dirInvalid"),
-                            Localizer.getLocalizedText("dirInvalidDesc"));
+                    Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dialog.init.dirInvalid"),
+                            Localizer.getLocalizedText("dialog.init.dirInvalidDesc"));
             }
             String os = System.getProperty("os.name").toLowerCase();
             File game = null;
             if (os.contains("win") || os.contains("nix")) {
                 FileChooser chooser = new FileChooser();
-                chooser.setTitle(Localizer.getLocalizedText("selectGameExec"));
+                chooser.setTitle(Localizer.getLocalizedText("dialog.init.selectGameExec"));
                 if (os.contains("win"))
                     chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("osu! Executable", "osu!.exe"));
                 else
@@ -229,20 +229,20 @@ public class LoadTask extends Task<Void> {
                     System.exit(0);
             } else {
                 DirectoryChooser chooser = new DirectoryChooser();
-                chooser.setTitle(Localizer.getLocalizedText("selectGameExec"));
+                chooser.setTitle(Localizer.getLocalizedText("dialog.init.selectGameExec"));
                 while (game == null || !game.getName().equals("osu!.app")) {
                     game = chooser.showDialog(null);
                     if (game == null)
                         System.exit(0);
-                    Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("invalidExec"), Localizer.getLocalizedText("invalidExecDesc"));
+                    Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dialog.error.invalidExec"), Localizer.getLocalizedText("dialog.error.invalidExecDesc"));
                 }
             }
             Global.INSTANCE.setGameExecutable(game);
             try {
                 Global.INSTANCE.saveConfig();
             } catch (IOException e) {
-                Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("failedSaveConfig"),
-                        Localizer.getLocalizedText("failedSaveConfig"), Localizer.getLocalizedText("failedSaveConfigDesc"));
+                Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dialog.error.failedSaveConfig"),
+                        Localizer.getLocalizedText("dialog.error.failedSaveConfig"), Localizer.getLocalizedText("dialog.error.failedSaveConfigDesc"));
                 e.printStackTrace();
             }
             setup.set(true);

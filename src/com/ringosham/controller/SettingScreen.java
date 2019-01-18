@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -104,8 +104,8 @@ public class SettingScreen {
         try {
             Global.INSTANCE.saveConfig();
         } catch (IOException e) {
-            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("failedSaveConfig"),
-                    Localizer.getLocalizedText("failedSaveConfigDesc"));
+            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dialog.error.failedSaveConfig"),
+                    Localizer.getLocalizedText("dialog.error.failedSaveConfigDesc"));
             e.printStackTrace();
         }
         if (isLanguageChanged)
@@ -116,7 +116,7 @@ public class SettingScreen {
 
     public void changeGameDir() {
         DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle(Localizer.getLocalizedText("selectGameDir"));
+        chooser.setTitle(Localizer.getLocalizedText("dialog.init.selectGameDir"));
         File dir = chooser.showDialog(null);
         if (dir != null)
             checkGameDir(dir);
@@ -127,8 +127,8 @@ public class SettingScreen {
             gameDirectory.setText(dir.getAbsolutePath());
             return true;
         } else {
-            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dirInvalid"),
-                    Localizer.getLocalizedText("dirInvalidDesc"));
+            Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dialog.init.dirInvalid"),
+                    Localizer.getLocalizedText("dialog.init.dirInvalidDesc"));
             return false;
         }
     }
@@ -138,7 +138,7 @@ public class SettingScreen {
         File game = null;
         if (os.contains("win") || os.contains("nix")) {
             FileChooser chooser = new FileChooser();
-            chooser.setTitle(Localizer.getLocalizedText("selectGameExec"));
+            chooser.setTitle(Localizer.getLocalizedText("dialog.init.selectGameExec"));
             if (os.contains("win"))
                 chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("osu! Executable", "osu!.exe"));
             else
@@ -147,12 +147,12 @@ public class SettingScreen {
             game = chooser.showOpenDialog(null);
         } else {
             DirectoryChooser chooser = new DirectoryChooser();
-            chooser.setTitle(Localizer.getLocalizedText("selectGameExec"));
+            chooser.setTitle(Localizer.getLocalizedText("dialog.init.selectGameExec"));
             while (game == null || !game.getName().equals("osu!.app")) {
                 game = chooser.showDialog(null);
                 if (game == null)
                     break;
-                Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("invalidExec"), Localizer.getLocalizedText("invalidExecDesc"));
+                Global.INSTANCE.showAlert(Alert.AlertType.ERROR, Localizer.getLocalizedText("dialog.error.invalidExec"), Localizer.getLocalizedText("dialog.error.invalidExecDesc"));
             }
         }
         if (game != null)

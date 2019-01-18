@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -35,16 +35,16 @@ class Converter {
         Metadata metadata = getMetadataFromSong(song.getBeatmapID());
         assert metadata != null;
         if (metadata.getUnicodeTitle() == null || metadata.getUnicodeArtist() == null)
-            Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("converting")
+            Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("export.process.converting")
                     .replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist())));
         else
-            Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("converting")
+            Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("export.process.converting")
                     .replace("%SONG%", metadata.getUnicodeTitle() + " - " + metadata.getUnicodeArtist())));
         if (!Global.INSTANCE.getConvertDir().exists()) {
             try {
                 Files.createDirectory(Global.INSTANCE.getConvertDir().toPath());
             } catch (IOException e) {
-                String error = Localizer.getLocalizedText("errorCreateDir").replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist());
+                String error = Localizer.getLocalizedText("export.error.createDir").replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist());
                 mainScreen.consoleArea.appendText(error + "\n");
                 mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
                 e.printStackTrace();
@@ -84,7 +84,7 @@ class Converter {
             song.setOgg(false);
         } catch (EncoderException e) {
             Platform.runLater(() -> {
-                String error = Localizer.getLocalizedText("errorConvert").replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist());
+                String error = Localizer.getLocalizedText("export.error.convert").replace("%SONG%", metadata.getTitle() + " - " + metadata.getArtist());
                 mainScreen.consoleArea.appendText(error + "\n");
                 mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
             });

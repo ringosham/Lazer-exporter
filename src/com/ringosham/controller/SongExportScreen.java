@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -53,15 +53,15 @@ public class SongExportScreen {
     @FXML
     public void initialize() {
         //UI initialization
-        String convertTooltip = Localizer.getLocalizedText("convertTooltip");
-        String addTagTooltip = Localizer.getLocalizedText("applyTagsTooltip");
-        String overrideTooltip = Localizer.getLocalizedText("overwriteTagTooltip");
-        String useIDTooltip = Localizer.getLocalizedText("renameIDTooltip");
-        String renameTooltip = Localizer.getLocalizedText("renameTooltip");
-        String practiseTooltip = Localizer.getLocalizedText("practiceTooltip");
-        String filterTooltip = Localizer.getLocalizedText("filterTooltip");
-        String overwriteTooltip = Localizer.getLocalizedText("overwriteFileTooltip");
-        String romajiTooltip = Localizer.getLocalizedText("romajiTooltip");
+        String convertTooltip = Localizer.getLocalizedText("export.tooltip.convert");
+        String addTagTooltip = Localizer.getLocalizedText("export.tooltip.applyTags");
+        String overrideTooltip = Localizer.getLocalizedText("export.tooltip.overwriteTag");
+        String useIDTooltip = Localizer.getLocalizedText("export.tooltip.renameID");
+        String renameTooltip = Localizer.getLocalizedText("export.tooltip.rename");
+        String practiseTooltip = Localizer.getLocalizedText("export.tooltip.practice");
+        String filterTooltip = Localizer.getLocalizedText("export.tooltip.filter");
+        String overwriteTooltip = Localizer.getLocalizedText("export.tooltip.overwriteFile");
+        String romajiTooltip = Localizer.getLocalizedText("export.tooltip.romaji");
         convertCheckbox.setTooltip(new Tooltip(convertTooltip));
         overrideTags.setTooltip(new Tooltip(overrideTooltip));
         useBeatmapID.setTooltip(new Tooltip(useIDTooltip));
@@ -102,13 +102,13 @@ public class SongExportScreen {
         if (filterDuplicates.isSelected())
             seconds = Integer.parseInt(filterSeconds.getText());
         DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle(Localizer.getLocalizedText("chooseExportDir"));
+        chooser.setTitle(Localizer.getLocalizedText("dialog.export.chooseExportDir"));
         File exportDirectory = chooser.showDialog(null);
         if (exportDirectory == null)
             return;
         ExportSettings settings = new ExportSettings(convertCheckbox.isSelected(), filterPractice.isSelected(), overwriteCheckbox.isSelected(),
                 addTags.isSelected(), overrideTags.isSelected(),
-                ((RadioButton) renameOptions.getSelectedToggle()).getText().equals(Localizer.getLocalizedText("renameBeatmap")),
+                ((RadioButton) renameOptions.getSelectedToggle()).getText().equals(Localizer.getLocalizedText("export.option.renameBeatmap")),
                 filterDuplicates.isSelected(), romajiNaming.isSelected(), seconds, exportDirectory);
         SongExport export = new SongExport(mainScreen, settings);
         Thread thread = new Thread(export);

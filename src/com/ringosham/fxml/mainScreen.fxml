@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  ~ Copyright (c) 2018. Ringo Sham.
+  ~ Copyright (c) 2019. Ringo Sham.
   ~ Licensed under the Apache license. Version 2.0
   ~ http://www.apache.org/licenses/LICENSE-2.0
   -->
@@ -87,7 +87,7 @@
     </TextArea>
     <HBox alignment="TOP_RIGHT" layoutX="480.0" layoutY="484.0" prefHeight="25.0" prefWidth="164.0" spacing="10.0"
           AnchorPane.bottomAnchor="177.0" AnchorPane.rightAnchor="14.0">
-        <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#deselectAll" text="%deselectAll"/>
-        <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#selectAll" text="%selectAll"/>
+        <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#deselectAll" text="%button.deselectAll"/>
+        <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#selectAll" text="%button.selectAll"/>
     </HBox>
 </AnchorPane>
