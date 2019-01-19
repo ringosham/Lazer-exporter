@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018. Ringo Sham.
+ * Copyright (c) 2019. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -21,7 +21,7 @@ class Filter {
     private final boolean filterDuplicates;
     private final int filterSeconds;
 
-    public Filter(List<Song> songList, boolean filterPractice, boolean filterDuplicates, int filterSeconds) {
+    Filter(List<Song> songList, boolean filterPractice, boolean filterDuplicates, int filterSeconds) {
         this.songList = songList;
         this.filterPractice = filterPractice;
         this.filterDuplicates = filterDuplicates;
