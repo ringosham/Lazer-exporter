@@ -171,9 +171,9 @@ public class Global {
             if (os.contains("win"))
                 defaultLazerDir = System.getenv("AppData").replaceAll("\\\\", "/") + "/osu";
             else if (os.contains("mac"))
-                defaultLazerDir = System.getenv("user.home") + "/osu";
+                defaultLazerDir = System.getProperty("user.home") + "/osu";
             else
-                defaultLazerDir = System.getenv("user.home") + "/.local/share/osu";
+                defaultLazerDir = System.getProperty("user.home") + "/.local/share/osu";
             return defaultLazerDir;
         }
 

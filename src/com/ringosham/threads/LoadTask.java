@@ -221,9 +221,6 @@ public class LoadTask extends Task<Void> {
                 chooser.setTitle(Localizer.getLocalizedText("dialog.init.selectGameExec"));
                 if (os.contains("win"))
                     chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("osu! Executable", "osu!.exe"));
-                else
-                    //Assumes the executable in Arch linux AUR
-                    chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("osu! Executable", "osu-lazer"));
                 game = chooser.showOpenDialog(null);
                 if (game == null)
                     System.exit(0);

@@ -142,8 +142,7 @@ public class SettingScreen {
             if (os.contains("win"))
                 chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("osu! Executable", "osu!.exe"));
             else
-                //Assumes the executable in Arch linux AUR
-                chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("osu! Executable", "osu-lazer"));
+                chooser.getExtensionFilters().clear();
             game = chooser.showOpenDialog(null);
         } else {
             DirectoryChooser chooser = new DirectoryChooser();
