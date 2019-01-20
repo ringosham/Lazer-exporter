@@ -6,8 +6,8 @@
 
 package com.ringosham.objects.view;
 
+import com.ringosham.Global;
 import com.ringosham.objects.xml.BeatmapXML;
-import javafx.application.HostServices;
 import javafx.beans.property.*;
 import javafx.scene.control.Hyperlink;
 
@@ -19,13 +19,13 @@ public class BeatmapView {
     private final IntegerProperty beatmapIdInt = new SimpleIntegerProperty();
     private final Hyperlink beatmapId;
 
-    public BeatmapView(boolean isInstalled, BeatmapXML xml, HostServices hostServices) {
+    public BeatmapView(boolean isInstalled, BeatmapXML xml) {
         this.title.set(xml.getTitle());
         this.artist.set(xml.getArtist());
         this.beatmapId = new Hyperlink(Integer.toString(xml.getBeatmapID()));
         this.installedProperty.set(isInstalled);
         this.beatmapIdInt.set(xml.getBeatmapID());
-        beatmapId.setOnAction(e -> hostServices.showDocument("https://osu.ppy.sh/beatmapsets/" + xml.getBeatmapID()));
+        beatmapId.setOnAction(e -> Global.INSTANCE.openLink("https://osu.ppy.sh/beatmapsets/" + xml.getBeatmapID()));
         queueProperty.set(isInstalled);
     }
 

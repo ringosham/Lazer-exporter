@@ -11,10 +11,12 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -217,5 +219,14 @@ public class Global {
         return name.replaceAll("\\*", "").replaceAll("<", "").replaceAll(">", "")
                 .replaceAll("\\|", "").replaceAll("\\?", "").replaceAll(":", "")
                 .replaceAll("\"", "").replaceAll("\\\\", ",").replaceAll("/", ",");
+    }
+
+    public void openLink(String url) {
+        if (Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().browse(new URI(url));
+            } catch (IOException | URISyntaxException ignored) {
+            }
+        }
     }
 }

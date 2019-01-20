@@ -12,7 +12,6 @@ import com.ringosham.objects.view.BeatmapView;
 import com.ringosham.threads.export.beatmap.BeatmapExport;
 import com.ringosham.threads.export.list.ListExport;
 import com.ringosham.threads.imports.ListImport;
-import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -67,11 +66,6 @@ public class MainScreen {
     private final Stage loginStage = new Stage();
 
     private boolean shownDisclaimer = false;
-    private final HostServices hostServices;
-
-    public MainScreen(HostServices hostServices) {
-        this.hostServices = hostServices;
-    }
 
     public void initialize() {
         downloadMaps.setDisable(true);
@@ -134,7 +128,7 @@ public class MainScreen {
     }
 
     public void aboutWindow() throws IOException {
-        loadStage(aboutStage, Localizer.getLocalizedText("menu.help.about"), "/com/ringosham/fxml/about.fxml", new About(hostServices));
+        loadStage(aboutStage, Localizer.getLocalizedText("menu.help.about"), "/com/ringosham/fxml/about.fxml", new About());
     }
 
     public void importList() {
@@ -142,7 +136,7 @@ public class MainScreen {
         File importFile = getChooserFile(true);
         if (importFile == null)
             return;
-        ListImport importer = new ListImport(this, importFile, hostServices);
+        ListImport importer = new ListImport(this, importFile);
         statusText.textProperty().bind(importer.messageProperty());
         Thread thread = new Thread(importer);
         thread.setDaemon(true);
@@ -282,7 +276,7 @@ public class MainScreen {
         settingsStage.close();
         aboutStage.close();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ringosham/fxml/loading.fxml"), Localizer.getResourceBundle());
-        loader.setController(new Loading(stage, hostServices));
+        loader.setController(new Loading(stage));
         try {
             Parent root = loader.load();
             stage.resizableProperty().setValue(false);

@@ -6,24 +6,19 @@
 
 package com.ringosham.controller;
 
-import javafx.application.HostServices;
+import com.ringosham.Global;
 import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
 
 public class About {
-    private final HostServices hostServices;
 
     @FXML
     private Hyperlink license;
     @FXML
     private Hyperlink github;
 
-    About(HostServices hostServices) {
-        this.hostServices = hostServices;
-    }
-
     public void initialize() {
-        license.setOnAction(e -> hostServices.showDocument("https://www.apache.org/licenses/LICENSE-2.0"));
-        github.setOnAction(e -> hostServices.showDocument("https://github.com/ringosham/Lazer-exporter"));
+        license.setOnAction(e -> Global.INSTANCE.openLink("https://www.apache.org/licenses/LICENSE-2.0"));
+        github.setOnAction(e -> Global.INSTANCE.openLink("https://github.com/ringosham/Lazer-exporter"));
     }
 }
