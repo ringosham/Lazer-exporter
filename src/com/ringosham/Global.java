@@ -225,7 +225,7 @@ public class Global {
         //AWT only works on Windows and macOS, but not Linux.
         //HostService on JavaFX is bugged in OpenJDK 8, and it's not fixed until Java 9.
         if (System.getProperty("os.name").toLowerCase().equals("linux")) {
-            //Why is something as simple as opening a link so difficult!?
+            //Why is something as simple as opening an URL so difficult!?
             //If you are using wayland, sorry. There is nothing I can do.
             try {
                 Runtime.getRuntime().exec("xdg-open " + url);
