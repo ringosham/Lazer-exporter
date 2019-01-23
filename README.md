@@ -31,7 +31,7 @@ Do not use this program for distributing songs illegally. The creator of this pr
 * Import and export beatmap list
 * Download beatmaps directly from osu server after importing a list (Requires osu account login)
 * Export installed beatmaps back to .osz format
-* Multiple language support (Translators needed!)
+* Multiple language support (Translators needed! I'll make a Google spreadsheet when I have the time)
 * Export songs that are installed in the game
     * Proper file renaming (Romanji/Unicode/Rename after the beatmap ID)
     * Adding MP3 tags based on beatmap info
