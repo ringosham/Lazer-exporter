@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
-public class Global {
+public final class Global {
     public static final Global INSTANCE = new Global();
     private File configFile;
     public final List<Beatmap> beatmapList = new ArrayList<>();

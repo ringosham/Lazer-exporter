@@ -13,28 +13,37 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="292.0" prefWidth="321.0"
             xmlns="http://javafx.com/javafx/8.0.172-ea">
-    <Label layoutX="80.0" layoutY="132.0" text="Lazer Exporter" AnchorPane.topAnchor="132.0">
-        <font>
-            <Font name="Verdana" size="22.0"/>
-        </font>
-    </Label>
-    <Label alignment="CENTER" layoutX="75.0" layoutY="177.0" text="Copyright © 2018 - Ringosham"
-           AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="177.0"/>
-    <Label layoutX="153.0" layoutY="160.0" text="1.3" AnchorPane.topAnchor="160.0"/>
-    <Hyperlink fx:id="license" alignment="CENTER" contentDisplay="TOP" graphicTextGap="0.0" minWidth="-Infinity"
-               text="Licensed under Apache 2.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="85.0"
-               AnchorPane.rightAnchor="85.0"/>
-    <Hyperlink fx:id="github" contentDisplay="GRAPHIC_ONLY" layoutX="141.0" layoutY="207.0" minHeight="-Infinity"
-               minWidth="-Infinity" prefHeight="32.0" prefWidth="32.0" AnchorPane.bottomAnchor="53.0"
-               AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="140.0">
-        <graphic>
-            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@../assets/GitHub-Mark-32px.png"/>
-            </ImageView>
-        </graphic>
-    </Hyperlink>
-    <ImageView fitHeight="64.0" fitWidth="64.0" layoutX="129.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true"
-               AnchorPane.leftAnchor="129.0" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="42.0">
-        <Image url="@../assets/logo64x64.png"/>
-    </ImageView>
+    <GridPane alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="139.0" minHeight="10.0" prefHeight="123.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="123.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="86.0" minHeight="8.0" prefHeight="8.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="44.0" minHeight="10.0" prefHeight="12.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../assets/logo64x64.png"/>
+        </ImageView>
+        <Label text="Lazer Exporter" GridPane.rowIndex="1">
+            <font>
+                <Font name="Verdana" size="22.0"/>
+            </font>
+        </Label>
+        <Label text="1.3" GridPane.rowIndex="2"/>
+        <Label alignment="CENTER" text="Copyright © 2019 - Ringosham" GridPane.rowIndex="3"/>
+        <Hyperlink fx:id="github" contentDisplay="GRAPHIC_ONLY" GridPane.rowIndex="4">
+            <graphic>
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../assets/GitHub-Mark-32px.png"/>
+                </ImageView>
+            </graphic>
+        </Hyperlink>
+        <Hyperlink fx:id="license" alignment="CENTER" contentDisplay="TOP" graphicTextGap="0.0"
+                   text="Licensed under Apache 2.0" GridPane.rowIndex="5"/>
+    </GridPane>
 </AnchorPane>

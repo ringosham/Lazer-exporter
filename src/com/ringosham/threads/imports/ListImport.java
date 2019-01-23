@@ -54,15 +54,16 @@ public class ListImport extends Task<Void> {
         }
         updateMessage(Localizer.getLocalizedText("status.list.processingXML"));
         List<BeatmapXML> list = xml.getBeatmaps();
+        //Sanity checks. Marshaller converts all non-digits and decimals to 0.
+        list.removeIf(beatmapXML -> beatmapXML.getBeatmapID() <= 0);
         //Preparing view.
         list.sort((o1, o2) -> {
             if (isBeatmapInstalled(o1.getBeatmapID()) && !isBeatmapInstalled(o2.getBeatmapID()))
                 return 1;
             else if (!isBeatmapInstalled(o1.getBeatmapID()) && isBeatmapInstalled(o2.getBeatmapID()))
                 return -1;
-            else {
+            else
                 return Integer.compare(o1.getBeatmapID(), o2.getBeatmapID());
-            }
         });
         //Convert data to viewable objects for TableView
         List<BeatmapView> view = new ArrayList<>();
