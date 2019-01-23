@@ -13,7 +13,6 @@ import com.ringosham.objects.Beatmap;
 import com.ringosham.objects.view.BeatmapView;
 import com.ringosham.objects.xml.BeatmapListXML;
 import com.ringosham.objects.xml.BeatmapXML;
-import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
@@ -28,12 +27,10 @@ import java.util.List;
 public class ListImport extends Task<Void> {
     private final MainScreen mainScreen;
     private final File importFile;
-    private final HostServices hostServices;
 
-    public ListImport(MainScreen mainScreen, File importFile, HostServices hostServices) {
+    public ListImport(MainScreen mainScreen, File importFile) {
         this.mainScreen = mainScreen;
         this.importFile = importFile;
-        this.hostServices = hostServices;
     }
 
     @Override
@@ -70,7 +67,7 @@ public class ListImport extends Task<Void> {
         //Convert data to viewable objects for TableView
         List<BeatmapView> view = new ArrayList<>();
         for (BeatmapXML beatmap : list)
-            view.add(new BeatmapView(isBeatmapInstalled(beatmap.getBeatmapID()), beatmap, hostServices));
+            view.add(new BeatmapView(isBeatmapInstalled(beatmap.getBeatmapID()), beatmap));
         Platform.runLater(() -> mainScreen.beatmapList.setItems(FXCollections.observableArrayList(view)));
         updateMessage(Localizer.getLocalizedText("status.success"));
         finish();

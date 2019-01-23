@@ -136,13 +136,13 @@ public class SettingScreen {
     public void changeGameExec() {
         String os = System.getProperty("os.name").toLowerCase();
         File game = null;
-        if (os.contains("win") || os.contains("nix")) {
+        if (os.contains("win") || os.equals("linux")) {
             FileChooser chooser = new FileChooser();
             chooser.setTitle(Localizer.getLocalizedText("dialog.init.selectGameExec"));
             if (os.contains("win"))
                 chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("osu! Executable", "osu!.exe"));
             else
-                chooser.getExtensionFilters().clear();
+                chooser.setInitialDirectory(new File("/usr/bin"));
             game = chooser.showOpenDialog(null);
         } else {
             DirectoryChooser chooser = new DirectoryChooser();

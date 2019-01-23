@@ -11,10 +11,12 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -217,5 +219,25 @@ public class Global {
         return name.replaceAll("\\*", "").replaceAll("<", "").replaceAll(">", "")
                 .replaceAll("\\|", "").replaceAll("\\?", "").replaceAll(":", "")
                 .replaceAll("\"", "").replaceAll("\\\\", ",").replaceAll("/", ",");
+    }
+
+    public void openLink(String url) {
+        //AWT only works on Windows and macOS, but not Linux.
+        //HostService on JavaFX is bugged in OpenJDK 8, and it's not fixed until Java 9.
+        if (System.getProperty("os.name").toLowerCase().equals("linux")) {
+            //Why is something as simple as opening an URL so difficult!?
+            //If you are using wayland, sorry. There is nothing I can do.
+            try {
+                Runtime.getRuntime().exec("xdg-open " + url);
+            } catch (IOException ignored) {
+            }
+            return;
+        }
+        if (Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().browse(new URI(url));
+            } catch (IOException | URISyntaxException ignored) {
+            }
+        }
     }
 }
