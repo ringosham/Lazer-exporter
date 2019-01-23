@@ -28,7 +28,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/loading.fxml"));
-        //Need to pass HostServices around all threads just to make hyperlinks. What the hell JavaFX.
         loader.setController(new Loading(primaryStage));
         Parent root = loader.load();
         primaryStage.resizableProperty().setValue(false);
