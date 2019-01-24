@@ -32,9 +32,12 @@ public class BeatmapExport extends Task<Void> {
 
     @Override
     protected Void call() {
-        updateProgress(0, Global.INSTANCE.beatmapList.size());
+        updateProgress(0, Global.INSTANCE.beatmapList.size() - 1);
         int progress = 0;
         for (Beatmap beatmap : Global.INSTANCE.beatmapList) {
+            //Skips the default beatmap. There is no use importing it anyway as it has no beatmap data.
+            if (beatmap.getBeatmapId() == -1)
+                continue;
             updateMessage(Localizer.getLocalizedText("status.beatmap.exportingMap").replace("%BEATMAP%", beatmap.getBeatmapFullname()));
             File outputFile = new File(exportDir, Global.INSTANCE.getValidFileName(beatmap.getBeatmapFullname() + ".osz"));
             try {
@@ -49,7 +52,7 @@ public class BeatmapExport extends Task<Void> {
                     while ((length = in.read(buffer)) > 0)
                         stream.write(buffer, 0, length);
                     fileCount++;
-                    int finalFileCount = fileCount;
+                    final int finalFileCount = fileCount;
                     Platform.runLater(() -> mainScreen.subProgress.setProgress((double) finalFileCount / beatmap.getFileMap().keySet().size()));
                 }
                 stream.close();
