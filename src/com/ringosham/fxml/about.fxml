@@ -34,7 +34,7 @@
                 <Font name="Verdana" size="22.0"/>
             </font>
         </Label>
-        <Label text="1.3" GridPane.rowIndex="2"/>
+        <Label text="1.4" GridPane.rowIndex="2"/>
         <Label alignment="CENTER" text="Copyright © 2019 - Ringosham" GridPane.rowIndex="3"/>
         <Hyperlink fx:id="github" contentDisplay="GRAPHIC_ONLY" GridPane.rowIndex="4">
             <graphic>

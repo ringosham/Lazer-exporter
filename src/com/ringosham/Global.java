@@ -6,9 +6,12 @@
 
 package com.ringosham;
 
+import com.ringosham.locale.Localizer;
 import com.ringosham.objects.Beatmap;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 
 import java.awt.*;
@@ -76,6 +79,7 @@ public final class Global {
         config.setProperty("lazerDirectory", Defaults.getDefaultDirectory());
         config.setProperty("locale", Defaults.locale.toString());
         config.setProperty("settings.videoDownload", String.valueOf(Defaults.videoDownload));
+        config.setProperty("settings.gameExecutable", Defaults.getDefaultGameExecutable());
         config.store(out, "Lazer exporter config");
         out.close();
     }
@@ -210,6 +214,7 @@ public final class Global {
         alert.setTitle(title);
         alert.setHeaderText(headerText);
         alert.setContentText(content);
+        ((Button) (alert.getDialogPane().lookupButton(ButtonType.OK))).setText(Localizer.getLocalizedText("dialog.common.ok"));
         alert.showAndWait();
     }
 

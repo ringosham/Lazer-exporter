@@ -11,12 +11,20 @@ import com.ringosham.controller.MainScreen;
 import com.ringosham.locale.Localizer;
 import com.ringosham.objects.xml.BeatmapXML;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 class Downloader {
     private static final String downloadUrlPrefix = "https://osu.ppy.sh/beatmapsets/";
@@ -64,6 +72,31 @@ class Downloader {
                         .replace("%FAILCOUNT%", Integer.toString(failCount)));
             mainScreen.mainProgress.setProgress(0);
             mainScreen.subProgress.setProgress(0);
+            ButtonType ok = new ButtonType(Localizer.getLocalizedText("dialog.common.yes"), ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancel = new ButtonType(Localizer.getLocalizedText("dialog.common.no"), ButtonBar.ButtonData.CANCEL_CLOSE);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, Localizer.getLocalizedText("dialog.import.beatmapText"), ok, cancel);
+            alert.setTitle(Localizer.getLocalizedText("dialog.import.beatmapTitle"));
+            alert.setHeaderText(Localizer.getLocalizedText("dialog.import.beatmapHeader"));
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.orElse(cancel) == ok) {
+                File[] beatmaps = new File(Global.INSTANCE.getLazerDirectory(), "files").listFiles((dir, name) -> name.endsWith(".osz"));
+                List<String> command = new ArrayList<>();
+                command.add(Global.INSTANCE.getGameExecutable().getAbsolutePath());
+                List<String> paths = beatmaps == null ? new ArrayList<>() : Arrays.stream(beatmaps).map(File::getAbsolutePath).collect(Collectors.toList());
+                command.addAll(paths);
+                ProcessBuilder builder = new ProcessBuilder(command);
+                try {
+                    builder.start();
+                } catch (IOException ignored) {
+                }
+            } else {
+                Alert saveAlert = new Alert(Alert.AlertType.INFORMATION);
+                saveAlert.setTitle(Localizer.getLocalizedText("dialog.import.saveTitle"));
+                saveAlert.setHeaderText(Localizer.getLocalizedText("dialog.import.saveText"));
+                saveAlert.setContentText(new File(Global.INSTANCE.getLazerDirectory(), "files").getAbsolutePath());
+                ((Button) (saveAlert.getDialogPane().lookupButton(ButtonType.OK))).setText(Localizer.getLocalizedText("dialog.common.ok"));
+                saveAlert.showAndWait();
+            }
         });
     }
 

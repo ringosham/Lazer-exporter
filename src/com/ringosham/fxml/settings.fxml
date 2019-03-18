@@ -15,7 +15,7 @@
     <HBox alignment="TOP_RIGHT" layoutX="384.0" layoutY="362.0" prefHeight="20.0" prefWidth="200.0" spacing="10.0"
           AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="16.0">
         <Button mnemonicParsing="false" onAction="#apply" text="%settings.apply"/>
-        <Button mnemonicParsing="false" onAction="#close" text="%settings.cancel"/>
+        <Button mnemonicParsing="false" onAction="#close" text="%dialog.common.cancel"/>
     </HBox>
     <TextField fx:id="gameDirectory" layoutX="14.0" layoutY="37.0" minHeight="-Infinity" prefHeight="25.0"
                prefWidth="572.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0"
