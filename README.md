@@ -38,6 +38,7 @@ Do not use this program for distributing songs illegally. The creator of this pr
     * Filter practice beatmaps
     * Filter duplicates based on song length
     * Conversion from .ogg to .mp3 (Done through FFmpeg)
+    * Synchronize with the osu library
     
 ## Things to note
 

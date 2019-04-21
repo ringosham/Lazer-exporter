@@ -41,6 +41,8 @@ public class SongExportScreen {
     private TextField filterSeconds;
     @FXML
     private CheckBox romajiNaming;
+    @FXML
+    private CheckBox syncOsu;
 
     private final MainScreen mainScreen;
     private final Stage currentStage;
@@ -62,6 +64,7 @@ public class SongExportScreen {
         String filterTooltip = Localizer.getLocalizedText("export.tooltip.filter");
         String overwriteTooltip = Localizer.getLocalizedText("export.tooltip.overwriteFile");
         String romajiTooltip = Localizer.getLocalizedText("export.tooltip.romaji");
+        String syncTooltip = Localizer.getLocalizedText("export.tooltip.synchronize");
         convertCheckbox.setTooltip(new Tooltip(convertTooltip));
         overrideTags.setTooltip(new Tooltip(overrideTooltip));
         useBeatmapID.setTooltip(new Tooltip(useIDTooltip));
@@ -71,24 +74,16 @@ public class SongExportScreen {
         addTags.setTooltip(new Tooltip(addTagTooltip));
         overwriteCheckbox.setTooltip(new Tooltip(overwriteTooltip));
         romajiNaming.setTooltip(new Tooltip(romajiTooltip));
+        syncOsu.setTooltip(new Tooltip(syncTooltip));
+
         overrideTags.setDisable(true);
         filterPractice.setSelected(true);
-        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-            //macOS cannot run the FFmpeg included. These options needed to be disabled.
-            convertCheckbox.setDisable(true);
-            filterDuplicates.setDisable(true);
-            filterSeconds.setDisable(true);
-            useBeatmapID.setSelected(true);
-            useBeatmapID.setDisable(true);
-            renameBeatmap.setDisable(true);
-        } else {
-            filterDuplicates.setSelected(true);
-            filterSeconds.setText("10");
-            filterSeconds.textProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue.length() > 2 || !newValue.matches("\\d*") || newValue.equals("0"))
-                    filterSeconds.setText(oldValue);
-            });
-        }
+        filterDuplicates.setSelected(true);
+        filterSeconds.setText("10");
+        filterSeconds.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 2 || !newValue.matches("\\d*") || newValue.equals("0"))
+                filterSeconds.setText(oldValue);
+        });
     }
 
     @FXML
@@ -109,7 +104,7 @@ public class SongExportScreen {
         ExportSettings settings = new ExportSettings(convertCheckbox.isSelected(), filterPractice.isSelected(), overwriteCheckbox.isSelected(),
                 addTags.isSelected(), overrideTags.isSelected(),
                 ((RadioButton) renameOptions.getSelectedToggle()).getText().equals(Localizer.getLocalizedText("export.option.renameBeatmap")),
-                filterDuplicates.isSelected(), romajiNaming.isSelected(), seconds, exportDirectory);
+                filterDuplicates.isSelected(), romajiNaming.isSelected(), syncOsu.isSelected(), seconds, exportDirectory);
         SongExport export = new SongExport(mainScreen, settings);
         Thread thread = new Thread(export);
         thread.setDaemon(true);

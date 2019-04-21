@@ -55,6 +55,8 @@
                   text="%export.option.overwriteFile" GridPane.columnIndex="1"/>
         <CheckBox fx:id="romajiNaming" minWidth="-Infinity" mnemonicParsing="false" text="%export.option.romajiNaming"
                   GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <CheckBox fx:id="syncOsu" mnemonicParsing="false" text="%export.option.synchronize" GridPane.columnIndex="1"
+                  GridPane.rowIndex="1"/>
     </GridPane>
     <GridPane prefHeight="60.0" prefWidth="413.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0"
               AnchorPane.topAnchor="180.0">

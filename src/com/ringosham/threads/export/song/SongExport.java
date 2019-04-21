@@ -19,9 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermissions;
-import java.util.Comparator;
 import java.util.List;
 
 public class SongExport extends Task<Void> {
@@ -121,7 +119,10 @@ public class SongExport extends Task<Void> {
             new Tagger(mainScreen, songList, settings.isOverrideTags()).run();
         Platform.runLater(() -> mainScreen.statusText.setText(Localizer.getLocalizedText("export.process.cleanUp")));
         try {
-            cleanUp();
+            if (settings.isSyncOsuLibrary())
+                new CleanUp(mainScreen).run(songList, settings.getExportDirectory());
+            else
+                new CleanUp(mainScreen).run();
         } catch (IOException e) {
             String error = Localizer.getLocalizedText("export.error.cleanUp");
             mainScreen.consoleArea.appendText(error + "\n");
@@ -146,20 +147,5 @@ public class SongExport extends Task<Void> {
         Files.copy(ffmpegStream, ffmpeg.toPath());
         if (isUnixFs)
             Files.setPosixFilePermissions(ffmpeg.toPath(), PosixFilePermissions.fromString("rwxrwxr-x"));
-    }
-
-    //Clean up
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void cleanUp() throws IOException {
-        if (!Global.INSTANCE.getConvertDir().exists())
-            return;
-        Files.walk(Global.INSTANCE.getConvertDir().toPath())
-                .sorted(Comparator.reverseOrder())
-                .map(Path::toFile)
-                .forEach(File::delete);
-        String os = System.getProperty("os.name").toLowerCase();
-        File ffmpeg = new File(System.getProperty("java.io.tmpdir"), "ffmpeg" + (os.contains("win") ? ".exe" : ""));
-        if (ffmpeg.exists())
-            Files.delete(ffmpeg.toPath());
     }
 }

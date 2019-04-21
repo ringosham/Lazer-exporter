@@ -17,11 +17,12 @@ public class ExportSettings {
     private final boolean renameAsBeatmap;
     private final boolean filterDuplicates;
     private final boolean romajiNaming;
+    private final boolean syncOsuLibrary;
     private final int filterSeconds;
     private final File exportDirectory;
 
 
-    public ExportSettings(boolean convertOgg, boolean filterPractice, boolean overwrite, boolean applyTags, boolean overrideTags, boolean renameAsBeatmap, boolean filterDuplicates, boolean romajiNaming, int filterSeconds, File exportDirectory) {
+    public ExportSettings(boolean convertOgg, boolean filterPractice, boolean overwrite, boolean applyTags, boolean overrideTags, boolean renameAsBeatmap, boolean filterDuplicates, boolean romajiNaming, boolean syncOsuLibrary, int filterSeconds, File exportDirectory) {
         this.convertOgg = convertOgg;
         this.filterPractice = filterPractice;
         this.overwrite = overwrite;
@@ -30,6 +31,7 @@ public class ExportSettings {
         this.renameAsBeatmap = renameAsBeatmap;
         this.filterDuplicates = filterDuplicates;
         this.romajiNaming = romajiNaming;
+        this.syncOsuLibrary = syncOsuLibrary;
         this.filterSeconds = filterSeconds;
         this.exportDirectory = exportDirectory;
     }
@@ -72,5 +74,9 @@ public class ExportSettings {
 
     public boolean isRomajiNaming() {
         return romajiNaming;
+    }
+
+    public boolean isSyncOsuLibrary() {
+        return syncOsuLibrary;
     }
 }
