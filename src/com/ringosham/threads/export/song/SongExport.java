@@ -146,6 +146,6 @@ public class SongExport extends Task<Void> {
     private void copyExecutables(File ffmpeg, InputStream ffmpegStream, boolean isUnixFs) throws IOException {
         Files.copy(ffmpegStream, ffmpeg.toPath());
         if (isUnixFs)
-            Files.setPosixFilePermissions(ffmpeg.toPath(), PosixFilePermissions.fromString("rwxrwxr-x"));
+            Files.setPosixFilePermissions(ffmpeg.toPath(), PosixFilePermissions.fromString("rwxr-xr-x"));
     }
 }
