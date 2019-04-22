@@ -172,6 +172,10 @@ public class LoadTask extends Task<Void> {
             try {
                 Parent root = loader.load();
                 stage.resizableProperty().setValue(true);
+                stage.setMinWidth(550);
+                stage.setMinHeight(500);
+                stage.setWidth(800);
+                stage.setHeight(700);
                 MainScreen controller = loader.getController();
                 stage.setOnCloseRequest(e -> {
                     e.consume();
