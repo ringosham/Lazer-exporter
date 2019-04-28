@@ -50,7 +50,6 @@ The FFmpeg used for exporting songs supports both 32 bit and 64 bit with the fol
 * macOS 10.6 and above
 * Any Linux distributions
   * The binary used is 32 bit. Please make sure you have the required libraries to enable 32 bit compatibility
-  * You will need to install OpenJFX to run this program
 
 ## Building
 
