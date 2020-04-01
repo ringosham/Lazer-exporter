@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Ringo Sham.
+ * Copyright (c) 2020. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -46,7 +46,7 @@ public class Login {
     }
 
     public void onLogin() {
-        if (!email.getText().matches(emailRegex)) {
+        if (email.getText().trim().isEmpty()) {
             email.setStyle("-fx-text-box-boarder: red; -fx-focus-color: red");
             email.requestFocus();
             return;

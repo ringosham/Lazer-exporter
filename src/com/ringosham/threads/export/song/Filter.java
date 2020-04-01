@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Ringo Sham.
+ * Copyright (c) 2020. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -51,7 +51,8 @@ class Filter {
                     String songBTitle = Objects.requireNonNull(getTitleFromSong(songB.getBeatmapID())).toLowerCase().trim();
                     if (songATitle.equals(songBTitle)) {
                         if (Math.abs(songA.getLengthInSeconds() - songB.getLengthInSeconds()) < filterSeconds) {
-                            iterator.remove();
+                            if (songA.getBitrate() < songB.getBitrate())
+                                iterator.remove();
                         } else {
                             if (songA.getLengthInSeconds() > songB.getLengthInSeconds())
                                 songA.setFullVersion(true);
