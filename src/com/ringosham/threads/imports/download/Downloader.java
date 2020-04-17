@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Ringo Sham.
+ * Copyright (c) 2020. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -149,9 +149,14 @@ class Downloader {
                     in.close();
                     out.close();
                     return false;
-                } else
+                } else {
+                    in.close();
+                    out.close();
                     throw new IOException(errorString.toString());
+                }
             } else if (responseCode == HttpsURLConnection.HTTP_NOT_FOUND) {
+                in.close();
+                out.close();
                 throw new IOException(Localizer.getLocalizedText("download.notFound"));
             } else {
                 final byte[] data = new byte[1024];
@@ -164,6 +169,7 @@ class Downloader {
                     Platform.runLater(() -> mainScreen.subProgress.setProgress((double) finalDownloadedSize / fileSize));
                     out.write(data, 0, count);
                 }
+                in.close();
                 out.close();
             }
         } catch (IOException e) {

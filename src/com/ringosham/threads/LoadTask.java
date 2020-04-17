@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Ringo Sham.
+ * Copyright (c) 2020. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -58,7 +58,7 @@ public class LoadTask extends Task<Void> {
         final String jdbcUrl = "jdbc:sqlite:";
         try {
             Connection connection = DriverManager.getConnection(jdbcUrl + Global.INSTANCE.getDatabaseAbsolutePath());
-            String beatmapsetInfoSql = "SELECT ID, OnlineBeatmapSetID, MetadataID FROM BeatmapSetInfo ORDER BY ID";
+            String beatmapsetInfoSql = "SELECT ID, OnlineBeatmapSetID, MetadataID, Status, DeletePending FROM BeatmapSetInfo ORDER BY ID";
             String fileInfoSql = "SELECT BeatmapSetInfoID, Filename, FileInfo.Hash" +
                     " FROM BeatmapSetFileInfo JOIN FileInfo ON BeatmapSetFileInfo.FileInfoID = FileInfo.ID";
             String metadataSql = "SELECT ID, Artist, ArtistUnicode, Title, TitleUnicode, AudioFile, BackgroundFile FROM BeatmapMetadata";
@@ -70,7 +70,7 @@ public class LoadTask extends Task<Void> {
             ResultSet beatmapMetadataSet = metadataStatement.executeQuery(metadataSql);
             //Extract ResultSets to Java objects as SQLite only supports forward only cursors.
             List<List<String>> beatmapSetInfo = new ArrayList<List<String>>() {{
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 5; i++)
                     add(new ArrayList<>());
             }};
             List<List<String>> fileInfo = new ArrayList<List<String>>() {{
@@ -93,6 +93,8 @@ public class LoadTask extends Task<Void> {
                 beatmapSetInfo.get(0).add(beatmapSetInfoSet.getString(1));
                 beatmapSetInfo.get(1).add(beatmapSetInfoSet.getString(2));
                 beatmapSetInfo.get(2).add(beatmapSetInfoSet.getString(3));
+                beatmapSetInfo.get(3).add(beatmapSetInfoSet.getString(4));
+                beatmapSetInfo.get(4).add(beatmapSetInfoSet.getString(5));
             }
             while (fileInfoSet.next()) {
                 fileInfo.get(0).add(fileInfoSet.getString(1));
@@ -118,8 +120,17 @@ public class LoadTask extends Task<Void> {
             for (int i = 0; i < beatmapSetInfo.get(0).size(); i++) {
                 String beatmapID = beatmapSetInfo.get(0).get(i);
                 String onlineString = beatmapSetInfo.get(1).get(i);
-                //The default beatmap always starts with ID 1 and no online beatmap ID
-                if (onlineString == null && !beatmapID.equals("1")) {
+                int beatmapStatus = Integer.parseInt(beatmapSetInfo.get(3).get(i));
+                String deletePending = beatmapSetInfo.get(4).get(i);
+                //Check if there are any beatmaps that doesn't have a online ID
+                //4 means loved
+                //3 means qualified
+                //2 probably means approved (Haven't tested)
+                //1 means ranked
+                //0 means pending
+                //-2 means graveyard
+                //-3 means built-in (Like Triangles and Circles)
+                if (onlineString == null && beatmapStatus != -3) {
                     if (!nullIDFound) {
                         Global.INSTANCE.showAlert(Alert.AlertType.WARNING, Localizer.getLocalizedText("dialog.warn.nullID"),
                                 Localizer.getLocalizedText("dialog.warn.nullIDHead"), Localizer.getLocalizedText("dialog.warn.nullIDDesc"));
@@ -127,12 +138,14 @@ public class LoadTask extends Task<Void> {
                     }
                     continue;
                 }
-                int onlineID;
-                if (beatmapID.equals("1"))
-                    onlineID = -1;
-                else {
-                    onlineID = Integer.parseInt(onlineString);
-                }
+                //Skip any beatmaps that are built-in (Status -3) and deleted
+                //osu! deletes the beatmaps after you close the game, but it does not delete the entry in the database
+                if (beatmapStatus == -3)
+                    continue;
+                if (deletePending.equals("1"))
+                    continue;
+                //Get online beatmap ID
+                int onlineID = Integer.parseInt(onlineString);
                 String metadataID = beatmapSetInfo.get(2).get(i);
                 HashMap<String, String> fileMap = new HashMap<>();
                 for (int j = 0; j < fileInfo.get(0).size(); j++)
