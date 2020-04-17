@@ -123,13 +123,19 @@ public class LoadTask extends Task<Void> {
                 int beatmapStatus = Integer.parseInt(beatmapSetInfo.get(3).get(i));
                 String deletePending = beatmapSetInfo.get(4).get(i);
                 //Check if there are any beatmaps that doesn't have a online ID
+                //See https://github.com/ppy/osu/blob/master/osu.Game/Beatmaps/BeatmapSetOnlineStatus.cs
                 //4 means loved
                 //3 means qualified
-                //2 probably means approved (Haven't tested)
+                //2 means approved
                 //1 means ranked
                 //0 means pending
+                //-1 means WIP
                 //-2 means graveyard
-                //-3 means built-in (Like Triangles and Circles)
+                //-3 means unknown
+                //Unknown normally should be reserved for built-in ones like Circle and Triangles, but in some cases
+                //if the game raises an error during parsing, it will give them a status -3 as well.
+
+                //Raises a warning if there are *normally* imported beatmaps that doesn't have a online ID
                 if (onlineString == null && beatmapStatus != -3) {
                     if (!nullIDFound) {
                         Global.INSTANCE.showAlert(Alert.AlertType.WARNING, Localizer.getLocalizedText("dialog.warn.nullID"),
@@ -138,13 +144,16 @@ public class LoadTask extends Task<Void> {
                     }
                     continue;
                 }
-                //Skip any beatmaps that are built-in (Status -3) and deleted
+                //Skip any beatmaps that are deleted
                 //osu! deletes the beatmaps after you close the game, but it does not delete the entry in the database
-                if (beatmapStatus == -3)
-                    continue;
                 if (deletePending.equals("1"))
                     continue;
+                //Skip any beatmaps that don't have an Online ID (Including unknown beatmap status)
+                //This also skips built-in beatmaps that are not playable
+                if (onlineString == null)
+                    continue;
                 //Get online beatmap ID
+                //We have to ensure that every beatmap must have a online ID, so that the download function will work properly
                 int onlineID = Integer.parseInt(onlineString);
                 String metadataID = beatmapSetInfo.get(2).get(i);
                 HashMap<String, String> fileMap = new HashMap<>();
