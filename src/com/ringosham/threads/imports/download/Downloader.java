@@ -135,17 +135,7 @@ class Downloader {
                 while ((line = reader.readLine()) != null)
                     errorString.append(line);
                 if (errorString.toString().contains("slow down")) {
-                    int timeout = 30;
-                    while (timeout >= 0) {
-                        int finalTimeout = timeout;
-                        Platform.runLater(() -> {
-                            mainScreen.statusText.setText(Localizer.getLocalizedText("status.download.timeout")
-                                    .replace("%TIMEOUT%", String.valueOf(finalTimeout)));
-                            mainScreen.subProgress.setProgress(-1);
-                        });
-                        Thread.sleep(1000);
-                        timeout--;
-                    }
+                    timeout();
                     in.close();
                     out.close();
                     return false;
@@ -172,7 +162,10 @@ class Downloader {
                         timeoutCurrent = System.currentTimeMillis();
                         //If osu! has stop sending any data for 5 seconds
                         if (timeoutCurrent - timeoutStart >= 5000) {
-                            //TODO Display timeout. Retry
+                            timeout();
+                            in.close();
+                            out.close();
+                            return false;
                         }
                     } else {
                         timeoutStart = -1;
@@ -193,8 +186,24 @@ class Downloader {
             mainScreen.consoleArea.appendText(error + "\n");
             mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage() + "\n");
             e.printStackTrace();
-        } catch (InterruptedException ignored) {
         }
         return true;
+    }
+
+    private void timeout() {
+        int timeout = 30;
+        while (timeout >= 0) {
+            int finalTimeout = timeout;
+            Platform.runLater(() -> {
+                mainScreen.statusText.setText(Localizer.getLocalizedText("status.download.timeout")
+                        .replace("%TIMEOUT%", String.valueOf(finalTimeout)));
+                mainScreen.subProgress.setProgress(-1);
+            });
+            try {
+                Thread.sleep(30000);
+            } catch (InterruptedException ignored) {
+            }
+            timeout--;
+        }
     }
 }
