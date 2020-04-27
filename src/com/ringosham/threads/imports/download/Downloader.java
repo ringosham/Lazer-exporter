@@ -162,7 +162,21 @@ class Downloader {
                 final byte[] data = new byte[1024];
                 long downloadedSize = 0;
                 int count;
+                //Check if osu! sent 0 bytes (Prevent user from using too much bandwidth)
+                long timeoutStart = -1;
+                long timeoutCurrent;
                 while ((count = in.read(data, 0, 1024)) != -1) {
+                    if (count == 0) {
+                        if (timeoutStart == -1)
+                            timeoutStart = System.currentTimeMillis();
+                        timeoutCurrent = System.currentTimeMillis();
+                        //If osu! has stop sending any data for 5 seconds
+                        if (timeoutCurrent - timeoutStart >= 5000) {
+                            //TODO Display timeout. Retry
+                        }
+                    } else {
+                        timeoutStart = -1;
+                    }
                     downloadedSize += count;
                     long finalDownloadedSize = downloadedSize;
                     //Unknown file size would turn the progress bar indeterminate

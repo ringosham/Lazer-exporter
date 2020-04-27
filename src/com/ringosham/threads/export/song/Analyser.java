@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019. Ringo Sham.
+ * Copyright (c) 2020. Ringo Sham.
  * Licensed under the Apache license. Version 2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -45,30 +45,41 @@ class Analyser {
         int progress = 0;
         for (Beatmap beatmap : Global.INSTANCE.beatmapList) {
             String audioFilename = beatmap.getFileMap().get(beatmap.getMetadata().getAudioFilename());
-            File songFile = getFileFromHash(audioFilename);
+            File songFile = null;
             try {
-                Encoder encoder;
-                if (customExecutable)
-                    encoder = new Encoder(SongExport.locator);
-                else
-                    encoder = new Encoder();
-                MultimediaInfo info = encoder.getInfo(songFile);
-                long duration = info.getDuration() / 1000;
-                int bitrate = info.getAudio().getBitRate();
-                //Beatmap songs can only be MP3s or Vorbis ogg.
-                songMap.put(beatmap.getFileMap().get(beatmap.getMetadata().getAudioFilename()),
-                        new Song(songFile, beatmap.getBeatmapId(),
-                                beatmap.getMetadata().getAudioFilename().toLowerCase().endsWith(".ogg"), duration, bitrate));
-            } catch (EncoderException e) {
-                SongExport.failCount++;
-                Platform.runLater(() -> {
-                    mainScreen.consoleArea.appendText(Localizer.getLocalizedText("export.error.song").replace("%BEATMAP%",
-                            beatmap.getBeatmapFullname()));
-                    mainScreen.consoleArea.appendText("\n");
-                    mainScreen.consoleArea.appendText(e.getClass().getName() + " : " + e.getMessage());
-                    mainScreen.consoleArea.appendText("\n");
-                });
+                songFile = getFileFromHash(audioFilename);
+            } catch (NullPointerException e) {
+                String errorString = Localizer.getLocalizedText("export.error.filenotfound").replace("%BEATMAP%", beatmap.getBeatmapFullname()) +
+                        "\n" +
+                        e.getClass().getSimpleName() + " : " + e.getMessage() +
+                        "\n";
+                Platform.runLater(() -> mainScreen.consoleArea.appendText(errorString));
                 e.printStackTrace();
+            }
+            if (songFile != null) {
+                try {
+                    Encoder encoder;
+                    if (customExecutable)
+                        encoder = new Encoder(SongExport.locator);
+                    else
+                        encoder = new Encoder();
+                    MultimediaInfo info = encoder.getInfo(songFile);
+                    long duration = info.getDuration() / 1000;
+                    int bitrate = info.getAudio().getBitRate();
+                    //Beatmap songs can only be MP3s or Vorbis ogg.
+                    songMap.put(beatmap.getFileMap().get(beatmap.getMetadata().getAudioFilename()),
+                            new Song(songFile, beatmap.getBeatmapId(),
+                                    beatmap.getMetadata().getAudioFilename().toLowerCase().endsWith(".ogg"), duration, bitrate));
+                } catch (EncoderException | NullPointerException e) {
+                    //Sometimes FFMPEG can fail reading some of the MP3s
+                    SongExport.failCount++;
+                    String errorString = Localizer.getLocalizedText("export.error.song").replace("%BEATMAP%", beatmap.getBeatmapFullname()) +
+                            "\n" +
+                            e.getClass().getSimpleName() + " : " + e.getMessage() +
+                            "\n";
+                    Platform.runLater(() -> mainScreen.consoleArea.appendText(errorString));
+                    e.printStackTrace();
+                }
             }
             progress++;
             int finalProgress = progress;
